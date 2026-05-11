@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "k6W4h5ZmHaQ=",
+  "success": true,
+  "projectFilePath": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Anders\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.7\\microsoft.aspnetcore.openapi.10.0.7.nupkg.sha512",
+    "C:\\Users\\Anders\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
