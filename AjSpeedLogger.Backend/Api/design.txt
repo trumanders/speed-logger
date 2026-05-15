@@ -1,0 +1,40 @@
+ApplicationUser : IdentityUser
+├── ICollection<Student> Students
+└── ICollection<AcademicYear> AcademicYears
+
+AcademicYear
+├── int Id
+├── string Name ("2024/2025")
+├── DateOnly StartDate
+├── DateOnly EndDate
+├── string ApplicationUserId (FK)
+├── BaseLog BaseLog
+└── ICollection<StudentLog> StudentLogs
+
+Student
+├── int Id
+├── string Name
+├── DayOfWeek LessonDay
+├── TimeOnly LessonStartTime
+├── TimeOnly LessonEndTime
+├── string ApplicationUserId (FK)
+└── ICollection<StudentLog> StudentLogs
+
+BaseLog
+├── int Id
+├── int AcademicYearId (FK)
+└── ICollection<LogDay> LogDays
+
+StudentLog
+├── int Id
+├── int StudentId (FK)
+├── int AcademicYearId (FK)
+└── ICollection<LogDay> LogDays
+
+LogDay
+├── int Id
+├── DateOnly Date
+├── string Note
+├── bool IsFuturePlan
+├── int? BaseLogId (FK, nullable)
+└── int? StudentLogId (FK, nullable)

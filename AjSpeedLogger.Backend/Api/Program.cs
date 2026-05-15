@@ -1,4 +1,11 @@
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
+using Persistence.Interfaces;
+using Persistence.Repositories;
 
+using Persistence.Entities;
+using Common;
 namespace Api
 {
 	public class Program
@@ -10,7 +17,14 @@ namespace Api
 			// Add services to the container.
 
 			builder.Services.AddControllers();
-			// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+			builder.Services.AddDbContext<Context>(options =>
+				options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+
+			builder.Services.AddScoped<IRepository, Repository>();
+
+			ConfigureAutoMapper(builder.Services);
+
 			builder.Services.AddOpenApi();
 
 			var app = builder.Build();
@@ -22,13 +36,20 @@ namespace Api
 			}
 
 			app.UseHttpsRedirection();
-
 			app.UseAuthorization();
-
-
 			app.MapControllers();
-
 			app.Run();
+		}
+
+		private static void ConfigureAutoMapper(IServiceCollection services)
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<AcademicYear, AcademicYearDto>();
+			}, null);
+
+			var mapper = config.CreateMapper();
+			services.AddSingleton(mapper);
 		}
 	}
 }

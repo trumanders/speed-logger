@@ -1,13 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>282354f7-5fb3-490d-9d3e-ac2eb94894d7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
 
 </Project>

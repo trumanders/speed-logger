@@ -1,0 +1,22 @@
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
+
+namespace Persistence.Contexts
+{
+	public class Context : IdentityDbContext<ApplicationUser>
+	{
+		public DbSet<AcademicYear> AcademicYears => Set<AcademicYear>();
+		public DbSet<BaseLog> BaseLogs => Set<BaseLog>();
+		public DbSet<LogDay> LogDays => Set<LogDay>();
+		public DbSet<Student> Students => Set<Student>();
+		public DbSet<StudentLog> StudentLogs => Set<StudentLog>();
+
+		public Context(DbContextOptions<Context> options) : base(options) { }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+		}
+	}
+}
