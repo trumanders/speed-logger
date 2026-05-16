@@ -7,10 +7,10 @@ namespace Persistence.Contexts
 	public class Context : IdentityDbContext<ApplicationUser>
 	{
 		public DbSet<AcademicYear> AcademicYears => Set<AcademicYear>();
-		public DbSet<BaseLog> BaseLogs => Set<BaseLog>();
+		public DbSet<BaseLogDay> BaseLogDays => Set<BaseLogDay>();
+		public DbSet<Log> StudentLogs => Set<Log>();
 		public DbSet<LogDay> LogDays => Set<LogDay>();
 		public DbSet<Student> Students => Set<Student>();
-		public DbSet<Log> StudentLogs => Set<Log>();
 
 		public Context(DbContextOptions<Context> options) : base(options) { }
 

@@ -8,6 +8,7 @@ namespace Persistence.Entities
 		public DayOfWeek DayOfWeek { get; set; }
 		public TimeOnly LessonStartTime { get; set; }
 		public TimeOnly LessonEndTime { get; set; }
+
 		public ICollection<LogDay> LogDays { get; set; } = [];
 
 

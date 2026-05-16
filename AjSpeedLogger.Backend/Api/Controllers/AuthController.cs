@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
 		};
 
 		var token = new JwtSecurityToken(
-			issuer: _configuration["Jwt:Issuer"]
+			issuer: _configuration["Jwt:Issuer"],
 			audience: _configuration["Jwt:Audience"],
 			claims: claims,
 			expires: DateTime.UtcNow.AddHours(8),
