@@ -10,7 +10,7 @@ namespace Persistence.Contexts
 		public DbSet<BaseLog> BaseLogs => Set<BaseLog>();
 		public DbSet<LogDay> LogDays => Set<LogDay>();
 		public DbSet<Student> Students => Set<Student>();
-		public DbSet<StudentLog> StudentLogs => Set<StudentLog>();
+		public DbSet<Log> StudentLogs => Set<Log>();
 
 		public Context(DbContextOptions<Context> options) : base(options) { }
 

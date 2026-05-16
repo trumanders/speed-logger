@@ -1,4 +1,5 @@
 using Common.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Entities;
 using Persistence.Interfaces;
@@ -7,6 +8,7 @@ namespace Api.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
+	[Authorize]
 	public class AcademicYearController : ControllerBase
 	{
 		private readonly IRepository _repository;
@@ -18,14 +20,14 @@ namespace Api.Controllers
 
 		// ADD
 		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] AcademicYearDto dto)
+		public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto dto)
 		{
 			if (dto == null)
 			{
 				return BadRequest("AcademicYearDto cannot be null.");
 			}
 
-			var entity = await _repository.AddAsync<AcademicYear, AcademicYearDto>(dto);
+			var entity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
 
 			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 

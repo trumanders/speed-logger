@@ -10,7 +10,7 @@ namespace Persistence.Entities
 		public DateOnly EndDate { get; set; }
 		public string ApplicationUserId { get; set; } = string.Empty;
 
-		public BaseLog BaseLog { get; set; } = null!;
-		public ICollection<StudentLog> StudentLogs { get; set; } = [];
+		//public ICollection<Student> Students { get; set; } = [];
+		//public ICollection<LogDay> BaseLogDays { get; set; } = [];
 	}
 }

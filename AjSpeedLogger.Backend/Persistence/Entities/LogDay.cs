@@ -6,8 +6,8 @@ namespace Persistence.Entities
 	{
 		public int Id { get; set; }
 		public DateOnly Date { get; set; }
-		public string Content { get; set; }
-		public int? BaseLogId { get; set; }
-		public int? StudentLogId { get; set; }
+		public string Content { get; set; } = string.Empty;
+
+		public int LogId { get; set; }
 	}
 }
