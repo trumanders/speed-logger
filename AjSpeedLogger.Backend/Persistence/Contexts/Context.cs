@@ -8,7 +8,7 @@ namespace Persistence.Contexts
 	{
 		public DbSet<AcademicYear> AcademicYears => Set<AcademicYear>();
 		public DbSet<BaseLogDay> BaseLogDays => Set<BaseLogDay>();
-		public DbSet<Log> StudentLogs => Set<Log>();
+		public DbSet<Log> Logs => Set<Log>();
 		public DbSet<LogDay> LogDays => Set<LogDay>();
 		public DbSet<Student> Students => Set<Student>();
 

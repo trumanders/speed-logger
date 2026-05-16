@@ -247,7 +247,7 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
+            modelBuilder.Entity("Persistence.Entities.BaseLogDay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,12 +258,46 @@ namespace Persistence.Migrations
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AcademicYearId")
-                        .IsUnique();
+                    b.ToTable("BaseLogDays");
+                });
 
-                    b.ToTable("BaseLogs");
+            modelBuilder.Entity("Persistence.Entities.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AcademicYearId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeOnly>("LessonEndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<TimeOnly>("LessonStartTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Persistence.Entities.LogDay", b =>
@@ -274,7 +308,7 @@ namespace Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BaseLogId")
+                    b.Property<int?>("AcademicYearId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Content")
@@ -284,14 +318,14 @@ namespace Persistence.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<int?>("StudentLogId")
+                    b.Property<int>("LogId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BaseLogId");
+                    b.HasIndex("AcademicYearId");
 
-                    b.HasIndex("StudentLogId");
+                    b.HasIndex("LogId");
 
                     b.ToTable("LogDays");
                 });
@@ -305,17 +339,7 @@ namespace Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
-                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("LessonDayOfWeek")
-                        .HasColumnType("integer");
-
-                    b.Property<TimeOnly>("LessonEndTime")
-                        .HasColumnType("time without time zone");
-
-                    b.Property<TimeOnly>("LessonStartTime")
-                        .HasColumnType("time without time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -326,29 +350,6 @@ namespace Persistence.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("Persistence.Entities.StudentLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AcademicYearId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentLogs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -411,56 +412,38 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
+            modelBuilder.Entity("Persistence.Entities.Log", b =>
                 {
-                    b.HasOne("Persistence.Entities.AcademicYear", null)
-                        .WithOne("BaseLog")
-                        .HasForeignKey("Persistence.Entities.BaseLog", "AcademicYearId")
+                    b.HasOne("Persistence.Entities.Student", null)
+                        .WithMany("Logs")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Persistence.Entities.LogDay", b =>
                 {
-                    b.HasOne("Persistence.Entities.BaseLog", null)
-                        .WithMany("LogDays")
-                        .HasForeignKey("BaseLogId");
+                    b.HasOne("Persistence.Entities.AcademicYear", null)
+                        .WithMany("BaseLogDays")
+                        .HasForeignKey("AcademicYearId");
 
-                    b.HasOne("Persistence.Entities.StudentLog", null)
+                    b.HasOne("Persistence.Entities.Log", null)
                         .WithMany("LogDays")
-                        .HasForeignKey("StudentLogId");
+                        .HasForeignKey("LogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistence.Entities.Student", b =>
                 {
                     b.HasOne("Persistence.Entities.ApplicationUser", null)
                         .WithMany("Students")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Persistence.Entities.StudentLog", b =>
-                {
-                    b.HasOne("Persistence.Entities.AcademicYear", null)
-                        .WithMany("StudentLogs")
-                        .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Persistence.Entities.Student", null)
-                        .WithMany("StudentLogs")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("Persistence.Entities.AcademicYear", b =>
                 {
-                    b.Navigation("BaseLog")
-                        .IsRequired();
-
-                    b.Navigation("StudentLogs");
+                    b.Navigation("BaseLogDays");
                 });
 
             modelBuilder.Entity("Persistence.Entities.ApplicationUser", b =>
@@ -470,19 +453,14 @@ namespace Persistence.Migrations
                     b.Navigation("Students");
                 });
 
-            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
+            modelBuilder.Entity("Persistence.Entities.Log", b =>
                 {
                     b.Navigation("LogDays");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Student", b =>
                 {
-                    b.Navigation("StudentLogs");
-                });
-
-            modelBuilder.Entity("Persistence.Entities.StudentLog", b =>
-                {
-                    b.Navigation("LogDays");
+                    b.Navigation("Logs");
                 });
 #pragma warning restore 612, 618
         }
