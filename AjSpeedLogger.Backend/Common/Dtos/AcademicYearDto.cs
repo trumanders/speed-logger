@@ -1,4 +1,4 @@
-﻿namespace Common;
+﻿namespace Common.Dtos;
 public class AcademicYearDto
 {
 	public int Id { get; set; }

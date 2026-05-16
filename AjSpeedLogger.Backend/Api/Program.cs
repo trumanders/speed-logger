@@ -1,11 +1,9 @@
-using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using Persistence.Entities;
 using Persistence.Interfaces;
 using Persistence.Repositories;
-
-using Persistence.Entities;
-using Common;
 namespace Api
 {
 	public class Program
@@ -23,33 +21,28 @@ namespace Api
 
 			builder.Services.AddScoped<IRepository, Repository>();
 
-			ConfigureAutoMapper(builder.Services);
 
-			builder.Services.AddOpenApi();
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+				.AddEntityFrameworkStores<Context>()
+				.AddDefaultTokenProviders();
+
+			builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
+
+			builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.MapOpenApi();
+				app.UseSwagger();
+				app.UseSwaggerUI();
 			}
 
 			app.UseHttpsRedirection();
 			app.UseAuthorization();
 			app.MapControllers();
 			app.Run();
-		}
-
-		private static void ConfigureAutoMapper(IServiceCollection services)
-		{
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.CreateMap<AcademicYear, AcademicYearDto>();
-			}, null);
-
-			var mapper = config.CreateMapper();
-			services.AddSingleton(mapper);
 		}
 	}
 }

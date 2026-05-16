@@ -3,28 +3,56 @@
   "WorkspaceRootPath": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\controllers\\academicyearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\controllers\\academicyearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\persistence\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|solutionrelative:persistence\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\common\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|solutionrelative:common\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\common\\dtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|solutionrelative:common\\dtos\\registerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\controllers\\academicyearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\controllers\\academicyearcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\persistence\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|solutionrelative:persistence\\repositories\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\persistence\\entities\\academicyear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|solutionrelative:persistence\\entities\\academicyear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\persistence\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|solutionrelative:persistence\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\persistence\\interfaces\\ientity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B3AF4CC7-7332-48FB-ADCF-BB390CA7C919}|Persistence\\Persistence.csproj|solutionrelative:persistence\\interfaces\\ientity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\common\\academicyeardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|solutionrelative:common\\academicyeardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CBFA08EA-AECE-205F-7B85-326FD0B81BAD}|Api\\Api.csproj|solutionrelative:api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|d:\\programmering\\ajspeedlogger\\ajspeedlogger.backend\\common\\dtos\\academicyeardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2F47C784-7086-4431-BB58-95D673C0A883}|Common\\Common.csproj|solutionrelative:common\\dtos\\academicyeardto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,34 +62,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 31,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IEntity.cs",
-              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IEntity.cs",
-              "RelativeDocumentMoniker": "Persistence\\Interfaces\\IEntity.cs",
-              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IEntity.cs",
-              "RelativeToolTip": "Persistence\\Interfaces\\IEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T21:55:59.314Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AcademicYearController.cs",
-              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AcademicYearController.cs",
-              "RelativeDocumentMoniker": "Api\\Controllers\\AcademicYearController.cs",
-              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AcademicYearController.cs",
-              "RelativeToolTip": "Api\\Controllers\\AcademicYearController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAABKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T20:56:04.894Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:136:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -180,12 +182,64 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LogInDto.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\LogInDto.cs",
+              "RelativeDocumentMoniker": "Common\\Dtos\\LogInDto.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\LogInDto.cs",
+              "RelativeToolTip": "Common\\Dtos\\LogInDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T00:25:07.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RegisterDto.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\RegisterDto.cs",
+              "RelativeDocumentMoniker": "Common\\Dtos\\RegisterDto.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\RegisterDto.cs",
+              "RelativeToolTip": "Common\\Dtos\\RegisterDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T00:20:19.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Api\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Api\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T00:12:16.729Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "AcademicYearController.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AcademicYearController.cs",
+              "RelativeDocumentMoniker": "Api\\Controllers\\AcademicYearController.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Controllers\\AcademicYearController.cs",
+              "RelativeToolTip": "Api\\Controllers\\AcademicYearController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAwDoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T20:56:04.894Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "AcademicYearDto.cs",
-              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\AcademicYearDto.cs",
-              "RelativeDocumentMoniker": "Common\\AcademicYearDto.cs",
-              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\AcademicYearDto.cs",
-              "RelativeToolTip": "Common\\AcademicYearDto.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\AcademicYearDto.cs",
+              "RelativeDocumentMoniker": "Common\\Dtos\\AcademicYearDto.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Common\\Dtos\\AcademicYearDto.cs",
+              "RelativeToolTip": "Common\\Dtos\\AcademicYearDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T17:08:57.086Z",
@@ -193,41 +247,106 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IRepository.cs",
-              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IRepository.cs",
-              "RelativeDocumentMoniker": "Persistence\\Interfaces\\IRepository.cs",
-              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IRepository.cs",
-              "RelativeToolTip": "Persistence\\Interfaces\\IRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-15T16:57:17.066Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Repository.cs",
               "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Repositories\\Repository.cs",
               "RelativeDocumentMoniker": "Persistence\\Repositories\\Repository.cs",
               "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Repositories\\Repository.cs",
               "RelativeToolTip": "Persistence\\Repositories\\Repository.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAYwCsAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAABUAAAAAAAAAAAAzwDUAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T16:25:22.126Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Program.cs",
               "RelativeDocumentMoniker": "Api\\Program.cs",
               "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Program.cs",
               "RelativeToolTip": "Api\\Program.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAgwC8AAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-15T05:12:19.88Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AcademicYear.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Entities\\AcademicYear.cs",
+              "RelativeDocumentMoniker": "Persistence\\Entities\\AcademicYear.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Entities\\AcademicYear.cs",
+              "RelativeToolTip": "Persistence\\Entities\\AcademicYear.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T23:26:56.352Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IRepository.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IRepository.cs",
+              "RelativeDocumentMoniker": "Persistence\\Interfaces\\IRepository.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IRepository.cs",
+              "RelativeToolTip": "Persistence\\Interfaces\\IRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBQAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T16:57:17.066Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Mappings\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "Api\\Mappings\\MappingProfile.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Mappings\\MappingProfile.cs",
+              "RelativeToolTip": "Api\\Mappings\\MappingProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T22:55:28.645Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\appsettings.json",
+              "RelativeDocumentMoniker": "Api\\appsettings.json",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\appsettings.json",
+              "RelativeToolTip": "Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-15T23:05:24.113Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Api\\Properties\\launchSettings.json",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Api\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Api\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-15T23:05:28.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "IEntity.cs",
+              "DocumentMoniker": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IEntity.cs",
+              "RelativeDocumentMoniker": "Persistence\\Interfaces\\IEntity.cs",
+              "ToolTip": "D:\\Programmering\\AjSpeedLogger\\AjSpeedLogger.Backend\\Persistence\\Interfaces\\IEntity.cs",
+              "RelativeToolTip": "Persistence\\Interfaces\\IEntity.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-15T21:55:59.314Z",
               "EditorCaption": ""
             }
           ]

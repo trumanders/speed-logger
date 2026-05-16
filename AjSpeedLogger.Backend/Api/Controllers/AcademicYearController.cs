@@ -1,4 +1,4 @@
-using Common;
+using Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Entities;
 using Persistence.Interfaces;
@@ -11,6 +11,11 @@ namespace Api.Controllers
 	{
 		private readonly IRepository _repository;
 
+		public AcademicYearController(IRepository repository)
+		{
+			_repository = repository;
+		}
+
 		// ADD
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] AcademicYearDto dto)
@@ -22,14 +27,22 @@ namespace Api.Controllers
 
 			var entity = await _repository.AddAsync<AcademicYear, AcademicYearDto>(dto);
 
+			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+			if (userId == null)
+				return Unauthorized();
+
+			entity.ApplicationUserId = userId;
+
+
 			try
 			{
 				if (await _repository.SaveChangesAsync())
 					return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
 			}
-			catch
+			catch(Exception ex)
 			{
-				return BadRequest("An error occurred while saving the academic year.");
+				return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.Message}");
 			}
 			return BadRequest();
 
@@ -37,6 +50,7 @@ namespace Api.Controllers
 
 
 		// GET by ID
+		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
 			var academicYears = await _repository.GetAllAsync<AcademicYear, AcademicYearDto>();

@@ -11,9 +11,10 @@ namespace Persistence.Repositories
 		private readonly Context _db;
 		private readonly IMapper _mapper;
 
-		public Repository(Context db)
+		public Repository(Context db, IMapper mapper)
 		{
 			_db = db;
+			_mapper = mapper;
 		}
 
 		
