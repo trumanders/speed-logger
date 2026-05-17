@@ -9,6 +9,8 @@ namespace Api.Mappings
 		public MappingProfile()
 		{
 			CreateMap<AcademicYear, AcademicYearCreateDto>().ReverseMap();
+			CreateMap<Student, StudentCreateDto>().ReverseMap();
+			CreateMap<Student, StudentDto>().ReverseMap();
 		}
 	}
 }

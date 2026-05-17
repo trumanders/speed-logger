@@ -7,6 +7,7 @@ using Persistence.Entities;
 using Persistence.Interfaces;
 using Persistence.Repositories;
 using System.Text;
+
 namespace Api
 {
 	public class Program
@@ -51,7 +52,32 @@ namespace Api
 
 			builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
 
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddSwaggerGen(c =>
+			{
+				c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+				{
+					Name = "Authorization",
+					Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+					Scheme = "Bearer",
+					BearerFormat = "JWT",
+					In = Microsoft.OpenApi.Models.ParameterLocation.Header
+				});
+				c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+	{
+		{
+			new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+			{
+				Reference = new Microsoft.OpenApi.Models.OpenApiReference
+				{
+					Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+					Id = "Bearer"
+				}
+			},
+			Array.Empty<string>()
+		}
+	});
+			});
+
 
 			var app = builder.Build();
 
@@ -60,6 +86,7 @@ namespace Api
 			{
 				app.UseSwagger();
 				app.UseSwaggerUI();
+
 			}
 
 			app.UseAuthentication();

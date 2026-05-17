@@ -18,8 +18,6 @@ public class AuthController : ControllerBase
 	private readonly SignInManager<ApplicationUser> _signInManager;
 	private readonly IConfiguration _configuration;
 
-	private readonly IRepository _repository;
-
 	public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
 	{
 		_userManager = userManager;
@@ -60,13 +58,13 @@ public class AuthController : ControllerBase
 		if (!result.Succeeded)
 			return Unauthorized("Invalid username or password.");
 
-		var token = GenrateJwtToken(user);
-		
-		return Ok("User logged in successfully.");
+		var token = GenerateJwtToken(user);
+
+		return Ok(new { token = GenerateJwtToken(user) });
 	}
 
 
-	private string GenrateJwtToken(ApplicationUser user)
+	private string GenerateJwtToken(ApplicationUser user)
 	{
 		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 		var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
