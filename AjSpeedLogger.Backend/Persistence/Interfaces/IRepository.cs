@@ -12,6 +12,10 @@ namespace Persistence.Interfaces
 			where TEntity : class, IEntity, IUserOwned
 			where TDto : class;
 
+		public Task<TDto> GetByIdAsync<TEntity, TDto>(int id, string applicationUserId)
+			where TEntity : class, IEntity, IUserOwned
+			where TDto : class;
+
 		public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
 

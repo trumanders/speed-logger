@@ -39,7 +39,7 @@ namespace Api.Controllers
 			try
 			{
 				if (await _repository.SaveChangesAsync())
-					return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
+					return CreatedAtAction(nameof(GetByIdAsync), new { id = entity.Id }, dto);
 			}
 			catch (Exception ex)
 			{
@@ -49,24 +49,39 @@ namespace Api.Controllers
 
 		}
 
-
-		// GET by ID
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetById(int id)
+		// GET ALL (by User)
+		[HttpGet]
+		public async Task<IActionResult> GetAllAsync()
 		{
 			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
 			if (userId == null)
 				return Unauthorized();
 
-			var students = await _repository.GetAllAsync<Student, StudentDto>();
-			var student = students.FirstOrDefault(x => x.Id == id);
+			var students = await _repository.GetAllAsync<Student, StudentDto>(userId);
+			if (students == null)
+			{
+				return NotFound($"Students not found.");
+			}
+			return Ok(students);
+		}
+
+
+		// GET by ID
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetByIdAsync(int id)
+		{
+			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+			if (userId == null)
+				return Unauthorized();
+
+			var student = await _repository.GetByIdAsync<Student, StudentDto>(id, userId);
 			if (student == null)
 			{
 				return NotFound($"Student year with ID {id} not found.");
 			}
 			return Ok(student);
 		}
-
 	}
 }

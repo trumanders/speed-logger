@@ -37,6 +37,15 @@ namespace Persistence.Repositories
 			return _mapper.Map<List<TDto>>(entities);
 		}
 
+		public async Task<TDto> GetByIdAsync<TEntity, TDto>(int id, string applicationUserId)
+			where TEntity : class, IEntity, IUserOwned
+			where TDto : class
+		{
+			var entity = await _db.Set<TEntity>()
+				.FirstOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
+			return _mapper.Map<TDto>(entity);
+		}
+
 
 		public async Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity
