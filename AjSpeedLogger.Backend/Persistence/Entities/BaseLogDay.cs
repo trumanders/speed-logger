@@ -1,6 +1,6 @@
 ﻿namespace Persistence.Entities;
 
-public class BaseLogDay : IEntity, IAcademicYearOwned
+public class BaseLogDay : IEntity
 {
 	public int Id { get; set; }
 	public DateOnly Date { get; set; }

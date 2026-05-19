@@ -1,6 +1,4 @@
-﻿using Persistence.Interfaces;
-
-namespace Persistence.Entities;
+﻿namespace Persistence.Entities;
 
 public class Log : IEntity
 {
@@ -15,4 +13,6 @@ public class Log : IEntity
 	// MANY TO MANY RELATIONSHIP: Student has many AcademicYears. AcademicYear has many Students. Log is the join table.
 	public int StudentId { get; set; }
 	public int AcademicYearId { get; set; }
+	public Student Student { get; set; }
+	public AcademicYear AcademicYear { get; set; }
 }
