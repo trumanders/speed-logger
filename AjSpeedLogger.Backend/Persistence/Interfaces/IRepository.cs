@@ -1,9 +1,9 @@
-﻿using System.Linq.Expressions;
-
+﻿
 namespace Persistence.Interfaces
 {
 	public interface IRepository
 	{
+		// GET
 		public Task<List<TDto>> GetAllAsync<TEntity, TDto>()
 			where TEntity : class, IEntity
 			where TDto : class;
@@ -19,9 +19,15 @@ namespace Persistence.Interfaces
 		public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
 
+
+		// ADD
 		public Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
 			where TEntity : class, IEntity
 			where TDto : class;
+
+		// DELETE
+		public Task<bool> DeleteAsync<TEntity>(int id, string applicationUserId)
+			where TEntity : class, IEntity, IUserOwned;
 
 
 

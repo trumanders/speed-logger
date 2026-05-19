@@ -1,7 +1,6 @@
-﻿namespace Persistence.Interfaces
+﻿namespace Persistence.Interfaces;
+
+public interface IEntity
 {
-	public interface IEntity
-	{
-		int Id { get; set; }
-	}
+	int Id { get; set; }
 }

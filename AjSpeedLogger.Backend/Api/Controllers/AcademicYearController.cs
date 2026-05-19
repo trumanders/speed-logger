@@ -1,68 +1,61 @@
-using Common.Dtos;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Persistence.Entities;
-using Persistence.Interfaces;
+namespace Api.Controllers;
 
-namespace Api.Controllers
+[ApiController]
+[Route("api/[controller]")]
+[Authorize]
+public class AcademicYearController : ControllerBase
 {
-	[ApiController]
-	[Route("api/[controller]")]
-	[Authorize]
-	public class AcademicYearController : ControllerBase
+	private readonly IRepository _repository;
+
+	public AcademicYearController(IRepository repository)
 	{
-		private readonly IRepository _repository;
+		_repository = repository;
+	}
 
-		public AcademicYearController(IRepository repository)
+	// ADD
+	[HttpPost]
+	public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto dto)
+	{
+		if (dto == null)
 		{
-			_repository = repository;
+			return BadRequest("AcademicYearDto cannot be null.");
 		}
 
-		// ADD
-		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto dto)
+		var entity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
+
+		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+		if (userId == null)
+			return Unauthorized();
+
+		entity.ApplicationUserId = userId;
+
+
+		try
 		{
-			if (dto == null)
-			{
-				return BadRequest("AcademicYearDto cannot be null.");
-			}
-
-			var entity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
-
-			var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-			if (userId == null)
-				return Unauthorized();
-
-			entity.ApplicationUserId = userId;
-
-
-			try
-			{
-				if (await _repository.SaveChangesAsync())
-					return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
-			}
-			catch(Exception ex)
-			{
-				return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.Message}");
-			}
-			return BadRequest();
-
+			if (await _repository.SaveChangesAsync())
+				return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
 		}
-
-
-		// GET by ID
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetById(int id)
+		catch(Exception ex)
 		{
-			var academicYears = await _repository.GetAllAsync<AcademicYear, AcademicYearDto>();
-			var academicYear = academicYears.FirstOrDefault(ay => ay.Id == id);
-			if (academicYear == null)
-			{
-				return NotFound($"Academic year with ID {id} not found.");
-			}
-			return Ok(academicYear);
+			return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.Message}");
 		}
+		return BadRequest();
 
 	}
+
+
+	// GET by ID
+	[HttpGet("{id}")]
+	public async Task<IActionResult> GetById(int id)
+	{
+		var academicYears = await _repository.GetAllAsync<AcademicYear, AcademicYearDto>();
+		var academicYear = academicYears.FirstOrDefault(ay => ay.Id == id);
+		if (academicYear == null)
+		{
+			return NotFound($"Academic year with ID {id} not found.");
+		}
+		return Ok(academicYear);
+	}
+
 }

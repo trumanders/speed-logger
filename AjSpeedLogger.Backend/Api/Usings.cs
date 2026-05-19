@@ -1,0 +1,15 @@
+﻿global using AutoMapper;
+global using Common.Dtos;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.IdentityModel.Tokens;
+global using Persistence.Contexts;
+global using Persistence.Entities;
+global using Persistence.Interfaces;
+global using Persistence.Repositories;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text;

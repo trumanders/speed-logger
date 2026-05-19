@@ -1,7 +1,6 @@
-﻿namespace Persistence.Interfaces
+﻿namespace Persistence.Interfaces;
+
+public interface IUserOwned
 {
-	public interface IUserOwned
-	{
-		public string ApplicationUserId { get; set; }
-	}
+	public string ApplicationUserId { get; set; }
 }

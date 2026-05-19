@@ -1,6 +1,4 @@
-﻿using Persistence.Interfaces;
-
-namespace Persistence.Entities;
+﻿namespace Persistence.Entities;
 
 public class AcademicYear : IEntity, IUserOwned
 {

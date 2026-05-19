@@ -1,99 +1,88 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Persistence.Contexts;
-using Persistence.Entities;
-using Persistence.Interfaces;
-using Persistence.Repositories;
-using System.Text;
+namespace Api;
 
-namespace Api
+public class Program
 {
-	public class Program
+	public static void Main(string[] args)
 	{
-		public static void Main(string[] args)
+		var builder = WebApplication.CreateBuilder(args);
+
+		// Add services to the container.
+
+		builder.Services.AddControllers();
+
+		builder.Services.AddDbContext<Context>(options =>
+			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+
+		builder.Services.AddScoped<IRepository, Repository>();
+
+
+		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+			.AddEntityFrameworkStores<Context>()
+			.AddDefaultTokenProviders();
+
+		builder.Services.AddAuthentication(options =>
 		{
-			var builder = WebApplication.CreateBuilder(args);
-
-			// Add services to the container.
-
-			builder.Services.AddControllers();
-
-			builder.Services.AddDbContext<Context>(options =>
-				options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
-
-			builder.Services.AddScoped<IRepository, Repository>();
-
-
-			builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-				.AddEntityFrameworkStores<Context>()
-				.AddDefaultTokenProviders();
-
-			builder.Services.AddAuthentication(options =>
+			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+			options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+		})
+			.AddJwtBearer(options =>
 			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-				.AddJwtBearer(options =>
+				options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
 				{
-					options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidateLifetime = true,
-						ValidateIssuerSigningKey = true,
-						ValidIssuer = builder.Configuration["Jwt:Issuer"],
-						ValidAudience = builder.Configuration["Jwt:Audience"],
-						IssuerSigningKey = new SymmetricSecurityKey(
-							Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-					};
-				});
-
-			builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
-
-			builder.Services.AddSwaggerGen(c =>
-			{
-				c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-				{
-					Name = "Authorization",
-					Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-					Scheme = "Bearer",
-					BearerFormat = "JWT",
-					In = Microsoft.OpenApi.Models.ParameterLocation.Header
-				});
-				c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-	{
-		{
-			new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-			{
-				Reference = new Microsoft.OpenApi.Models.OpenApiReference
-				{
-					Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-					Id = "Bearer"
-				}
-			},
-			Array.Empty<string>()
-		}
-	});
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = builder.Configuration["Jwt:Issuer"],
+					ValidAudience = builder.Configuration["Jwt:Audience"],
+					IssuerSigningKey = new SymmetricSecurityKey(
+						Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+				};
 			});
 
+		builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
 
-			var app = builder.Build();
-
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
+		builder.Services.AddSwaggerGen(c =>
+		{
+			c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-
+				Name = "Authorization",
+				Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+				Scheme = "Bearer",
+				BearerFormat = "JWT",
+				In = Microsoft.OpenApi.Models.ParameterLocation.Header
+			});
+			c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+{
+	{
+		new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+		{
+			Reference = new Microsoft.OpenApi.Models.OpenApiReference
+			{
+				Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+				Id = "Bearer"
 			}
+		},
+		Array.Empty<string>()
+	}
+});
+		});
 
-			app.UseAuthentication();
-			app.UseAuthorization();
-			app.UseHttpsRedirection();
-			app.MapControllers();
-			app.Run();
+
+		var app = builder.Build();
+
+		// Configure the HTTP request pipeline.
+		if (app.Environment.IsDevelopment())
+		{
+			app.UseSwagger();
+			app.UseSwaggerUI();
+
 		}
+
+		app.UseAuthentication();
+		app.UseAuthorization();
+		app.UseHttpsRedirection();
+		app.MapControllers();
+		app.Run();
 	}
 }
