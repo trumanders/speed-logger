@@ -1,19 +1,10 @@
-﻿
-namespace Api.Controllers;
+﻿namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class StudentController : ControllerBase
+public class StudentController(IRepository _repository, IStudentRepository _studentRepository) : BaseController
 {
-	private readonly IRepository _repository;
-	private readonly IStudentRepository _studentRepository;
-
-	public StudentController(IRepository repository)
-	{
-		_repository = repository;
-	}
-
 	// ADD
 	[HttpPost]
 	public async Task<IActionResult> Post([FromBody] StudentCreateDto dto)
@@ -23,13 +14,11 @@ public class StudentController : ControllerBase
 			return BadRequest("StudentCreateDto cannot be null.");
 		}
 
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-		if (userId == null)
+		if (ApplicationUserId == null)
 			return Unauthorized();
 
 		var entity = await _repository.AddAsync<Student, StudentCreateDto>(dto);
-		entity.ApplicationUserId = userId;
+		entity.ApplicationUserId = ApplicationUserId;
 
 
 		try
@@ -49,12 +38,12 @@ public class StudentController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetAllAsync()
 	{
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		var applicationUserId = ApplicationUserId;
 
-		if (userId == null)
+		if (applicationUserId == null)
 			return Unauthorized();
 
-		var students = await _repository.GetAllAsync<Student, StudentDto>(userId);
+		var students = await _repository.GetAllAsync<Student, StudentDto>(applicationUserId);
 		if (students == null)
 		{
 			return NotFound($"Students not found.");
@@ -67,12 +56,12 @@ public class StudentController : ControllerBase
 	[HttpGet("{id}")]
 	public async Task<IActionResult> GetByIdAsync(int id)
 	{
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var applicationUserId = ApplicationUserId;
 
-		if (userId == null)
+        if (applicationUserId == null)
 			return Unauthorized();
 
-		var student = await _repository.GetByIdAsync<Student, StudentDto>(id, userId);
+		var student = await _repository.GetByIdAsync<Student, StudentDto>(id, applicationUserId);
 		if (student == null)
 		{
 			return NotFound($"Student year with ID {id} not found.");
@@ -84,12 +73,12 @@ public class StudentController : ControllerBase
 	[HttpGet("byAcademicYear/{academicYearId}")]
 	public async Task<IActionResult> GetByAcademicYearIdAsync(int academicYearId)
 	{
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var applicationUserId = ApplicationUserId;
 
-		if (userId == null)
+        if (applicationUserId == null)
 			return Unauthorized();
 
-		var students = await _studentRepository.GetByAcademicYearIdAsync(academicYearId, userId);
+		var students = await _studentRepository.GetByAcademicYearIdAsync(academicYearId, applicationUserId);
 		
 		if (students == null || !students.Any())
 		{
@@ -99,30 +88,57 @@ public class StudentController : ControllerBase
 		return Ok(students);
 	}
 
-
-
-
 	// DELETE
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> Delete(int id)
 	{
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		var applicationUserId = ApplicationUserId;
 
-		if (userId == null)
+		if (applicationUserId == null)
 			return Unauthorized();
 								
 		try
 		{
-			if (!await _repository.DeleteAsync<Student>(id, userId))
+			if (!await _repository.DeleteAsync<Student>(id, applicationUserId))
 				return NotFound($"Student with ID {id} not found.");
 
 			if (await _repository.SaveChangesAsync())
 				return NoContent();
 		}
-		catch (Exception ex)
+		catch (Exception)
 		{
 			return BadRequest($"An error occurred while deleting student.");
 		}
 		return BadRequest();
+	}
+
+	// UPDATE
+	[HttpPut("{id}")]
+	public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateDto dto)
+	{
+		if (dto == null)
+			return BadRequest("DTO is null");
+
+		var applicationUserId = ApplicationUserId;
+		if (applicationUserId == null)
+			return Unauthorized();
+
+		try
+		{
+			if (!await _repository.AnyAsync<Student>(e => e.Id.Equals(id) && e.ApplicationUserId == applicationUserId))
+				return NotFound();
+
+			if (await _repository.Update<Student, StudentUpdateDto>(id, dto, applicationUserId))
+			{
+				if (await _repository.SaveChangesAsync())
+					return NoContent();
+			}
+		}
+		catch (Exception ex)
+		{
+			return BadRequest($"An error occurred while updating student with ID {id}.\n{ex.InnerException?.Message ?? ex.Message}");
+		}
+
+		return BadRequest($"An error occurred while updating student with ID {id}.");
 	}
 }

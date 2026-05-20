@@ -1,11 +1,13 @@
 ﻿namespace Persistence.Entities;
 
-public class Log : IEntity
+public class Log : IEntity, IUserOwned
 {
 	public int Id { get; set; }
 	public DayOfWeek DayOfWeek { get; set; }
 	public TimeOnly LessonStartTime { get; set; }
 	public TimeOnly LessonEndTime { get; set; }
+
+	public string ApplicationUserId { get; set; } = string.Empty;
 
 	public ICollection<LogDay> LogDays { get; set; } = [];
 

@@ -10,6 +10,7 @@ global using Persistence.Contexts;
 global using Persistence.Entities;
 global using Persistence.Interfaces;
 global using Persistence.Repositories;
+global using Persistence.Services;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Text;

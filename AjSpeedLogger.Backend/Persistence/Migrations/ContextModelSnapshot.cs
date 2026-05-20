@@ -281,6 +281,10 @@ namespace Persistence.Migrations
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("integer");
 
@@ -294,6 +298,8 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AcademicYearId");
 
                     b.HasIndex("StudentId");
 
@@ -339,6 +345,7 @@ namespace Persistence.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -414,11 +421,21 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Persistence.Entities.Log", b =>
                 {
-                    b.HasOne("Persistence.Entities.Student", null)
+                    b.HasOne("Persistence.Entities.AcademicYear", "AcademicYear")
+                        .WithMany()
+                        .HasForeignKey("AcademicYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Persistence.Entities.Student", "Student")
                         .WithMany("Logs")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AcademicYear");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Persistence.Entities.LogDay", b =>
@@ -438,7 +455,9 @@ namespace Persistence.Migrations
                 {
                     b.HasOne("Persistence.Entities.ApplicationUser", null)
                         .WithMany("Students")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistence.Entities.AcademicYear", b =>

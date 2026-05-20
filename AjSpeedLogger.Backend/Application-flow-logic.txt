@@ -1,0 +1,10 @@
+1. Skapa LÄSÅR (namn, startdatum, slutdatum, BASLOG skapas autom.)
+2. Skapa LOG (veckodag, lektionstid, alla LOGDAY skapas på vald veckodag)
+3. Välj ELEV att koppla till log.
+4. Om elev inte fanns --> skapa ELEV (namn)
+
+• Visa läsårsflikar: hämta läsår för aktuell user
+• För varje läsårsflik: hämta alla loggar för user+läsår, och visa i veckodags- och tidsordning från Log, och på samma rad - visa Student.Name via StudentId på Logen.
+• När man klickat på en Student, visas logen i höger-sidan. Den ska ha en flik som visar de läsår som finns på den valda eleven:
+• Visa flikar, en för varje läsår som vald elevs loggar är kopplade till.
+• Visa loggen för det läsåret/loggen man väljer i högerdelen

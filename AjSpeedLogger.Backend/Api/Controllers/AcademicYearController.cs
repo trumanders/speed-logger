@@ -3,45 +3,32 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AcademicYearController : ControllerBase
+public class AcademicYearController(IRepository _repository, IAcademicYearService _academicYearService) : BaseController
 {
-	private readonly IRepository _repository;
-
-	public AcademicYearController(IRepository repository)
-	{
-		_repository = repository;
-	}
-
 	// ADD
 	[HttpPost]
 	public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto dto)
 	{
 		if (dto == null)
 		{
-			return BadRequest("AcademicYearDto cannot be null.");
+			return BadRequest("Dto cannot be null.");
 		}
 
-		var entity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
+		var applicationUserId = ApplicationUserId;
 
-		var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-		if (userId == null)
+		if (applicationUserId == null)
 			return Unauthorized();
-
-		entity.ApplicationUserId = userId;
-
-
+		
 		try
 		{
-			if (await _repository.SaveChangesAsync())
-				return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
+			var entity = await _academicYearService.CreateAcademicYearAsync(dto, applicationUserId);
+
+			return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
 		}
 		catch(Exception ex)
 		{
 			return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.Message}");
 		}
-		return BadRequest();
-
 	}
 
 
@@ -49,13 +36,17 @@ public class AcademicYearController : ControllerBase
 	[HttpGet("{id}")]
 	public async Task<IActionResult> GetById(int id)
 	{
-		var academicYears = await _repository.GetAllAsync<AcademicYear, AcademicYearDto>();
-		var academicYear = academicYears.FirstOrDefault(ay => ay.Id == id);
+		var applicationUserId = ApplicationUserId;
+
+		if (applicationUserId == null)
+			return Unauthorized();
+
+		var academicYear = await _repository.GetByIdAsync<AcademicYear, AcademicYearDto>(id, applicationUserId);
+
 		if (academicYear == null)
 		{
 			return NotFound($"Academic year with ID {id} not found.");
 		}
 		return Ok(academicYear);
 	}
-
 }

@@ -17,7 +17,7 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 		where TDto : class
 	{
 		var entities = await _db.Set<TEntity>()
-			.Where(x => x.ApplicationUserId == applicationUserId)
+			.Where(e => e.ApplicationUserId == applicationUserId)
 			.ToListAsync();
 		return _mapper.Map<List<TDto>>(entities);
 	}
@@ -49,24 +49,40 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 		return entity;		
 	}
 
+	// ADD RANGE
+	public async Task AddRangeAsync<TEntity>(ICollection<TEntity> entities)
+	where TEntity : class, IEntity
+	{
+		await _db.Set<TEntity>().AddRangeAsync(entities);
+	}
+
 	// DELETE
 	public async Task<bool> DeleteAsync<TEntity>(int id, string applicationUserId)
 		where TEntity : class, IEntity, IUserOwned
 	{
-		try
-		{
-			var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
-			
-			if (entity == null)
-				return false;
-
-			_db.Set<TEntity>().Remove(entity);
-			return true;
-		}
-		catch
-		{
+		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
+		
+		if (entity == null)
 			return false;
-		}					
+		
+		_db.Set<TEntity>().Remove(entity);
+		return true;
+	}
+
+	// UPDATE
+	public async Task<bool> Update<TEntity, TDto>(int id, TDto dto, string applicationUserId)
+	where TEntity : class, IEntity, IUserOwned
+	where TDto : class
+	{
+		// Get the existing entity because we only change the properties that are in the DTO, not the whole entity
+		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id && e.ApplicationUserId == applicationUserId);
+
+		if (entity == null)
+			return false;
+
+		_mapper.Map(dto, entity); // Copies the properties from the DTO to the entity
+		_db.Set<TEntity>().Update(entity);
+		return true;
 	}
 
 

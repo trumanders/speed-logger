@@ -38,19 +38,32 @@ public class AuthController : ControllerBase
 	[HttpPost("login")]
 	public async Task<IActionResult> Login([FromBody] LogInDto dto)
 	{
-		var user = await _userManager.FindByEmailAsync(dto.Email);
-		
-		if (user == null)
-			return Unauthorized("Invalid email or password");
+		try
+		{
+            var user = await _userManager.FindByEmailAsync(dto.Email);
 
-		var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+            if (user == null)
+                return Unauthorized("Invalid email or password");
 
-		if (!result.Succeeded)
-			return Unauthorized("Invalid username or password.");
+            var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
 
-		var token = GenerateJwtToken(user);
+            if (!result.Succeeded)
+                return Unauthorized("Invalid username or password.");
 
-		return Ok(new { token = GenerateJwtToken(user) });
+            var token = GenerateJwtToken(user);
+
+            return Ok(new { token = GenerateJwtToken(user) });
+        }
+		catch(Exception ex)
+		{
+			return BadRequest($"{ex.Message} - {ex.InnerException?.Message}");
+        }
+    }
+
+	[HttpPost("logout")]
+	public async Task<IActionResult> Logout()
+	{
+		return Ok();
 	}
 
 

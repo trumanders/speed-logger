@@ -7,7 +7,8 @@ public class StudentRepository(Context _db, IMapper _mapper) : IStudentRepositor
     public async Task<List<StudentDto>> GetByAcademicYearIdAsync(int academicYearId, string applicationUserId)
     {
         var studentEntities = await _db.Set<Log>()
-            .Where(log => log.AcademicYearId == academicYearId && log.Student.ApplicationUserId == applicationUserId)
+			.Include(log => log.Student)
+            .Where(log => log.AcademicYearId == academicYearId && log.ApplicationUserId == applicationUserId)
             .Select(log => log.Student)
             .ToListAsync();
 

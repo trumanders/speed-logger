@@ -14,7 +14,8 @@ public class Program
 			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 
 		builder.Services.AddScoped<IRepository, Repository>();
-
+		builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 			.AddEntityFrameworkStores<Context>()
