@@ -1,0 +1,71 @@
+# ==========================================
+# ASP.NET Core / .NET Backend
+# ==========================================
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bld/
+[Bb]in/
+[Oo]bj/
+*.Local.json
+UserSecretsId
+_ReSharper*/
+
+# Visual Studio tillfälliga filer och cache
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.metadata/
+
+# Rider / JetBrains
+.idea/
+
+# Rider for Unreal
+.each/
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ==========================================
+# React / TypeScript Frontend
+# ==========================================
+node_modules/
+/npm-debug.log*
+/yarn-error.log*
+/yarn-debug.log*
+/npm-with-typescript-error.log*
+
+# Produktionsbyggen (React dist-mappar)
+/frontend/dist/
+/frontend/build/
+/frontend/out/
+
+# TypeScript-cache
+*.tsbuildinfo
+
+# Local env-filer (innehåller hemligheter)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Serverlösa / Moln-filer (om tillämpligt)
+.netlify/
+.vercel/
+
+# ==========================================
+# Operativsystem (Skräpfiler)
+# ==========================================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

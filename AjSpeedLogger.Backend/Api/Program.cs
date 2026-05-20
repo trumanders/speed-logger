@@ -1,19 +1,26 @@
+using Microsoft.Extensions.Options;
+
 namespace Api;
 
 public class Program
 {
 	public static void Main(string[] args)
 	{
-		var builder = WebApplication.CreateBuilder(args);
+        AppContext.SetSwitch("System.Net.DisableIPv6", true);
+        var builder = WebApplication.CreateBuilder(args);
 
 		// Add services to the container.
 
 		builder.Services.AddControllers();
 
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"), o =>
+			{
+				o.EnableRetryOnFailure();
+			}));
 
-		builder.Services.AddScoped<IRepository, Repository>();
+
+        builder.Services.AddScoped<IRepository, Repository>();
 		builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 
