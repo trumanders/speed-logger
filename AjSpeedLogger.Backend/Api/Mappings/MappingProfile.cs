@@ -9,5 +9,7 @@ public class MappingProfile : Profile
 		CreateMap<Student, StudentCreateDto>().ReverseMap();
 		CreateMap<Student, StudentDto>().ReverseMap();
 		CreateMap<StudentUpdateDto, Student>().ReverseMap();
+		CreateMap<Log, LogDto>().ReverseMap();
+		CreateMap<Log, LogCreateDto>().ReverseMap();
 	}
 }

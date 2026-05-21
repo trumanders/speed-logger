@@ -3,13 +3,13 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AcademicYearController(IRepository _repository, IAcademicYearService _academicYearService) : BaseController
+public class AcademicYearController(IRepository _repository, IAcademicYearService _academicYearService, IMapper _mapper) : BaseController
 {
 	// ADD
 	[HttpPost]
-	public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto dto)
+	public async Task<IActionResult> Post([FromBody] AcademicYearCreateDto createDto)
 	{
-		if (dto == null)
+		if (createDto == null)
 		{
 			return BadRequest("Dto cannot be null.");
 		}
@@ -21,9 +21,9 @@ public class AcademicYearController(IRepository _repository, IAcademicYearServic
 		
 		try
 		{
-			var entity = await _academicYearService.CreateAcademicYearAsync(dto, applicationUserId);
+			var academicYearDto = await _academicYearService.CreateAcademicYearAsync(createDto, applicationUserId);
 
-			return CreatedAtAction(nameof(GetById), new { id = entity.Id }, dto);
+			return CreatedAtAction(nameof(GetById), new { id = academicYearDto.Id }, academicYearDto);
 		}
 		catch(Exception ex)
 		{
@@ -41,12 +41,13 @@ public class AcademicYearController(IRepository _repository, IAcademicYearServic
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		var academicYear = await _repository.GetByIdAsync<AcademicYear, AcademicYearDto>(id, applicationUserId);
+		var academicYear = await _repository.GetByIdAsync<AcademicYear>(id, applicationUserId);
 
 		if (academicYear == null)
-		{
 			return NotFound($"Academic year with ID {id} not found.");
-		}
-		return Ok(academicYear);
+
+		var academicYearDto = _mapper.Map<AcademicYearDto>(academicYear);
+
+		return Ok(academicYearDto);
 	}
 }

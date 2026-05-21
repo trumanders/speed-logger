@@ -3,7 +3,7 @@
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class StudentController(IRepository _repository, IStudentRepository _studentRepository) : BaseController
+public class StudentController(IRepository _repository, IStudentRepository _studentRepository, IMapper _mapper) : BaseController
 {
 	// ADD
 	[HttpPost]
@@ -14,17 +14,22 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 			return BadRequest("StudentCreateDto cannot be null.");
 		}
 
-		if (ApplicationUserId == null)
+		var applicationUserId = ApplicationUserId;
+		if (applicationUserId == null)
 			return Unauthorized();
 
 		var entity = await _repository.AddAsync<Student, StudentCreateDto>(dto);
-		entity.ApplicationUserId = ApplicationUserId;
+		entity.ApplicationUserId = applicationUserId;
 
 
 		try
 		{
 			if (await _repository.SaveChangesAsync())
-				return CreatedAtAction(nameof(GetByIdAsync), new { id = entity.Id }, dto);
+			{
+				var studentDto = _mapper.Map<StudentDto>(entity);
+				return CreatedAtAction(nameof(GetById), new { id = entity.Id }, studentDto);
+
+			}
 		}
 		catch (Exception ex)
 		{
@@ -43,30 +48,34 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		var students = await _repository.GetAllAsync<Student, StudentDto>(applicationUserId);
-		if (students == null)
-		{
+		var studentEntities = await _repository.GetAllAsync<Student>(applicationUserId);
+
+		if (studentEntities == null)
 			return NotFound($"Students not found.");
-		}
-		return Ok(students);
+
+		var studentDtos = _mapper.Map<List<StudentDto>>(studentEntities);
+
+		return Ok(studentDtos);
 	}
 
 
 	// GET by ID
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetByIdAsync(int id)
+	public async Task<IActionResult> GetById(int id)
 	{
         var applicationUserId = ApplicationUserId;
 
         if (applicationUserId == null)
 			return Unauthorized();
 
-		var student = await _repository.GetByIdAsync<Student, StudentDto>(id, applicationUserId);
-		if (student == null)
-		{
+		var studentEntities = await _repository.GetByIdAsync<Student>(id, applicationUserId);
+
+		if (studentEntities == null)
 			return NotFound($"Student year with ID {id} not found.");
-		}
-		return Ok(student);
+
+		var studentDtos = _mapper.Map<StudentDto>(studentEntities);
+
+		return Ok(studentDtos);
 	}
 
 	// GET by AcademicYearId

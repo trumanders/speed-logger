@@ -327,6 +327,9 @@ namespace Persistence.Migrations
                     b.Property<int>("LogId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("WeekNumber")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AcademicYearId");
@@ -440,7 +443,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Persistence.Entities.LogDay", b =>
                 {
-                    b.HasOne("Persistence.Entities.AcademicYear", null)
+                    b.HasOne("Persistence.Entities.AcademicYear", "AcademicYear")
                         .WithMany("BaseLogDays")
                         .HasForeignKey("AcademicYearId");
 
@@ -449,6 +452,8 @@ namespace Persistence.Migrations
                         .HasForeignKey("LogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AcademicYear");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Student", b =>

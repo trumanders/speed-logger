@@ -1,6 +1,5 @@
 <Solution>
   <Folder Name="/Solution Items/">
-    <File Path=".gitignore" />
     <File Path="Application-flow-logic.txt" />
   </Folder>
   <Project Path="Api/Api.csproj" />

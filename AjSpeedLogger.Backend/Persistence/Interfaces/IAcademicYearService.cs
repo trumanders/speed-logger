@@ -4,5 +4,5 @@ namespace Persistence.Interfaces;
 
 public interface IAcademicYearService
 {
-	public Task<AcademicYear> CreateAcademicYearAsync(AcademicYearCreateDto dto, string applicationUserId);
+	public Task<AcademicYearDto> CreateAcademicYearAsync(AcademicYearCreateDto dto, string applicationUserId);
 }

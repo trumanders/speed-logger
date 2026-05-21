@@ -2,33 +2,32 @@
 
 public class Repository(Context _db, IMapper _mapper) : IRepository
 {
-	
+
 	// GET
-	public async Task<List<TDto>> GetAllAsync<TEntity, TDto>()
+	public async Task<List<TEntity>> GetAllAsync<TEntity>()
 		where TEntity : class, IEntity
-		where TDto : class
 	{
 		var entities = await _db.Set<TEntity>().ToListAsync();
-		return _mapper.Map<List<TDto>>(entities);
+		return entities;
 	}
 
-	public async Task<List<TDto>> GetAllAsync<TEntity, TDto>(string applicationUserId)
+	public async Task<List<TEntity>> GetAllAsync<TEntity>(string applicationUserId)
 		where TEntity : class, IEntity, IUserOwned
-		where TDto : class
 	{
 		var entities = await _db.Set<TEntity>()
 			.Where(e => e.ApplicationUserId == applicationUserId)
 			.ToListAsync();
-		return _mapper.Map<List<TDto>>(entities);
+
+		return entities;
 	}
 
-	public async Task<TDto> GetByIdAsync<TEntity, TDto>(int id, string applicationUserId)
+	public async Task<TEntity?> GetByIdAsync<TEntity>(int id, string applicationUserId)
 		where TEntity : class, IEntity, IUserOwned
-		where TDto : class
 	{
 		var entity = await _db.Set<TEntity>()
-			.FirstOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
-		return _mapper.Map<TDto>(entity);
+			.SingleOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
+
+		return entity;
 	}
 
 

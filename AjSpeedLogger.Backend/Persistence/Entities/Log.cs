@@ -8,7 +8,6 @@ public class Log : IEntity, IUserOwned
 	public TimeOnly LessonEndTime { get; set; }
 
 	public string ApplicationUserId { get; set; } = string.Empty;
-
 	public ICollection<LogDay> LogDays { get; set; } = [];
 
 
