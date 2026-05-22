@@ -3,7 +3,7 @@
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class LogController(ILogService _logService, IMapper _mapper) : BaseController
+public class LogController(ILogService _logService) : BaseController
 {
 	// GET by ID
 	[HttpGet("{id}")]

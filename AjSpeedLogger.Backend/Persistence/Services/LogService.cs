@@ -13,14 +13,15 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 		return logEntity == null ? null : _mapper.Map<LogDto>(logEntity);
 	}
 
-	public async Task<LogDto> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
+	public async Task<LogDto?> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
 	{
+		var academicYear = await _repository.GetByIdAsync<AcademicYear>(createDto.AcademicYearId, applicationUserId);
+		if (academicYear == null) return null;
+
 		var logEntity = await _repository.AddAsync<Log, LogCreateDto>(createDto);
 		logEntity.ApplicationUserId = applicationUserId;
-		await _repository.SaveChangesAsync();
 
 		// Generate the log days
-		var academicYear = await _repository.GetByIdAsync<AcademicYear>(logEntity.AcademicYearId, applicationUserId);
 		var academicYearStartDate = academicYear.StartDate;
 		var academicYearEndDate = academicYear.EndDate;
 		var daysDiff = (int)logEntity.DayOfWeek - (int)academicYearStartDate.DayOfWeek;
@@ -44,8 +45,7 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 		await _repository.AddRangeAsync(logDays); 
 
 		await _repository.SaveChangesAsync();
-		var logDto = _mapper.Map<LogDto>(logEntity);
 
-		return logDto;
+		return _mapper.Map<LogDto>(logEntity);
 	}
 }
