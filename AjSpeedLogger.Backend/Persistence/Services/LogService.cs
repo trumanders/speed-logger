@@ -5,6 +5,15 @@ namespace Persistence.Services;
 
 public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 {
+
+	public async Task<LogDto> GetByIdAsync(int id, string applicationUserId)
+	{		
+		var logEntity = await _repository.GetByIdAsync<Log>(id, applicationUserId);
+		if (logEntity == null) return null;
+
+		return _mapper.Map<LogDto>(logEntity);
+	}
+
 	public async Task<LogDto> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
 	{
 		var logEntity = await _repository.AddAsync<Log, LogCreateDto>(createDto);
