@@ -1,6 +1,4 @@
-﻿using Common.Dtos;
-
-namespace Persistence.Services;
+﻿namespace Persistence.Services;
 
 public class AcademicYearService(IRepository _repository, IMapper _mapper) : IAcademicYearService
 {
@@ -8,25 +6,13 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper) : IAc
 	{
 		var academicYearEntity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
 		academicYearEntity.ApplicationUserId = applicationUserId;
-		await _repository.SaveChangesAsync();
-
-
-		var baseLogDays = new List<LogDay>();
-		var date = academicYearEntity.StartDate;
-
-		while(date <= academicYearEntity.EndDate)
+		academicYearEntity.BaseLog = new BaseLog
 		{
-			baseLogDays.Add(new LogDay
-			{
-				Date = date,
-				AcademicYearId = academicYearEntity.Id
-			});
-			date = date.AddDays(1);
-		}
+			AcademicYearId = academicYearEntity.Id // Works because the entity is being tracked by the context, so when we save changes, it will update the BaseLog's AcademicYearId with the correct value
+		};
 
-		await _repository.AddRangeAsync(baseLogDays);
 		await _repository.SaveChangesAsync();
 
 		return _mapper.Map<AcademicYearDto>(academicYearEntity);
-	}		
+	}	
 }
