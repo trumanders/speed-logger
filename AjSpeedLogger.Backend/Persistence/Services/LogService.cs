@@ -8,14 +8,14 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 
 	public async Task<LogDto?> GetByIdAsync(int id, string applicationUserId)
 	{		
-		var logEntity = await _repository.GetByIdAsync<Log>(id, applicationUserId);
+		var logEntity = await _repository.GetByIdAsync<Log>(log => log.Id == id && log.ApplicationUserId == applicationUserId);
 
 		return logEntity == null ? null : _mapper.Map<LogDto>(logEntity);
 	}
 
 	public async Task<LogDto?> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
 	{
-		var academicYear = await _repository.GetByIdAsync<AcademicYear>(createDto.AcademicYearId, applicationUserId);
+		var academicYear = await _repository.GetByIdAsync<AcademicYear>(ay => createDto.AcademicYearId == ay.Id && ay.ApplicationUserId == applicationUserId);
 		if (academicYear == null) return null;
 
 		var logEntity = await _repository.AddAsync<Log, LogCreateDto>(createDto);

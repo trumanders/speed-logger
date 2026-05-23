@@ -48,7 +48,7 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		var studentEntities = await _repository.GetAllAsync<Student>(applicationUserId);
+		var studentEntities = await _repository.GetAllAsync<Student>(s => s.ApplicationUserId == applicationUserId);
 
 		if (studentEntities == null)
 			return NotFound($"Students not found.");
@@ -68,7 +68,7 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
         if (applicationUserId == null)
 			return Unauthorized();
 
-		var studentEntities = await _repository.GetByIdAsync<Student>(id, applicationUserId);
+		var studentEntities = await _repository.GetByIdAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId);
 
 		if (studentEntities == null)
 			return NotFound($"Student year with ID {id} not found.");

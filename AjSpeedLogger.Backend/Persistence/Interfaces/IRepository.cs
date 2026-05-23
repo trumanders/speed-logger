@@ -4,13 +4,10 @@ namespace Persistence.Interfaces
 	public interface IRepository
 	{
 		// GET
-		public Task<List<TEntity>> GetAllAsync<TEntity>()
+		public Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
 
-		public Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
-			where TEntity : class, IEntity, IUserOwned;
-
-		public Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+		public Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
 
 		public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)

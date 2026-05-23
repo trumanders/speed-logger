@@ -41,7 +41,7 @@ public class AcademicYearController(IRepository _repository, IAcademicYearServic
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		var academicYear = await _repository.GetByIdAsync<AcademicYear>(id, applicationUserId);
+		var academicYear = await _repository.GetByIdAsync<AcademicYear>(ay => ay.Id == id && ay.ApplicationUserId == applicationUserId);
 
 		if (academicYear == null)
 			return NotFound($"Academic year with ID {id} not found.");
