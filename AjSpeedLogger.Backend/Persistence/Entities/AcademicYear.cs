@@ -6,8 +6,10 @@ public class AcademicYear : IEntity, IUserOwned
 	public string Name { get; set; } = string.Empty; // "2026/2027"
 	public DateOnly StartDate { get; set; }
 	public DateOnly EndDate { get; set; }
+	
 	public string ApplicationUserId { get; set; } = string.Empty;
 
+	public ICollection<Log> Logs { get; set; } = [];
+	public BaseLog BaseLog { get; set; }
 
-	public ICollection<LogDay> BaseLogDays { get; set; } = [];
 }

@@ -9,4 +9,6 @@ public class LogDay : IEntity
 
 	public int LogId { get; set; }
 	public Log Log { get; set; } = null!;
+
+	public int? BaseLogId { get; set; }
 }

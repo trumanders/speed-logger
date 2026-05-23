@@ -247,7 +247,7 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Persistence.Entities.BaseLogDay", b =>
+            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,16 +258,12 @@ namespace Persistence.Migrations
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
                     b.HasKey("Id");
 
-                    b.ToTable("BaseLogDays");
+                    b.HasIndex("AcademicYearId")
+                        .IsUnique();
+
+                    b.ToTable("BaseLog");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Log", b =>
@@ -317,6 +313,9 @@ namespace Persistence.Migrations
                     b.Property<int?>("AcademicYearId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("BaseLogId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("text");
@@ -324,7 +323,7 @@ namespace Persistence.Migrations
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
-                    b.Property<int>("LogId")
+                    b.Property<int?>("LogId")
                         .HasColumnType("integer");
 
                     b.Property<int>("WeekNumber")
@@ -333,6 +332,8 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AcademicYearId");
+
+                    b.HasIndex("BaseLogId");
 
                     b.HasIndex("LogId");
 
@@ -422,6 +423,15 @@ namespace Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
+                {
+                    b.HasOne("Persistence.Entities.AcademicYear", null)
+                        .WithOne("BaseLog")
+                        .HasForeignKey("Persistence.Entities.BaseLog", "AcademicYearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Persistence.Entities.Log", b =>
                 {
                     b.HasOne("Persistence.Entities.AcademicYear", "AcademicYear")
@@ -444,14 +454,16 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Persistence.Entities.LogDay", b =>
                 {
                     b.HasOne("Persistence.Entities.AcademicYear", "AcademicYear")
-                        .WithMany("BaseLogDays")
+                        .WithMany()
                         .HasForeignKey("AcademicYearId");
+
+                    b.HasOne("Persistence.Entities.BaseLog", null)
+                        .WithMany("LogDays")
+                        .HasForeignKey("BaseLogId");
 
                     b.HasOne("Persistence.Entities.Log", null)
                         .WithMany("LogDays")
-                        .HasForeignKey("LogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LogId");
 
                     b.Navigation("AcademicYear");
                 });
@@ -467,7 +479,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Persistence.Entities.AcademicYear", b =>
                 {
-                    b.Navigation("BaseLogDays");
+                    b.Navigation("BaseLog")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Persistence.Entities.ApplicationUser", b =>
@@ -475,6 +488,11 @@ namespace Persistence.Migrations
                     b.Navigation("AcademicYears");
 
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("Persistence.Entities.BaseLog", b =>
+                {
+                    b.Navigation("LogDays");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Log", b =>

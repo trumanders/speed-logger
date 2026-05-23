@@ -3,8 +3,18 @@
 3. Välj ELEV att koppla till log.
 4. Om elev inte fanns --> skapa ELEV (namn)
 
+BASELOG:
+Entity BaseLog har egna LogDays. Man redigerar dessa separat och skapar en rad i LogDay för 
+baselog när man har skrivit nåt i Content där.
+Entity Log har egna LogDays, och i frontent kollar man för varje datum om det
+finns en LogDay med BaseLog-id med samma datum. I så fall genereras "BaseLog-text"
+som är reaonly på det datumet. Trots BaseLog-texten, kan man trycka på en knapp
+"lägg till elevlog" under det så att man kan skriva vanlig elev-log om man vill.
+Oftast handlar det om LOV, eller INSTÄLLT, och man vill inte ha nån elev-log där
+
 • Visa läsårsflikar: hämta läsår för aktuell user
-• För varje läsårsflik: hämta alla loggar för user+läsår, och visa i veckodags- och tidsordning från Log, och på samma rad - visa Student.Name via StudentId på Logen.
+• För varje läsårsflik: hämta alla loggar för user+läsår, och visa i veckodags- och tidsordning från Log, och på samma rad - visa Student.Name via StudentId för varje Log.
 • När man klickat på en Student, visas logen i höger-sidan. Den ska ha en flik som visar de läsår som finns på den valda eleven:
 • Visa flikar, en för varje läsår som vald elevs loggar är kopplade till.
-• Visa loggen för det läsåret/loggen man väljer i högerdelen
+• När man klickar på en elevs "annan" läsårsflik, visas elevens log för det läsåret i högersidan.
+* När man klckar på en elev i vänstersidan, uppdateras alltid högersidan, så att det läsår som är valt i vänstersidan, visas i högersidan.

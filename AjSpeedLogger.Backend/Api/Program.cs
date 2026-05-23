@@ -6,7 +6,7 @@ public class Program
 {
 	public static void Main(string[] args)
 	{
-        AppContext.SetSwitch("System.Net.DisableIPv6", true);
+        //AppContext.SetSwitch("System.Net.DisableIPv6", true);
         var builder = WebApplication.CreateBuilder(args);
 
 		// Add services to the container.
@@ -14,10 +14,8 @@ public class Program
 		builder.Services.AddControllers();
 
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"), o =>
-			{
-				o.EnableRetryOnFailure();
-			}));
+			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"))
+			);
 
 
         builder.Services.AddScoped<IRepository, Repository>();
