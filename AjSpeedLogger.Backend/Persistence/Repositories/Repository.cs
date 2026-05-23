@@ -11,21 +11,22 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 		return entities;
 	}
 
-	public async Task<List<TEntity>> GetAllAsync<TEntity>(string applicationUserId)
-		where TEntity : class, IEntity, IUserOwned
+	public async Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+		where TEntity : class, IEntity
 	{
 		var entities = await _db.Set<TEntity>()
-			.Where(e => e.ApplicationUserId == applicationUserId)
+			.Where(checkOwner)
 			.ToListAsync();
 
 		return entities;
 	}
 
-	public async Task<TEntity?> GetByIdAsync<TEntity>(int id, string applicationUserId)
-		where TEntity : class, IEntity, IUserOwned
+	public async Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+	where TEntity : class, IEntity
 	{
 		var entity = await _db.Set<TEntity>()
-			.SingleOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
+			.Where(checkOwner)
+			.SingleOrDefaultAsync();
 
 		return entity;
 	}

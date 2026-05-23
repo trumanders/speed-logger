@@ -7,11 +7,11 @@ namespace Persistence.Interfaces
 		public Task<List<TEntity>> GetAllAsync<TEntity>()
 			where TEntity : class, IEntity;
 
-		public Task<List<TEntity>> GetAllAsync<TEntity>(string applicationUserId)
+		public Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
 			where TEntity : class, IEntity, IUserOwned;
 
-		public Task<TEntity?> GetByIdAsync<TEntity>(int id, string applicationUserId)
-			where TEntity : class, IEntity, IUserOwned;
+		public Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+			where TEntity : class, IEntity;
 
 		public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
