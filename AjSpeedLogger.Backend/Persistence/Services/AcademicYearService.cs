@@ -15,4 +15,11 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper) : IAc
 
 		return _mapper.Map<AcademicYearDto>(academicYearEntity);
 	}	
+
+	public async Task<AcademicYearDto?> GetByIdAsync(int id, string applicationUserId)
+	{
+		var academicYearEntity = await _repository.GetByIdAsync<AcademicYear>(ay => ay.Id == id && ay.ApplicationUserId == applicationUserId);
+
+		return _mapper.Map<AcademicYearDto>(academicYearEntity);
+	}
 }
