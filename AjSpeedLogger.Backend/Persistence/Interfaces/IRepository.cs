@@ -23,13 +23,12 @@ namespace Persistence.Interfaces
 
 
 		// DELETE
-		public Task<bool> DeleteAsync<TEntity>(int id, string applicationUserId)
-			where TEntity : class, IEntity, IUserOwned;
+		public Task<bool> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+			where TEntity : class, IEntity;
 
 		// UPDATE
-		public Task<bool> Update<TEntity, TDto>(int id, TDto dto, string applicationUserId)
-			where TEntity : class, IEntity, IUserOwned
-			where TDto : class;
+		public Task<bool> Update<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate)
+			where TEntity : class, IEntity;
 
 
 		// Save changes

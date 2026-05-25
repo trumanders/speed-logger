@@ -55,10 +55,10 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 	}
 
 	// DELETE
-	public async Task<bool> DeleteAsync<TEntity>(int id, string applicationUserId)
-		where TEntity : class, IEntity, IUserOwned
+	public async Task<bool> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+		where TEntity : class, IEntity
 	{
-		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(x => x.ApplicationUserId == applicationUserId && x.Id == id);
+		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(predicate);
 		
 		if (entity == null)
 			return false;
@@ -68,9 +68,9 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 	}
 
 	// UPDATE
-	public async Task<bool> Update<TEntity, TDto>(int id, TDto dto, string applicationUserId)
-	where TEntity : class, IEntity, IUserOwned
-	where TDto : class
+	public async Task<bool> Update<TEntity>(Expression<Func<TEntity, bool>> predicate)
+	where TEntity : class, IEntity;
+
 	{
 		// Get the existing entity because we only change the properties that are in the DTO, not the whole entity
 		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id && e.ApplicationUserId == applicationUserId);

@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path="Application-flow-logic.txt" />
+    <File Path="swagger json paste.txt" />
   </Folder>
   <Project Path="Api/Api.csproj" />
   <Project Path="Common/Common.csproj" Id="2f47c784-7086-4431-bb58-95d673c0a883" />

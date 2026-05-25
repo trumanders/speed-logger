@@ -1,0 +1,22 @@
+{
+  "email": "trumanders@gmail.com",
+  "password": "Slingerland0+"
+}
+{
+  "email": "anderssvenaxelj@gmail.com",
+  "password": "Slingerland0+"
+}
+
+{
+  "dayOfWeek": 1,
+  "lessonStartTime": "18:40",
+  "lessonEndTime": "19:00",
+  "academicYearId": 14,
+  "studentId": 8
+}
+
+{
+  "name": "2020/2021",
+  "startDate": "2020-08-10",
+  "endDate": "2021-06-05"
+}
