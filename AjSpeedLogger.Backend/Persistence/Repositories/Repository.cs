@@ -40,11 +40,9 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 
 
 	// ADD
-	public async Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
+	public async Task<TEntity> AddAsync<TEntity>(TEntity entity)
 		where TEntity : class, IEntity
-		where TDto : class
 	{
-		var entity = _mapper.Map<TEntity>(dto);
 		await _db.Set<TEntity>().AddAsync(entity);
 		return entity;		
 	}

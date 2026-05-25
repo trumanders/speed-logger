@@ -1,15 +1,28 @@
-﻿namespace Persistence.Services;
+﻿using System.Globalization;
+
+namespace Persistence.Services;
 
 public class AcademicYearService(IRepository _repository, IMapper _mapper) : IAcademicYearService
 {
 	public async Task<AcademicYearDto> CreateAcademicYearAsync(AcademicYearCreateDto dto, string applicationUserId)
 	{
-		var academicYearEntity = await _repository.AddAsync<AcademicYear, AcademicYearCreateDto>(dto);
+		var academicYearEntity = await _repository.AddAsync<AcademicYear>(_mapper.Map<AcademicYear>(dto));
 		academicYearEntity.ApplicationUserId = applicationUserId;
-		academicYearEntity.BaseLog = new BaseLog
+
+		// Create all the BaseLogDays for the year
+		var date = academicYearEntity.StartDate;
+		academicYearEntity.BaseLogDays = new List<BaseLogDay>();
+
+		while (date <= academicYearEntity.EndDate)
 		{
-			AcademicYearId = academicYearEntity.Id // Works because the entity is being tracked by the context, so when we save changes, it will update the BaseLog's AcademicYearId with the correct value
-		};
+			academicYearEntity.BaseLogDays.Add(new BaseLogDay
+			{
+				Date = date,
+				WeekNumber = ISOWeek.GetWeekOfYear(date)
+			});
+
+			date = date.AddDays(1);
+		}
 
 		await _repository.SaveChangesAsync();
 

@@ -13,7 +13,8 @@ public class LogDayController(ILogDayService _logDayService) : BaseController
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		if (!await _logDayService.UpdateLogDayContentAsync(id, logDayContent, applicationUserId))
+		if (!await _logDayService.UpdateLogDayContentAsync
+			(id, logDayContent, applicationUserId))
 		{
 			return BadRequest();
 		}

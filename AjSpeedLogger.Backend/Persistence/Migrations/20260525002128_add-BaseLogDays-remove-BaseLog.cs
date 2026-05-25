@@ -1,0 +1,191 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace Persistence.Migrations
+{
+    /// <inheritdoc />
+    public partial class addBaseLogDaysremoveBaseLog : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_LogDays_BaseLog_BaseLogId",
+                table: "LogDays");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_LogDays_Logs_LogId",
+                table: "LogDays");
+
+            migrationBuilder.DropTable(
+                name: "BaseLog");
+
+            migrationBuilder.DropIndex(
+                name: "IX_LogDays_BaseLogId",
+                table: "LogDays");
+
+            migrationBuilder.DropColumn(
+                name: "BaseLogId",
+                table: "LogDays");
+
+            migrationBuilder.DropColumn(
+                name: "Date",
+                table: "LogDays");
+
+            migrationBuilder.RenameColumn(
+                name: "WeekNumber",
+                table: "LogDays",
+                newName: "BaseLogDayId");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "LogId",
+                table: "LogDays",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0,
+                oldClrType: typeof(int),
+                oldType: "integer",
+                oldNullable: true);
+
+            migrationBuilder.CreateTable(
+                name: "BaseLogDay",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AcademicYearId = table.Column<int>(type: "integer", nullable: false),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    WeekNumber = table.Column<int>(type: "integer", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BaseLogDay", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BaseLogDay_AcademicYears_AcademicYearId",
+                        column: x => x.AcademicYearId,
+                        principalTable: "AcademicYears",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LogDays_BaseLogDayId",
+                table: "LogDays",
+                column: "BaseLogDayId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BaseLogDay_AcademicYearId",
+                table: "BaseLogDay",
+                column: "AcademicYearId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LogDays_BaseLogDay_BaseLogDayId",
+                table: "LogDays",
+                column: "BaseLogDayId",
+                principalTable: "BaseLogDay",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LogDays_Logs_LogId",
+                table: "LogDays",
+                column: "LogId",
+                principalTable: "Logs",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropForeignKey(
+                name: "FK_LogDays_BaseLogDay_BaseLogDayId",
+                table: "LogDays");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_LogDays_Logs_LogId",
+                table: "LogDays");
+
+            migrationBuilder.DropTable(
+                name: "BaseLogDay");
+
+            migrationBuilder.DropIndex(
+                name: "IX_LogDays_BaseLogDayId",
+                table: "LogDays");
+
+            migrationBuilder.RenameColumn(
+                name: "BaseLogDayId",
+                table: "LogDays",
+                newName: "WeekNumber");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "LogId",
+                table: "LogDays",
+                type: "integer",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "integer");
+
+            migrationBuilder.AddColumn<int>(
+                name: "BaseLogId",
+                table: "LogDays",
+                type: "integer",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateOnly>(
+                name: "Date",
+                table: "LogDays",
+                type: "date",
+                nullable: false,
+                defaultValue: new DateOnly(1, 1, 1));
+
+            migrationBuilder.CreateTable(
+                name: "BaseLog",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AcademicYearId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BaseLog", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BaseLog_AcademicYears_AcademicYearId",
+                        column: x => x.AcademicYearId,
+                        principalTable: "AcademicYears",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LogDays_BaseLogId",
+                table: "LogDays",
+                column: "BaseLogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BaseLog_AcademicYearId",
+                table: "BaseLog",
+                column: "AcademicYearId",
+                unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LogDays_BaseLog_BaseLogId",
+                table: "LogDays",
+                column: "BaseLogId",
+                principalTable: "BaseLog",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LogDays_Logs_LogId",
+                table: "LogDays",
+                column: "LogId",
+                principalTable: "Logs",
+                principalColumn: "Id");
+        }
+    }
+}

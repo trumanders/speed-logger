@@ -15,9 +15,8 @@ namespace Persistence.Interfaces
 
 
 		// ADD
-		public Task<TEntity> AddAsync<TEntity, TDto>(TDto dto)
-			where TEntity : class, IEntity
-			where TDto : class;
+		public Task<TEntity> AddAsync<TEntity>(TEntity entity)
+			where TEntity : class, IEntity;
 
 		public Task AddRangeAsync<TEntity>(ICollection<TEntity> entities)
 			where TEntity : class, IEntity;

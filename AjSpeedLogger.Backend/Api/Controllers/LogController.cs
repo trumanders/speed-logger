@@ -33,6 +33,9 @@ public class LogController(ILogService _logService) : BaseController
 
 		var logDto = await _logService.CreateLogAsync(dto, applicationUserId);
 
+		if (logDto == null)
+			return NotFound();
+
 		return CreatedAtAction(nameof(GetById), new { id = logDto.Id }, logDto);
 	}
 }

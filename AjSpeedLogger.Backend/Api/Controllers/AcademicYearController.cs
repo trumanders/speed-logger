@@ -3,7 +3,7 @@ namespace Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AcademicYearController(IRepository _repository, IAcademicYearService _academicYearService, IMapper _mapper) : BaseController
+public class AcademicYearController(IAcademicYearService _academicYearService) : BaseController
 {
 	// ADD
 	[HttpPost]

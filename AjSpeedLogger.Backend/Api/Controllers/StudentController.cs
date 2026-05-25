@@ -18,7 +18,7 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 		if (applicationUserId == null)
 			return Unauthorized();
 
-		var entity = await _repository.AddAsync<Student, StudentCreateDto>(dto);
+		var entity = await _repository.AddAsync<Student>(_mapper.Map<Student>(dto));
 		entity.ApplicationUserId = applicationUserId;
 
 
