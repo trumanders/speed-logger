@@ -27,7 +27,7 @@ namespace Persistence.Interfaces
 			where TEntity : class, IEntity;
 
 		// UPDATE
-		public Task<bool> Update<TEntity, TDto>(Expression<Func<TEntity, bool>> predicate)
+		public Task<bool> Update<TEntity>(Expression<Func<TEntity, bool>> predicate)
 			where TEntity : class, IEntity;
 
 

@@ -69,16 +69,14 @@ public class Repository(Context _db, IMapper _mapper) : IRepository
 
 	// UPDATE
 	public async Task<bool> Update<TEntity>(Expression<Func<TEntity, bool>> predicate)
-	where TEntity : class, IEntity;
-
+	where TEntity : class, IEntity
 	{
 		// Get the existing entity because we only change the properties that are in the DTO, not the whole entity
-		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id && e.ApplicationUserId == applicationUserId);
+		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(predicate);
 
 		if (entity == null)
 			return false;
 
-		_mapper.Map(dto, entity); // Copies the properties from the DTO to the entity
 		_db.Set<TEntity>().Update(entity);
 		return true;
 	}

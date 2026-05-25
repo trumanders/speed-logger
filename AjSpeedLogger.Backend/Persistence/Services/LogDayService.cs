@@ -15,13 +15,8 @@ public class LogDayService(IRepository _repository) : ILogDayService
 			return false;
 		}
 
-		// 2.text skickas, raden fanns -> uppdatera raden
-		// 4.tom text skickas, raden fanns -> radera raden.
+		var logDayEntity = await _repository.GetByIdAsync<LogDay>(logDay => logDay.LogId == logId && logDay.BaseLogDayId == baseLogDayId);
 
-
-		var logDayEntity = await _repository.GetByIdAsync<LogDay>(l => l.LogId == logId && l.BaseLogDayId == baseLogDayId);
-
-		// LogDay row did not exist
 		if (logDayEntity == null)
 		{
 			if (string.IsNullOrEmpty(content))
@@ -45,28 +40,8 @@ public class LogDayService(IRepository _repository) : ILogDayService
 			else
 			{
 				logDayEntity.Content = content;
-				_repository.Update<LogDay>();
-				await _repository.SaveChangesAsync();
+				await _repository.Update<LogDay>(logDay => logDay.Id == logDayEntity.Id);
 			}
-		}
-
-
-
-		if (string.IsNullOrEmpty(content))
-		{
-			// If content is null, delete the LogDay if it exists
-			if (logDayEntity != null)
-			{
-				_repository.Remove(logDayEntity);
-				await _repository.SaveChangesAsync();
-			}
-			return true;
-		}
-
-		
-		else
-		{
-			logDayEntity.Content = content;
 		}
 		
 		await _repository.SaveChangesAsync();
