@@ -1,8 +1,8 @@
 ﻿namespace Persistence.Services;
 
-public class LogDayService(IRepository _repository)
+public class LogDayService(IRepository _repository) : ILogDayService
 {
-	public async Task<bool> UpdateLogDayContentAsync(int logId, int baseLogDayId, string content, string applicationUserId)
+	public async Task<bool> SaveLogDayContentAsync(int logId, int baseLogDayId, string content, string applicationUserId)
 	{
 		if (!await _repository.AnyAsync<Log>(log =>
 			log.Id == logId && log.ApplicationUserId == applicationUserId))

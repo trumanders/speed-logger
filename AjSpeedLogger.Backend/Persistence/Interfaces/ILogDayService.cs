@@ -2,5 +2,5 @@
 
 public interface ILogDayService
 {
-	public Task<bool> UpdateLogDayContentAsync(int id, string content, string applicationUserId);
+	public Task<bool> SaveLogDayContentAsync(int logId, int baseLogDayId, string content, string applicationUserId);
 }

@@ -22,6 +22,7 @@ public class Program
 		builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<ILogService, LogService>();
+		builder.Services.AddScoped<ILogDayService, LogDayService>();
 
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 			.AddEntityFrameworkStores<Context>()
