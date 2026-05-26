@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Options;
-
 namespace Api;
 
 public class Program
@@ -14,15 +12,16 @@ public class Program
 		builder.Services.AddControllers();
 
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"))
+			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"),
+			npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
 			);
 
-
-        builder.Services.AddScoped<IRepository, Repository>();
+		builder.Services.AddScoped<IRepository, Repository>();
 		builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<ILogService, LogService>();
 		builder.Services.AddScoped<ILogDayService, LogDayService>();
+		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
 
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 			.AddEntityFrameworkStores<Context>()

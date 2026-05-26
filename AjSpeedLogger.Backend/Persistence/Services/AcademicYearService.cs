@@ -35,4 +35,22 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper) : IAc
 
 		return _mapper.Map<AcademicYearDto>(academicYearEntity);
 	}
+
+	public async Task<bool> DeleteAsync(int id, string applicationUserId)
+	{
+		if (!await _repository.DeleteAsync<AcademicYear>(ay => ay.Id == id && ay.ApplicationUserId == applicationUserId))
+		{
+			return false;
+		}
+
+		await _repository.SaveChangesAsync();
+
+		// Logs will cascade delete.
+		// Remove any Students that don't have any Logs after the AcademicYear is deleted.
+
+		await _repository.DeleteAsync<Student>(s => s.ApplicationUserId == applicationUserId && !s.Logs.Any());
+		await _repository.SaveChangesAsync();
+
+		return true;
+	}
 }

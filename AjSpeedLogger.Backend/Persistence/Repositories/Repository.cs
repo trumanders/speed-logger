@@ -1,34 +1,28 @@
 ﻿namespace Persistence.Repositories;
 
-public class Repository(Context _db, IMapper _mapper) : IRepository
+public class Repository(Context _db) : IRepository
 {
-
-	// GET
-	public async Task<List<TEntity>> GetAllAsync<TEntity>()
-		where TEntity : class, IEntity
-	{
-		var entities = await _db.Set<TEntity>().ToListAsync();
-		return entities;
-	}
-
-	public async Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+	public async Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 		where TEntity : class, IEntity
 	{
 		var entities = await _db.Set<TEntity>()
-			.Where(checkOwner)
+			.Where(predicate)
 			.ToListAsync();
 
 		return entities;
 	}
 
-	public async Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> checkOwner)
+	public async Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)		
 	where TEntity : class, IEntity
 	{
-		var entity = await _db.Set<TEntity>()
-			.Where(checkOwner)
-			.SingleOrDefaultAsync();
+		IQueryable<TEntity> query = _db.Set<TEntity>();
+		
+		foreach (var include in includes)
+		{
+			query = query.Include(include);
+		}		
 
-		return entity;
+		return await query.FirstOrDefaultAsync(predicate);
 	}
 
 

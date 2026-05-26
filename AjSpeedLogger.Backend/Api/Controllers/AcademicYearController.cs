@@ -48,4 +48,26 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 
 		return Ok(academicYearDto);
 	}
+
+	// DELETE
+	[HttpDelete("{id}")]
+	public async Task<IActionResult> Delete(int id)
+	{
+		var applicationUserId = ApplicationUserId;
+
+		if (applicationUserId == null)
+			return Unauthorized();
+
+		try
+		{
+			if (!await _academicYearService.DeleteAsync(id, applicationUserId))
+				return NotFound($"Academic year with ID {id} not found.");
+
+			return NoContent();
+		}
+		catch (Exception)
+		{
+			return BadRequest($"An error occurred while deleting student.");
+		}
+	}
 }

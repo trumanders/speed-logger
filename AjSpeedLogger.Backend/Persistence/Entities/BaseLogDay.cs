@@ -5,7 +5,7 @@ public class BaseLogDay : IEntity
 	public int Id { get; set; }
 
 	public int AcademicYearId { get; set; }
-	public AcademicYear AcademicYear = null!;
+	public AcademicYear AcademicYear { get; set; } = null!;
 
 	public DateOnly Date { get; set; }
 	public int WeekNumber { get; set; }

@@ -1,7 +1,8 @@
-﻿using Common.Dtos;
+﻿namespace Persistence.Repositories;
 
-namespace Persistence.Repositories;
 
+// BEHÖVS DENNA KLASSEN?? Vi hämtar LOGS per ACACEMIC YEAR, och därifrån hämtar vi STUDENTS, och listar dem.
+// Inga students utan Logs.
 public class StudentRepository(Context _db, IMapper _mapper) : IStudentRepository
 {
     public async Task<List<StudentDto>> GetByAcademicYearIdAsync(int academicYearId, string applicationUserId)

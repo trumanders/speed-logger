@@ -79,6 +79,8 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 	}
 
 	// GET by AcademicYearId
+
+	// BEHÖVS DENNA ENDPOINTEN?? Vi hämtar LOGS per ACACEMIC YEAR, och därifrån hämtar vi STUDENTS, och listar dem.
 	[HttpGet("byAcademicYear/{academicYearId}")]
 	public async Task<IActionResult> GetByAcademicYearIdAsync(int academicYearId)
 	{
@@ -108,7 +110,7 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 								
 		try
 		{
-			if (!await _repository.DeleteAsync<Student>(id, applicationUserId))
+			if (!await _repository.DeleteAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId))
 				return NotFound($"Student with ID {id} not found.");
 
 			if (await _repository.SaveChangesAsync())
@@ -137,7 +139,7 @@ public class StudentController(IRepository _repository, IStudentRepository _stud
 			if (!await _repository.AnyAsync<Student>(e => e.Id.Equals(id) && e.ApplicationUserId == applicationUserId))
 				return NotFound();
 
-			if (await _repository.Update<Student, StudentUpdateDto>(id, dto, applicationUserId))
+			if (await _repository.Update<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId))
 			{
 				if (await _repository.SaveChangesAsync())
 					return NoContent();

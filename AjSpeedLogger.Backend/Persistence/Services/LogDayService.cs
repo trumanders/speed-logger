@@ -19,7 +19,7 @@ public class LogDayService(IRepository _repository) : ILogDayService
 
 		if (logDayEntity == null)
 		{
-			if (string.IsNullOrEmpty(content))
+			if (string.IsNullOrWhiteSpace(content))
 				return true;
 			
 			logDayEntity = new LogDay
