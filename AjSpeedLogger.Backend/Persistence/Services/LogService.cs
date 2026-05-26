@@ -22,4 +22,17 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 
 		return _mapper.Map<LogDto>(logEntity);
 	}
+
+	public async Task<bool> DeleteLogAsync(int id, string applicationUserId)
+	{
+		if (!await _repository.DeleteAsync<Log>(log => log.Id == id && log.ApplicationUserId == applicationUserId))
+			return false;
+
+		await _repository.SaveChangesAsync();
+
+		// Delete Students that no longer have any logs
+		await _repository.DeleteAsync<Student>(s => s.ApplicationUserId == applicationUserId && !s.Logs.Any());
+
+		return true;
+	}
 }

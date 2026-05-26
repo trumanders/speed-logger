@@ -38,4 +38,19 @@ public class LogController(ILogService _logService) : BaseController
 
 		return CreatedAtAction(nameof(GetById), new { id = logDto.Id }, logDto);
 	}
+
+	// DELETE
+	[HttpDelete("{id}")]
+	public async Task<IActionResult> Delete(int id)
+	{
+		var applicationUserId = ApplicationUserId;
+
+		if (applicationUserId == null)
+			return Unauthorized();
+
+		if (!await _logService.DeleteLogAsync(id, applicationUserId))
+			return NotFound($"Log with ID {id} not found.");
+		
+		return NoContent();
+	}
 }
