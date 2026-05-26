@@ -6,6 +6,7 @@ public class MappingProfile : Profile
 	{
 		CreateMap<AcademicYear, AcademicYearCreateDto>().ReverseMap();
 		CreateMap<AcademicYear, AcademicYearDto>().ReverseMap();
+		CreateMap<AcademicYear, AcademicYearNameDto>().ReverseMap();
 		CreateMap<Student, StudentCreateDto>().ReverseMap();
 		CreateMap<Student, StudentDto>().ReverseMap();
 		CreateMap<StudentUpdateDto, Student>().ReverseMap();

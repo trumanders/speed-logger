@@ -17,7 +17,7 @@ public class Program
 			);
 
 		builder.Services.AddScoped<IRepository, Repository>();
-		builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+		//builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<ILogService, LogService>();
 		builder.Services.AddScoped<ILogDayService, LogDayService>();

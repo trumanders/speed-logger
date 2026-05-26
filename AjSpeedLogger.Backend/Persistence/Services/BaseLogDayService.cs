@@ -8,10 +8,8 @@ public class BaseLogDayService(IRepository _repository) : IBaseLogDayService
 			bld => bld.Id == baseLogDayId && bld.AcademicYear.ApplicationUserId == applicationUserId,
 			"AcademicYear"
 		);
-		
 		if (baseLogDayEntity == null)
 			return false;
-
 		baseLogDayEntity.Content = newBaseLogDayContent;
 		await _repository.SaveChangesAsync();
 		return true;

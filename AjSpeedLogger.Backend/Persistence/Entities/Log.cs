@@ -1,6 +1,6 @@
 ﻿   namespace Persistence.Entities;
 
-public class Log : IEntity, IUserOwned
+public class Log : IEntity 
 {
 	public int Id { get; set; }
 

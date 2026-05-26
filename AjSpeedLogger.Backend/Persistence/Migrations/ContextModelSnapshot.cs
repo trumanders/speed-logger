@@ -350,6 +350,9 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsTerminated")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -423,11 +426,13 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Persistence.Entities.BaseLogDay", b =>
                 {
-                    b.HasOne("Persistence.Entities.AcademicYear", null)
+                    b.HasOne("Persistence.Entities.AcademicYear", "AcademicYear")
                         .WithMany("BaseLogDays")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AcademicYear");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Log", b =>

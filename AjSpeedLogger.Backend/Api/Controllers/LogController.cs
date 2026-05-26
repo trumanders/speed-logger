@@ -11,13 +11,18 @@ public class LogController(ILogService _logService) : BaseController
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null) return Unauthorized();
-
 		var logDto = await _logService.GetByIdAsync(id, applicationUserId);
-
 		if (logDto == null)
 			return NotFound($"Log with ID {id} not found.");
-
 		return Ok(logDto);
+	}
+
+	[HttpGet("{studentId}/has-multiple-logs")]
+	public async Task<IActionResult> HasMultipleLogs(int studentId)
+	{
+		// Antingen räknar du (Count > 1) eller kollar om det finns NÅGON mer logg utöver den man står i
+		var hasMultiple = await _logService.HasMultipleLogsAsync(studentId);
+		return Ok(hasMultiple); // Returnerar true eller false
 	}
 
 	// ADD
@@ -26,17 +31,24 @@ public class LogController(ILogService _logService) : BaseController
 	{
 		if (dto == null)
 			return BadRequest("LogCreateDto cannot be null.");
-
-		var applicationUserId = ApplicationUserId;
-		if (applicationUserId == null)
-			return Unauthorized();
-
-		var logDto = await _logService.CreateLogAsync(dto, applicationUserId);
-
-		if (logDto == null)
-			return NotFound();
-
-		return CreatedAtAction(nameof(GetById), new { id = logDto.Id }, logDto);
+		try
+		{
+			var applicationUserId = ApplicationUserId;
+			if (applicationUserId == null)
+				return Unauthorized();
+			var logDto = await _logService.CreateLogAsync(dto, applicationUserId);
+			if (logDto == null)
+				return NotFound();
+			return CreatedAtAction(nameof(GetById), new { id = logDto.Id }, logDto);
+		}
+		catch(InvalidOperationException ex)
+		{
+			return BadRequest($"{ex.Message}");
+		}
+		catch
+		{
+			return BadRequest();
+		}
 	}
 
 	// DELETE
@@ -44,13 +56,10 @@ public class LogController(ILogService _logService) : BaseController
 	public async Task<IActionResult> Delete(int id)
 	{
 		var applicationUserId = ApplicationUserId;
-
 		if (applicationUserId == null)
 			return Unauthorized();
-
 		if (!await _logService.DeleteLogAsync(id, applicationUserId))
 			return NotFound($"Log with ID {id} not found.");
-		
 		return NoContent();
 	}
 }

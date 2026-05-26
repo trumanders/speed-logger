@@ -1,7 +1,6 @@
-﻿namespace Common.Dtos
+﻿namespace Common.Dtos;
+
+public class StudentUpdateDto
 {
-	public class StudentUpdateDto
-	{
-		public string Name { get; set; } = string.Empty;
-	}
+	public string Name { get; set; } = string.Empty;
 }

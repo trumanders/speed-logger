@@ -1,6 +1,6 @@
 ﻿namespace Persistence.Entities;
 
-public class AcademicYear : IEntity, IUserOwned
+public class AcademicYear : IEntity
 {
 	public int Id { get; set; }
 

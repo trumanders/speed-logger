@@ -25,12 +25,8 @@ public class AuthController : ControllerBase
 		};
 
 		var result = await _userManager.CreateAsync(user, dto.Password);
-
 		if (!result.Succeeded)
-		{
 			return BadRequest(result.Errors);
-		}
-
 		return Ok("User registered successfully.");
 	}
 
@@ -41,17 +37,12 @@ public class AuthController : ControllerBase
 		try
 		{
             var user = await _userManager.FindByEmailAsync(dto.Email);
-
             if (user == null)
                 return Unauthorized("Invalid email or password");
-
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
-
             if (!result.Succeeded)
                 return Unauthorized("Invalid username or password.");
-
             var token = GenerateJwtToken(user);
-
             return Ok(new { token = GenerateJwtToken(user) });
         }
 		catch(Exception ex)
@@ -66,12 +57,10 @@ public class AuthController : ControllerBase
 		return Ok();
 	}
 
-
 	private string GenerateJwtToken(ApplicationUser user)
 	{
 		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 		var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
 		var claims = new[]
 		{
 			new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -85,7 +74,6 @@ public class AuthController : ControllerBase
 			expires: DateTime.UtcNow.AddHours(8),
 			signingCredentials: credentials
 		);
-
 		return new JwtSecurityTokenHandler().WriteToken(token);
 	}
 }

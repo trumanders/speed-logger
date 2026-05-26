@@ -1,4 +1,6 @@
-﻿namespace Persistence.Repositories;
+﻿using System.Formats.Tar;
+
+namespace Persistence.Repositories;
 
 public class Repository(Context _db) : IRepository
 {
@@ -8,7 +10,6 @@ public class Repository(Context _db) : IRepository
 		var entities = await _db.Set<TEntity>()
 			.Where(predicate)
 			.ToListAsync();
-
 		return entities;
 	}
 
@@ -16,12 +17,10 @@ public class Repository(Context _db) : IRepository
 	where TEntity : class, IEntity
 	{
 		IQueryable<TEntity> query = _db.Set<TEntity>();
-		
 		foreach (var include in includes)
 		{
 			query = query.Include(include);
 		}		
-
 		return await query.FirstOrDefaultAsync(predicate);
 	}
 
@@ -53,10 +52,8 @@ public class Repository(Context _db) : IRepository
 		where TEntity : class, IEntity
 	{
 		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(predicate);
-		
 		if (entity == null)
 			return false;
-		
 		_db.Set<TEntity>().Remove(entity);
 		return true;
 	}
@@ -67,12 +64,16 @@ public class Repository(Context _db) : IRepository
 	{
 		// Get the existing entity because we only change the properties that are in the DTO, not the whole entity
 		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(predicate);
-
 		if (entity == null)
 			return false;
-
 		_db.Set<TEntity>().Update(entity);
 		return true;
+	}
+
+	public async Task<bool> IsCountGreaterThan<TEntity>(Expression<Func<TEntity, bool>> predicate, int count)
+		where TEntity : class, IEntity
+	{
+		return await _db.Set<TEntity>().CountAsync(predicate) > count;
 	}
 
 
