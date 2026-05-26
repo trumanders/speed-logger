@@ -6,4 +6,5 @@ global using Microsoft.EntityFrameworkCore;
 global using Persistence.Contexts;
 global using Persistence.Entities;
 global using Persistence.Interfaces;
+global using System.Globalization;
 global using System.Linq.Expressions;
