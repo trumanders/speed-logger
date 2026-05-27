@@ -43,8 +43,12 @@ public class AuthController : ControllerBase
             if (!result.Succeeded)
                 return Unauthorized("Invalid username or password.");
             var token = GenerateJwtToken(user);
-            return Ok(new { token = GenerateJwtToken(user) });
-        }
+			return Ok(new
+			{
+				token = token,
+				username = user.UserName
+			});
+		}
 		catch(Exception ex)
 		{
 			return BadRequest($"{ex.Message} - {ex.InnerException?.Message}");
