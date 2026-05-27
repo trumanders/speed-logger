@@ -14,8 +14,10 @@ const LoginPage = () => {
     e.preventDefault();
     const credentials: LoginCredentials = { email, password };
     const data = await login(credentials); // Returns { token: "string"}
+
     if (data) {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
       navigate("/");
     }
   };
