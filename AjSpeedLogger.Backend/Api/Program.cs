@@ -4,29 +4,20 @@ public class Program
 {
 	public static void Main(string[] args)
 	{
-        //AppContext.SetSwitch("System.Net.DisableIPv6", true);
         var builder = WebApplication.CreateBuilder(args);
-
-		// Add services to the container.
-
 		builder.Services.AddControllers();
-
 		builder.Services.AddDbContext<Context>(options =>
 			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"),
 			npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
 			);
-
 		builder.Services.AddScoped<IRepository, Repository>();
-		//builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<ILogService, LogService>();
 		builder.Services.AddScoped<ILogDayService, LogDayService>();
 		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
-
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 			.AddEntityFrameworkStores<Context>()
 			.AddDefaultTokenProviders();
-
 		builder.Services.AddAuthentication(options =>
 		{
 			options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,9 +37,7 @@ public class Program
 						Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
 				};
 			});
-
 		builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
-
 		builder.Services.AddSwaggerGen(c =>
 		{
 			c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -60,21 +49,31 @@ public class Program
 				In = Microsoft.OpenApi.Models.ParameterLocation.Header
 			});
 			c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-{
-	{
-		new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-		{
-			Reference = new Microsoft.OpenApi.Models.OpenApiReference
 			{
-				Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-				Id = "Bearer"
-			}
-		},
-		Array.Empty<string>()
-	}
-});
+				{
+					new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+					{
+						Reference = new Microsoft.OpenApi.Models.OpenApiReference
+						{
+							Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+							Id = "Bearer"
+						}
+					},
+					Array.Empty<string>()
+				}
+			});
 		});
 
+		// Configure CORS
+		builder.Services.AddCors(options =>
+		{
+			options.AddDefaultPolicy(policy =>
+			{
+				policy.WithOrigins("http://localhost:5173") // React app URL
+					  .AllowAnyHeader()
+					  .AllowAnyMethod();
+			});
+		});
 
 		var app = builder.Build();
 
@@ -83,9 +82,8 @@ public class Program
 		{
 			app.UseSwagger();
 			app.UseSwaggerUI();
-
 		}
-
+		app.UseCors();
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.UseHttpsRedirection();
