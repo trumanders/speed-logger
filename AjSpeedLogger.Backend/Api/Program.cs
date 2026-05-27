@@ -4,7 +4,10 @@ public class Program
 {
 	public static void Main(string[] args)
 	{
-        var builder = WebApplication.CreateBuilder(args);
+		JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // To prevent default claim mapping
+		JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear(); // To prevent default claim mapping
+
+		var builder = WebApplication.CreateBuilder(args);
 		builder.Services.AddControllers();
 		builder.Services.AddDbContext<Context>(options =>
 			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"),
