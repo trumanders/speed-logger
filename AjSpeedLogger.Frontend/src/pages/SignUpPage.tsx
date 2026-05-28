@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { Button } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { signup } from "../services/api";
 
 const SignUpPage = () => {
@@ -48,10 +48,10 @@ const SignUpPage = () => {
               if (err.code === "PasswordRequiresUpper")
                 return "Lösenordet måste innehålla minst en stor bokstav.";
               return err.description || "Ett okänt fel inträffade.";
-            })
-            .join(" \n");
+            });
 
-          setErrorMessage(messages);
+            const uniqueMessages = [...new Set(messages)].join("\n");
+          setErrorMessage(uniqueMessages);
         } else {
           setErrorMessage(
             "Registreringen misslyckades. Kontrollera lösenordskraven.",
@@ -68,25 +68,13 @@ const SignUpPage = () => {
       <Form onSubmit={handleSignUp}>
         <h2>Skapa konto</h2>
 
-        {/* Lösenordskrav för användaren */}
-        <div style={{ fontSize: "0.9em", color: "#666", marginBottom: "15px" }}>
-          <strong>Lösenordet måste innehålla:</strong>
-          <ul style={{ margin: "5px 0 0 20px", padding: 0 }}>
-            <li>Minst 6 tecken</li>
-            <li>Minst en siffra (0-9)</li>
-            <li>Minst en stor bokstav (A-Z)</li>
-            <li>Minst en liten bokstav (a-z)</li>
-            <li>Minst ett specialtecken (t.ex. !, #, *, -)</li>
-          </ul>
-        </div>
-
         {/* Visar felmeddelanden från valideringen eller servern */}
         {errorMessage && (
-          <p
-            style={{ color: "red", fontWeight: "bold", whiteSpace: "pre-line" }}
-          >
-            {errorMessage}
-          </p>
+          <Alert variant="danger" onClose={() => setErrorMessage(null)} dismissible>
+            {errorMessage.split("\n").map((msg, idx) => (
+              <div key={idx}>{msg}</div>  
+            ))}
+          </Alert>
         )}
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
