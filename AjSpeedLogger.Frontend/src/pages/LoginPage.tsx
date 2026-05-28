@@ -45,14 +45,13 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
+        <p>
+          <Link to="/forgot-password">Glömt lösenord?</Link>
+        </p>
         <Button variant="primary" type="submit">
           Logga in
         </Button>
       </Form>
-
-      <p>
-        <Link to="/signup">Har du inget konto?</Link>
-      </p>
     </>
   );
 };
