@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
 		var user = await _userManager.FindByEmailAsync(dto.Email);
 		if (user == null)
 			return Ok(resetLinkSentMessage);
-		var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 		var resetLink = $"{frontendUrl}?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(user.Email!)}";
 		Console.WriteLine(resetLink);
 		return Ok(resetLinkSentMessage);

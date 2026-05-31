@@ -10,14 +10,13 @@ public class Program
 		var builder = WebApplication.CreateBuilder(args);
 		builder.Services.AddControllers();
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection"),
-			npgsqlOptions => npgsqlOptions.EnableRetryOnFailure())
-			);
+			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 		builder.Services.AddScoped<IRepository, Repository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<ILogService, LogService>();
 		builder.Services.AddScoped<ILogDayService, LogDayService>();
 		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
+		builder.Services.AddScoped<IContext, Context>();
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 		{
 			options.User.RequireUniqueEmail = true;
