@@ -4,7 +4,7 @@ public class BaseLogDayService(IRepository _repository) : IBaseLogDayService
 {
 	public async Task<bool> UpdateBaseLogDayContentAsync(int baseLogDayId, string newBaseLogDayContent, string applicationUserId)
 	{
-		var baseLogDayEntity = await _repository.GetByIdAsync<BaseLogDay>(
+		var baseLogDayEntity = await _repository.GetSingleWithIncludesAsync<BaseLogDay>(
 			bld => bld.Id == baseLogDayId && bld.AcademicYear.ApplicationUserId == applicationUserId,
 			"AcademicYear"
 		);

@@ -5,7 +5,7 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 
 	public async Task<LogDto?> GetByIdAsync(int id, string applicationUserId)
 	{		
-		var logEntity = await _repository.GetByIdAsync<Log>(log => log.Id == id && log.ApplicationUserId == applicationUserId);
+		var logEntity = await _repository.GetAsync<Log>(log => log.Id == id && log.ApplicationUserId == applicationUserId);
 		return logEntity == null ? null : _mapper.Map<LogDto>(logEntity);
 	}
 

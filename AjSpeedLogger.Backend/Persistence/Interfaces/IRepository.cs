@@ -3,10 +3,13 @@
 public interface IRepository
 {
 	// GET
-	public Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+
+	public Task<TEntity?> GetSingleByAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class, IEntity;
+
+	public Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 		where TEntity : class, IEntity;
 
-	public Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+	public Task<TEntity?> GetSingleWithIncludesAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)
 		where TEntity : class, IEntity;
 
 	public Task<bool> AnyAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)

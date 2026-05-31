@@ -1,10 +1,13 @@
-﻿using System.Formats.Tar;
-
-namespace Persistence.Repositories;
+﻿namespace Persistence.Repositories;
 
 public class Repository(Context _db) : IRepository
 {
-	public async Task<List<TEntity>> GetAllAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
+	public async Task<TEntity?> GetSingleByAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class, IEntity
+	{
+		return await _db.Set<TEntity>().FirstOrDefaultAsync(predicate);
+	}
+
+	public async Task<List<TEntity>> GetAsync<TEntity>(Expression<Func<TEntity, bool>> predicate)
 		where TEntity : class, IEntity
 	{
 		var entities = await _db.Set<TEntity>()
@@ -13,7 +16,7 @@ public class Repository(Context _db) : IRepository
 		return entities;
 	}
 
-	public async Task<TEntity?> GetByIdAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)		
+	public async Task<TEntity?> GetSingleWithIncludesAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)		
 	where TEntity : class, IEntity
 	{
 		IQueryable<TEntity> query = _db.Set<TEntity>();

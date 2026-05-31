@@ -7,7 +7,7 @@ public class LogDayService(IRepository _repository) : ILogDayService
 		// Check if the log belongs to the user
 		if (!await _repository.AnyAsync<Log>(log =>log.Id == logId && log.ApplicationUserId == applicationUserId))
 			return false;
-		var logDayEntity = await _repository.GetByIdAsync<LogDay>(logDay => logDay.LogId == logId && logDay.BaseLogDayId == baseLogDayId);
+		var logDayEntity = await _repository.GetSingleByAsync<LogDay>(logDay => logDay.LogId == logId && logDay.BaseLogDayId == baseLogDayId);
 		if (logDayEntity == null)
 		{
 			if (string.IsNullOrWhiteSpace(content))

@@ -5,6 +5,18 @@ namespace Api.Controllers;
 [Authorize]
 public class AcademicYearController(IAcademicYearService _academicYearService) : BaseController
 {
+	[HttpGet("/all-user-data/{id}")]
+	public async Task<IActionResult> GetAcademicYearAllUserData(int academicYearId)
+	{
+		var applicationUserId = ApplicationUserId;
+		if (applicationUserId == null)
+			return Unauthorized();
+		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(academicYearId);
+		if (allUserData == null)
+			return NotFound();
+		return Ok(allUserData);
+	}
+
 	// GET ALL (names only)
 	[HttpGet]
 	public async Task<IActionResult> Get()
@@ -12,7 +24,7 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var academicYears = await _academicYearService.GetAllAsync(applicationUserId);
+		var academicYears = await _academicYearService.GetAllNamesAsync(applicationUserId);
 		return Ok(academicYears);
 	}
 
@@ -36,7 +48,7 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var academicYearDtos = await _academicYearService.GetByStudentIdAsync(studentId, applicationUserId);
+		var academicYearDtos = await _academicYearService.GetAllNamesByStudentIdAsync(studentId, applicationUserId);
 		if (academicYearDtos == null || !academicYearDtos.Any())
 			return NotFound($"Academic years for student with ID {studentId} not found.");
 		return Ok(academicYearDtos);

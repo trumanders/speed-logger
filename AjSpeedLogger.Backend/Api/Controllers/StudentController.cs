@@ -38,7 +38,7 @@ public class StudentController(IRepository _repository, IMapper _mapper) : BaseC
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var studentEntities = await _repository.GetAllAsync<Student>(s => s.ApplicationUserId == applicationUserId);
+		var studentEntities = await _repository.GetAsync<Student>(s => s.ApplicationUserId == applicationUserId);
 		if (studentEntities == null)
 			return NotFound($"Students not found.");
 		var studentDtos = _mapper.Map<List<StudentDto>>(studentEntities);
@@ -53,7 +53,7 @@ public class StudentController(IRepository _repository, IMapper _mapper) : BaseC
         var applicationUserId = ApplicationUserId;
         if (applicationUserId == null)
 			return Unauthorized();
-		var studentEntities = await _repository.GetByIdAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId);
+		var studentEntities = await _repository.GetAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId);
 		if (studentEntities == null)
 			return NotFound($"Student year with ID {id} not found.");
 		var studentDtos = _mapper.Map<StudentDto>(studentEntities);
