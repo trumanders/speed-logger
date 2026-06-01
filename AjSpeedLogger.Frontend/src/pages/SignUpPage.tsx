@@ -23,7 +23,7 @@ const SignUpPage = () => {
     try {
       const credentials = { email, password };
       await signup(credentials);
-      navigate("/login");
+      navigate("/login", {state: {successMessage: "Konto har skapats. Du kan nu logga in."}});
     } catch (error: any) {
       if (error.response && error.response.data) {
         const backendData = error.response.data;

@@ -1,48 +1,56 @@
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 import type { LoginCredentials } from "../services/api";
 import { login } from "../services/api";
 import Alert from "react-bootstrap/Alert";
+import { useLocation } from "react-router";
 
 const LoginPage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  const successMessage = location.state?.successMessage;
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const credentials: LoginCredentials = { email, password };
-    
+
     try {
       const data = await login(credentials); // Returns { token: "string"}
-      
+
       if (data) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", data.username);
         navigate("/");
       }
-    }
-    catch (err: any) {
+    } catch (err: any) {
       if (err.response && err.response.status === 401) {
         setError("Fel användarnamn eller lösenord.");
-      }
-      else {
-        setError(err.resoponse?.data?.message || "Ett fel inträffade. Försök igen senare.");
+      } else {
+        setError(
+          err.resoponse?.data?.message ||
+            "Ett fel inträffade. Försök igen senare.",
+        );
       }
     }
   };
 
   return (
     <>
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
       <Form onSubmit={handleLogin}>
         <h2>Logga in</h2>
 
-          {error && (
-            <Alert variant="danger" onClose={() => setError(null) } dismissible>{error}</Alert>
-          )}
+        {error && (
+          <Alert variant="danger" onClose={() => setError(null)} dismissible>
+            {error}
+          </Alert>
+        )}
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>E-postadress</Form.Label>
