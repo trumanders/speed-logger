@@ -5,13 +5,13 @@ namespace Api.Controllers;
 [Authorize]
 public class AcademicYearController(IAcademicYearService _academicYearService) : BaseController
 {
-	[HttpGet("/all-user-data/{id}")]
-	public async Task<IActionResult> GetAcademicYearAllUserData(int academicYearId)
+	[HttpGet("all-user-data")]
+	public async Task<IActionResult> GetAcademicYearAllUserData()
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(academicYearId);
+		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(applicationUserId);
 		if (allUserData == null)
 			return NotFound();
 		return Ok(allUserData);

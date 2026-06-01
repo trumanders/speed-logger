@@ -5,5 +5,5 @@ public class StudentAllUserDataDto
 	public int Id { get; set; }
 	public string Name { get; set; } = string.Empty;
 
-	public List<LogAllUserDataDto> Logs { get; set; }
+	public LogAllUserDataDto Log { get; set; }
 }

@@ -23,10 +23,21 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 		return _mapper.Map<IEnumerable<AcademicYearNameDto>>(academicYearEntities);
 	}
 
-	public async Task<AcademicYearAllUserDataDto?> GetAcademicYearAllUserDataAsync(int academicYearId, string applicationUserId)
+	public async Task<AcademicYearAllUserDataDto?> GetAcademicYearAllUserDataAsync(string applicationUserId)
 	{
+		// Determine what academic year to fetch
+		var userAllAcademicYears = await _db.AcademicYears
+			.Where(ay => ay.ApplicationUserId == applicationUserId)
+			.ToListAsync();
+		if (!userAllAcademicYears.Any())
+			return null;
+		var today = DateOnly.FromDateTime(DateTime.Today);
+		var selectedAcademicYear = userAllAcademicYears.FirstOrDefault(uay => today >= uay.StartDate && today <= uay.EndDate);
+		if (selectedAcademicYear == null)
+			selectedAcademicYear = userAllAcademicYears.OrderByDescending(uay => uay.EndDate).First();
+
 		var data = await _db.AcademicYears
-			.Where(ay => ay.ApplicationUserId == applicationUserId && ay.Id == academicYearId)
+			.Where(ay => ay.ApplicationUserId == applicationUserId && ay.Id == selectedAcademicYear.Id)
 			.Select(ay => new AcademicYearAllUserDataDto
 			{
 				Name = ay.Name,
@@ -36,19 +47,21 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 				{
 					Id = l.StudentId,
 					Name = l.Student.Name,
-					Logs = l.Student.Logs.Select(sl => new LogAllUserDataDto
-					{
-						Id = sl.Id,
-						DayOfWeek = sl.DayOfWeek,
-						LessonStartTime = sl.LessonStartTime,
-						LessonEndTime = sl.LessonEndTime,
-						LogDays = sl.LogDays.Select(ld => new LogDayDto
+					Log = l.Student.Logs
+						.Where(sl => sl.AcademicYearId == selectedAcademicYear.Id)
+						.Select(sl => new LogAllUserDataDto
 						{
-							Id = ld.Id,
-							BaseLogDayId = ld.BaseLogDayId,
-							Content = ld.Content
-						}).ToList()
-					}).ToList()
+							Id = sl.Id,
+							DayOfWeek = sl.DayOfWeek,
+							LessonStartTime = sl.LessonStartTime,
+							LessonEndTime = sl.LessonEndTime,
+							LogDays = sl.LogDays.Select(ld => new LogDayDto
+							{
+								Id = ld.Id,
+								BaseLogDayId = ld.BaseLogDayId,
+								Content = ld.Content
+							}).ToList()
+						}).FirstOrDefault()
 				}).ToList()
 			}).FirstOrDefaultAsync();
 		
