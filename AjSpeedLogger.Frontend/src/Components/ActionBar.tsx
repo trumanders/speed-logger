@@ -1,32 +1,13 @@
 import { Button, Stack } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-interface ActionBarProps {
-  onAddAcademicYearClick?: () => void;
-  onStudentsClick?: () => void;
-  onBaseLogClick?: () => void;
-}
-
-const ActionBar = ({
-  onAddAcademicYearClick,
-  onStudentsClick,
-  onBaseLogClick,
-}: ActionBarProps) => {
+const ActionBar = () => {
   return (
     <div className="bg-light py-1 px-3 border-bottom w-100">
       <Stack direction="horizontal" gap={2}>
-
-        <Button variant="outline-primary" size="sm" onClick={onAddAcademicYearClick}>
-          Skapa nytt läsår
-        </Button>
-
-        <Button variant="outline-primary" size="sm" onClick={onStudentsClick}>
-          Elever
-        </Button>
-
-        <Button variant="outline-primary" size="sm" onClick={onBaseLogClick}>
-          Baslog
-        </Button>
-
+        <Link to="/add_year" className="btn btn-outline-primary btn-sm">Nytt läsår</Link>
+        <Link to="/manage_baselog" className="btn btn-outline-primary btn-sm">Baslog</Link>
+        <Link to="/manage_students" className="btn btn-outline-primary btn-sm">Elever</Link>
       </Stack>
     </div>
   );

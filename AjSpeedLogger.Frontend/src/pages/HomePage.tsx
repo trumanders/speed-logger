@@ -2,10 +2,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { AcademicYearAllUserData } from "../types/allUserData";
-import { getAcademicYears, getAllUserDataByAcademicYear } from "../services/api";
-import ActionBar from "../Components/ActionBar";
-import Sidebar from "../Components/Sidebar";
-import Workspace from "../Components/Workspace";
+import {
+  getAcademicYears,
+  getAllUserDataByAcademicYear,
+} from "../services/api";
+import ActionBar from "../components/ActionBar";
+import Sidebar from "../components/Sidebar";
+import Workspace from "../components/Workspace";
 import type { AcademicYear } from "../types/academicYear";
 
 const HomePage = () => {
@@ -16,8 +19,9 @@ const HomePage = () => {
     useState<AcademicYearAllUserData | null>(null);
   const [academicYears, setAcademicYears] = useState<AcademicYear[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
-  const [selectedAcademicYearId, setSelectedAcademicYearId] = useState<number | null>(null);
-  const [currentWorkspace, setCurrentWorkspace] = useState<string>("LOG");
+  const [selectedAcademicYearId, setSelectedAcademicYearId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,7 +36,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const academicYearAllUserData = await getAllUserDataByAcademicYear(null);
+        const academicYearAllUserData =
+          await getAllUserDataByAcademicYear(null);
         setAllUserData(academicYearAllUserData);
         setAcademicYears(await getAcademicYears());
         if (academicYearAllUserData && academicYearAllUserData.id) {
@@ -47,15 +52,20 @@ const HomePage = () => {
 
   const handleSelectedStudent = (id: number) => {
     setSelectedStudent(id);
-    setCurrentWorkspace("LOG");
   };
 
   const handleAcademicYearSelect = async (id: number) => {
     if (isAutorized) {
-      const fetchAllUserData = await getAllUserDataByAcademicYear(id)      
+      const fetchAllUserData = await getAllUserDataByAcademicYear(id);
       setAllUserData(fetchAllUserData);
     }
-  }
+  };
+
+  const handleAddAcademicYearClick = () => {};
+
+  const handleStudentsClick = () => {};
+
+  const handleBaseLogClick = () => {};
 
   if (!isAutorized) {
     return null;
@@ -63,7 +73,7 @@ const HomePage = () => {
 
   return (
     <>
-      <ActionBar/>      
+      <ActionBar />
       <Container fluid className="mt-4">
         <Row>
           <Col md={3} className="border-end">
@@ -73,13 +83,13 @@ const HomePage = () => {
               onAcademicYearSelect={handleAcademicYearSelect}
               academicYears={academicYears}
               selectedAcademicYearId={selectedAcademicYearId}
-              />
+            />
           </Col>
           <Col md={9} className="ps-4">
             <Workspace
-              currentWorkspace={currentWorkspace}
               selectedStudent={selectedStudent}
-              allUserData={allUserData} />
+              allUserData={allUserData}
+            />
           </Col>
         </Row>
       </Container>

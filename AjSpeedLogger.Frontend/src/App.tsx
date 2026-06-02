@@ -13,6 +13,7 @@ const App = () => {
       <Container>
         <Navigation />
         <Routes>
+          <Route path="*" element={<HomePage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/signup" element={<SignUpPage />} />

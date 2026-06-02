@@ -59,11 +59,23 @@ export const getAllUserDataByAcademicYear = async (
 };
 
 export const getAcademicYears = async () => {
-  const response = await apiClient.get(`/AcademicYear`);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  const response = await apiClient.get(`/AcademicYear`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
 
 export const addAcademicYear = async (academicYear: AcademicYearCreate) => {
-  const response = await apiClient.post(`/AcademicYear`, academicYear);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  const response = await apiClient.post(`/AcademicYear`, academicYear, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response.data;
 };
