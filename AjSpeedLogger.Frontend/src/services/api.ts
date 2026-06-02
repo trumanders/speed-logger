@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { AcademicYearAllUserData } from "../types/allUserData";
-
-const BASE_URL = "https://localhost:7293/api";
+import apiClient from "./apiClient";
+import type { AcademicYearCreate } from "../types/academicYearCreate";
 
 export interface LoginCredentials {
   email: string;
@@ -9,17 +9,17 @@ export interface LoginCredentials {
 }
 
 export const login = async (credentials: LoginCredentials) => {
-  const response = await axios.post(`${BASE_URL}/Auth/login`, credentials);
+  const response = await apiClient.post(`/Auth/login`, credentials);
   return response.data;
 };
 
 export const signup = async (credentials: LoginCredentials) => {
-  const response = await axios.post(`${BASE_URL}/Auth/register`, credentials);
+  const response = await apiClient.post(`/Auth/register`, credentials);
   return response.data;
 };
 
 export const forgotPassword = async (email: string) => {
-  const response = await axios.post(`${BASE_URL}/Auth/forgot-password`, {
+  const response = await apiClient.post(`/Auth/forgot-password`, {
     email,
   });
   return response.data;
@@ -30,24 +30,26 @@ export const resetPassword = async (
   token: string,
   newPassword: string,
 ) => {
-  await axios.post(`${BASE_URL}/Auth/reset-password`, {
+  await apiClient.post(`/Auth/reset-password`, {
     email,
     token,
     newPassword: newPassword,
   });
 };
 
-export const getAllUserDataByAcademicYear = async (academicYearId: number | null) => {
+export const getAllUserDataByAcademicYear = async (
+  academicYearId: number | null,
+) => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("User is not authenticated");
   }
   try {
-    const response = await axios.get<AcademicYearAllUserData | null>(
-      `${BASE_URL}/AcademicYear/all-user-data`,
+    const response = await apiClient.get<AcademicYearAllUserData | null>(
+      `/AcademicYear/all-user-data`,
       {
         headers: { Authorization: `Bearer ${token}` },
-        params: { academicYearId }
+        params: { academicYearId },
       },
     );
     return response.data;
@@ -57,6 +59,11 @@ export const getAllUserDataByAcademicYear = async (academicYearId: number | null
 };
 
 export const getAcademicYears = async () => {
-  const response = await axios.get(`${BASE_URL}/AcademicYear`);
+  const response = await apiClient.get(`/AcademicYear`);
   return response.data;
-}
+};
+
+export const addAcademicYear = async (academicYear: AcademicYearCreate) => {
+  const response = await apiClient.post(`/AcademicYear`, academicYear);
+  return response.data;
+};

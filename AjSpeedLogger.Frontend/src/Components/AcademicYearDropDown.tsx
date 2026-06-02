@@ -14,7 +14,7 @@ const AcademicYearDropdown = ({ academicYears, selectedAcademicYearId, onAcademi
         variant="outline-secondary" 
         className="w-100 d-flex align-items-center justify-content-between bg-white text-dark border-secondary-subtle"
       >
-        <span>Läsår: <strong className="ms-1">{selectedAcademicYearId ? academicYears.find(y => y.id === selectedAcademicYearId)?.name : "Välj ett läsår"}</strong></span>
+        <span>Läsår: <strong className="ms-1">{selectedAcademicYearId ? academicYears.find(y => y.id === selectedAcademicYearId)?.name : "Du har inga läsår"}</strong></span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="w-100 shadow-sm border-0 mt-1">

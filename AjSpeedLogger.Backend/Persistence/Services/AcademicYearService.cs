@@ -75,8 +75,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 			}).FirstOrDefaultAsync();
 		
 		return data;
-	}
-			
+	}			
 
 	// CREATE
 	public async Task<AcademicYearDto> CreateAcademicYearAsync(AcademicYearCreateDto dto, string applicationUserId)
