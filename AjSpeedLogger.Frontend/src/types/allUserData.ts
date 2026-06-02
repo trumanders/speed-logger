@@ -1,4 +1,5 @@
-export interface AcademicYearAllUserDataDto {
+export interface AcademicYearAllUserData {
+  id: number;
   name: string;
   startDate: string;
   endDate: string;

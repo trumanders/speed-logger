@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { AcademicYearAllUserDataDto } from "../types/allUserData";
+import type { AcademicYearAllUserData } from "../types/allUserData";
 
 const BASE_URL = "https://localhost:7293/api";
 
@@ -37,18 +37,26 @@ export const resetPassword = async (
   });
 };
 
-export const getUserDataForCurrentYear = async () => {
+export const getAllUserDataByAcademicYear = async (academicYearId: number | null) => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("User is not authenticated");
   }
   try {
-    const response = await axios.get<AcademicYearAllUserDataDto | null>(
+    const response = await axios.get<AcademicYearAllUserData | null>(
       `${BASE_URL}/AcademicYear/all-user-data`,
-      { headers: { Authorization: `Bearer ${token}` } },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { academicYearId }
+      },
     );
     return response.data;
   } catch {
     throw new Error("Kunde inte hämta data för läsåret.");
   }
 };
+
+export const getAcademicYears = async () => {
+  const response = await axios.get(`${BASE_URL}/AcademicYear`);
+  return response.data;
+}
