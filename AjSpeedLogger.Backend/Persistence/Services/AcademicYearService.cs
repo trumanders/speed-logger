@@ -23,21 +23,30 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 		return _mapper.Map<IEnumerable<AcademicYearNameDto>>(academicYearEntities);
 	}
 
-	public async Task<AcademicYearAllUserDataDto?> GetAcademicYearAllUserDataAsync(string applicationUserId)
+	public async Task<AcademicYearAllUserDataDto?> GetAcademicYearAllUserDataAsync(string applicationUserId, int? academicYearId)
 	{
-		// Determine what academic year to fetch
-		var userAllAcademicYears = await _db.AcademicYears
-			.Where(ay => ay.ApplicationUserId == applicationUserId)
-			.ToListAsync();
-		if (!userAllAcademicYears.Any())
-			return null;
-		var today = DateOnly.FromDateTime(DateTime.Today);
-		var selectedAcademicYear = userAllAcademicYears.FirstOrDefault(uay => today >= uay.StartDate && today <= uay.EndDate);
-		if (selectedAcademicYear == null)
-			selectedAcademicYear = userAllAcademicYears.OrderByDescending(uay => uay.EndDate).First();
+		int? selectedAcademicYearId;
+		if (academicYearId == null) // No academic years is explicitly selected
+		{
+			// Determine what academic year to fetch
+			var userAllAcademicYears = await _db.AcademicYears
+				.Where(ay => ay.ApplicationUserId == applicationUserId)
+				.ToListAsync();
+			if (userAllAcademicYears == null ||!userAllAcademicYears.Any())
+				return null;
+			var today = DateOnly.FromDateTime(DateTime.Today);
+			var selectedAcademicYear = userAllAcademicYears.FirstOrDefault(uay => today >= uay.StartDate && today <= uay.EndDate);
+			selectedAcademicYearId = selectedAcademicYear == null
+				? userAllAcademicYears.OrderByDescending(uay => uay.EndDate).First().Id
+				: selectedAcademicYear.Id;
+		}
+		else
+		{
+			selectedAcademicYearId = academicYearId;
+		}
 
 		var data = await _db.AcademicYears
-			.Where(ay => ay.ApplicationUserId == applicationUserId && ay.Id == selectedAcademicYear.Id)
+			.Where(ay => ay.ApplicationUserId == applicationUserId && ay.Id == selectedAcademicYearId)
 			.Select(ay => new AcademicYearAllUserDataDto
 			{
 				Name = ay.Name,
@@ -48,7 +57,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 					Id = l.StudentId,
 					Name = l.Student.Name,
 					Log = l.Student.Logs
-						.Where(sl => sl.AcademicYearId == selectedAcademicYear.Id)
+						.Where(sl => sl.AcademicYearId == selectedAcademicYearId)
 						.Select(sl => new LogAllUserDataDto
 						{
 							Id = sl.Id,
@@ -61,7 +70,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 								BaseLogDayId = ld.BaseLogDayId,
 								Content = ld.Content
 							}).ToList()
-						}).FirstOrDefault()
+						}).FirstOrDefault()!
 				}).ToList()
 			}).FirstOrDefaultAsync();
 		

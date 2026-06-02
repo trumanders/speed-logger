@@ -6,12 +6,12 @@ namespace Api.Controllers;
 public class AcademicYearController(IAcademicYearService _academicYearService) : BaseController
 {
 	[HttpGet("all-user-data")]
-	public async Task<IActionResult> GetAcademicYearAllUserData()
+	public async Task<IActionResult> GetAcademicYearAllUserData(int? academicYearId)
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(applicationUserId);
+		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(applicationUserId, academicYearId);
 		if (allUserData == null)
 			return NotFound();
 		return Ok(allUserData);

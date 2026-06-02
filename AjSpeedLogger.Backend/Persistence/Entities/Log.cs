@@ -1,4 +1,5 @@
-﻿   namespace Persistence.Entities;
+﻿   namespace Persistence.Entities; 
+
 
 public class Log : IEntity 
 {
@@ -10,7 +11,6 @@ public class Log : IEntity
 
 	public int AcademicYearId { get; set; }
 	public AcademicYear AcademicYear { get; set; } = null!;
-
 
 	public DayOfWeek DayOfWeek { get; set; }
 	public TimeOnly LessonStartTime { get; set; }
