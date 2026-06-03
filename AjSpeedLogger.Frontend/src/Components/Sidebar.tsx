@@ -10,6 +10,7 @@ interface SideBarProps {
   onSelectStudent: (id: number) => void;
   onAcademicYearSelect: (id: number) => void;
   selectedAcademicYearId: number | null;
+  
 }
 
 const Sidebar = ({ allUserData, academicYears, onSelectStudent, onAcademicYearSelect, selectedAcademicYearId }: SideBarProps) => {

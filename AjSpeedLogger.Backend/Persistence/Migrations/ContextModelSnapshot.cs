@@ -272,7 +272,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("AcademicYearId");
 
-                    b.ToTable("BaseLogDay");
+                    b.ToTable("BaseLogDays");
                 });
 
             modelBuilder.Entity("Persistence.Entities.Log", b =>

@@ -14,3 +14,4 @@ global using Persistence.Services;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Text;
+global using Common.Converters;

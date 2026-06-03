@@ -80,8 +80,9 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 	// CREATE
 	public async Task<AcademicYearDto> CreateAcademicYearAsync(AcademicYearCreateDto dto, string applicationUserId)
 	{
-		var academicYearEntity = await _repository.AddAsync<AcademicYear>(_mapper.Map<AcademicYear>(dto));
+		var academicYearEntity = _mapper.Map<AcademicYear>(dto);
 		academicYearEntity.ApplicationUserId = applicationUserId;
+		await _repository.AddAsync<AcademicYear>(academicYearEntity);
 
 		// Create all the BaseLogDays for the year
 		var date = academicYearEntity.StartDate;

@@ -48,7 +48,7 @@ const HomePage = () => {
       }
     };
     if (isAutorized) fetchData();
-  }, [isAutorized]);
+  }, [isAutorized, academicYears.length]);
 
   const handleSelectedStudent = (id: number) => {
     setSelectedStudent(id);
@@ -59,6 +59,10 @@ const HomePage = () => {
       const fetchAllUserData = await getAllUserDataByAcademicYear(id);
       setAllUserData(fetchAllUserData);
     }
+  };
+
+  const handleAcademicYearAdd = (newAcademicYear: AcademicYear) => {
+    setAcademicYears([...academicYears, newAcademicYear]);
   };
 
   const handleAddAcademicYearClick = () => {};
@@ -89,6 +93,7 @@ const HomePage = () => {
             <Workspace
               selectedStudent={selectedStudent}
               allUserData={allUserData}
+              onAddAcademicYear={handleAcademicYearAdd}
             />
           </Col>
         </Row>

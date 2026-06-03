@@ -1,4 +1,3 @@
-import axios from "axios";
 import type { AcademicYearAllUserData } from "../types/allUserData";
 import apiClient from "./apiClient";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
@@ -49,7 +48,7 @@ export const getAllUserDataByAcademicYear = async (
       `/AcademicYear/all-user-data`,
       {
         headers: { Authorization: `Bearer ${token}` },
-        params: { academicYearId },
+        params: academicYearId ? { academicYearId } : {},
       },
     );
     return response.data;

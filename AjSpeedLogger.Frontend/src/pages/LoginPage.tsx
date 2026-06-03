@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
 import type { LoginCredentials } from "../services/api";
@@ -16,7 +16,7 @@ const LoginPage = () => {
 
   const successMessage = location.state?.successMessage;
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const credentials: LoginCredentials = { email, password };
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
         setError("Fel användarnamn eller lösenord.");
       } else {
         setError(
-          err.resoponse?.data?.message ||
+          err.response?.data?.message ||
             "Ett fel inträffade. Försök igen senare.",
         );
       }

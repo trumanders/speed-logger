@@ -2,8 +2,15 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { addAcademicYear } from "../services/api";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
+import type { AcademicYear } from "../types/academicYear";
+import { useNavigate } from "react-router";
 
-const WorkspaceAddYear = () => {
+interface WorkspaceAddYearProps {
+  onAddAcademicYear: (newAcademicYear: AcademicYear) => void;
+}
+
+const WorkspaceAddYear = ({ onAddAcademicYear }: WorkspaceAddYearProps) => {
+  const navigate = useNavigate();
   const yearNameOptionsStartYear = new Date().getFullYear() - 3;
   const yearNameOptions = Array.from({ length:8 }, (_, i) =>
     `${yearNameOptionsStartYear + i}/${yearNameOptionsStartYear + i + 1}`);
@@ -13,14 +20,16 @@ const WorkspaceAddYear = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newAcademicYear: AcademicYearCreate = {
       name: yearName,
       startDate,
       endDate
     };
-    await addAcademicYear(newAcademicYear);
+    const response = await addAcademicYear(newAcademicYear);
+    onAddAcademicYear(response);
+    navigate("/"); 
   }
 
   return (

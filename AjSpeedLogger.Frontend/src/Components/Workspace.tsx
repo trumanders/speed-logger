@@ -5,17 +5,19 @@ import WorkspaceLog from "./WorkspaceLog";
 import WorkspaceAddYear from "./WorkspaceAddYear";
 import WorkspaceAddLog from "./WorkspaceAddLog";
 import WorkspaceManageStudents from "./WorkspaceManageStudents";
+import type { AcademicYear } from "../types/academicYear";
 
 interface WorkspaceProps {
   selectedStudent: number | null;
   allUserData: AcademicYearAllUserData | null;
+  onAddAcademicYear: (newAcademicYear: AcademicYear) => void;
 }
 
 
-const Workspace = ({ selectedStudent, allUserData }: WorkspaceProps) => {
+const Workspace = ({ selectedStudent, allUserData, onAddAcademicYear }: WorkspaceProps) => {
   return (
     <Routes>
-      <Route path="/add_year" element={<WorkspaceAddYear />} />
+      <Route path="/add_year" element={<WorkspaceAddYear onAddAcademicYear={onAddAcademicYear} />} />
       <Route path="/manage_baselog" element={<WorkspaceManageBaseLog />} />
       <Route path="/manage_students" element={<WorkspaceManageStudents />} />
       <Route path="/log" element={<WorkspaceLog allUserData={allUserData} selectedStudent={selectedStudent} />} />

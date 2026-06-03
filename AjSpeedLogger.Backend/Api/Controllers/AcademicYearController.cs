@@ -6,14 +6,20 @@ namespace Api.Controllers;
 public class AcademicYearController(IAcademicYearService _academicYearService) : BaseController
 {
 	[HttpGet("all-user-data")]
-	public async Task<IActionResult> GetAcademicYearAllUserData(int? academicYearId)
+	public async Task<IActionResult> GetAcademicYearAllUserData(int? academicYearId) // Optional id: if not provided, the service will determine which academic year to fetch.
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
+		if (academicYearId != null && academicYearId <= 0)
+			return BadRequest("Invalid Academic Year ID. It must be a positive integer.");
 		var allUserData = await _academicYearService.GetAcademicYearAllUserDataAsync(applicationUserId, academicYearId);
 		if (allUserData == null)
-			return NotFound();
+		{
+			if (academicYearId != null)
+				return NotFound($"Academic year with ID {academicYearId} not found.");
+			return Ok(null);
+		}
 		return Ok(allUserData);
 	}
 
@@ -70,7 +76,7 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 		}
 		catch(Exception ex)
 		{
-			return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.Message}");
+			return BadRequest($"An error occurred while saving the academic year.\n{ex.InnerException?.Message ?? ex.ToString()}");
 		}
 	}
 
