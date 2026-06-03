@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Skapa en instans av axios
 const apiClient = axios.create({
-  baseURL: "https://localhost:7293/api",
+  baseURL: "https://localhost:5000/api",
 });
 
 // Lägg till en interceptor för alla utgående anrop

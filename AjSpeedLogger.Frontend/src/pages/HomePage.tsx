@@ -36,13 +36,19 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const academicYearAllUserData =
-          await getAllUserDataByAcademicYear(null);
+        const academicYearSavedId = localStorage.getItem(
+          "selectedAcademicYearId",
+        );
+        const academicYearAllUserData = await getAllUserDataByAcademicYear(
+          academicYearSavedId ? parseInt(academicYearSavedId) : null,
+        );
         setAllUserData(academicYearAllUserData);
         setAcademicYears(await getAcademicYears());
-        if (academicYearAllUserData && academicYearAllUserData.id) {
-          setSelectedAcademicYearId(academicYearAllUserData.id);
-        }
+        setSelectedAcademicYearId(
+          academicYearSavedId
+            ? parseInt(academicYearSavedId)
+            : academicYearAllUserData?.id || null,
+        );
       } catch (err) {
         // WHAT?
       }
@@ -54,15 +60,25 @@ const HomePage = () => {
     setSelectedStudent(id);
   };
 
+  // When user selects a year int the dropdown, fetch, set selected year and store id in local storage.
   const handleAcademicYearSelect = async (id: number) => {
     if (isAutorized) {
       const fetchAllUserData = await getAllUserDataByAcademicYear(id);
       setAllUserData(fetchAllUserData);
+      setSelectedAcademicYearId(id);
+      localStorage.setItem("selectedAcademicYearId", id.toString());
     }
   };
 
-  const handleAcademicYearAdd = (newAcademicYear: AcademicYear) => {
+  // When adding new year, add to the list of years, set it as selected, and store id in local storage.
+  // Redirect to home page
+  const handleAddAcademicYear = (newAcademicYear: AcademicYear) => {
     setAcademicYears([...academicYears, newAcademicYear]);
+    setSelectedAcademicYearId(newAcademicYear.id);
+    localStorage.setItem(
+      "selectedAcademicYearId",
+      newAcademicYear.id.toString(),
+    );
   };
 
   const handleAddAcademicYearClick = () => {};
@@ -93,7 +109,7 @@ const HomePage = () => {
             <Workspace
               selectedStudent={selectedStudent}
               allUserData={allUserData}
-              onAddAcademicYear={handleAcademicYearAdd}
+              onAddAcademicYear={handleAddAcademicYear}
             />
           </Col>
         </Row>

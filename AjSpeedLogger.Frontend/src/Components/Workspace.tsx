@@ -1,5 +1,8 @@
 import { Routes, Route } from "react-router";
-import type { AcademicYearAllUserData, LogAllUserDataDto } from "../types/allUserData";
+import type {
+  AcademicYearAllUserData,
+  LogAllUserDataDto,
+} from "../types/allUserData";
 import WorkspaceManageBaseLog from "./WorkspaceManageBaseLog";
 import WorkspaceLog from "./WorkspaceLog";
 import WorkspaceAddYear from "./WorkspaceAddYear";
@@ -13,14 +16,28 @@ interface WorkspaceProps {
   onAddAcademicYear: (newAcademicYear: AcademicYear) => void;
 }
 
-
-const Workspace = ({ selectedStudent, allUserData, onAddAcademicYear }: WorkspaceProps) => {
+const Workspace = ({
+  selectedStudent,
+  allUserData,
+  onAddAcademicYear,
+}: WorkspaceProps) => {
   return (
     <Routes>
-      <Route path="/add_year" element={<WorkspaceAddYear onAddAcademicYear={onAddAcademicYear} />} />
+      <Route
+        path="/add_year"
+        element={<WorkspaceAddYear onAddAcademicYear={onAddAcademicYear} />}
+      />
       <Route path="/manage_baselog" element={<WorkspaceManageBaseLog />} />
       <Route path="/manage_students" element={<WorkspaceManageStudents />} />
-      <Route path="/log" element={<WorkspaceLog allUserData={allUserData} selectedStudent={selectedStudent} />} />
+      <Route
+        path="/log"
+        element={
+          <WorkspaceLog
+            allUserData={allUserData}
+            selectedStudent={selectedStudent}
+          />
+        }
+      />
       <Route path="/add_log" element={<WorkspaceAddLog />} />
     </Routes>
   );
