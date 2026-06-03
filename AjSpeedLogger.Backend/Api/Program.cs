@@ -8,7 +8,8 @@ public class Program
 		JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear(); // To prevent default claim mapping
 
 		var builder = WebApplication.CreateBuilder(args);
-		builder.Services.AddControllers();
+		builder.Services.AddControllers()
+			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter()));
 		builder.Services.AddDbContext<Context>(options =>
 			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
 		builder.Services.AddScoped<IRepository, Repository>();
