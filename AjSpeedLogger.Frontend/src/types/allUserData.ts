@@ -3,32 +3,32 @@ export interface AcademicYearAllUserData {
   name: string;
   startDate: string;
   endDate: string;
-  baseLogDaysDtos: BaseLogDayDto[];
-  students: StudentAllUserDataDto[];
+  baseLogDays: BaseLogDay[];
+  students: StudentAllUserData[];
 }
 
-export interface BaseLogDayDto {
+export interface BaseLogDay {
   id: number;
   date: string;
   weekNumber: number;
   content: string;
 }
 
-export interface StudentAllUserDataDto {
+export interface StudentAllUserData {
   id: number;
   name: string;
-  log: LogAllUserDataDto;
+  log: LogAllUserData;
 }
 
-export interface LogAllUserDataDto {
+export interface LogAllUserData {
   id: number;
   dayOfWeek: number;
   lessonStartTime: string;
   lessonEndTime: string;
-  logDays: LogDayDto[];
+  logDays: LogDay[];
 }
 
-export interface LogDayDto {
+export interface LogDay {
   id: number;
   baseLogDayId: number;
   content: string;

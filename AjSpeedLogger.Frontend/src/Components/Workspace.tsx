@@ -1,8 +1,5 @@
 import { Routes, Route } from "react-router";
-import type {
-  AcademicYearAllUserData,
-  LogAllUserDataDto,
-} from "../types/allUserData";
+import type { AcademicYearAllUserData } from "../types/allUserData";
 import WorkspaceManageBaseLog from "./WorkspaceManageBaseLog";
 import WorkspaceLog from "./WorkspaceLog";
 import WorkspaceAddYear from "./WorkspaceAddYear";
@@ -27,7 +24,10 @@ const Workspace = ({
         path="/add_year"
         element={<WorkspaceAddYear onAddAcademicYear={onAddAcademicYear} />}
       />
-      <Route path="/manage_baselog" element={<WorkspaceManageBaseLog />} />
+      <Route
+        path="/manage_baselog"
+        element={<WorkspaceManageBaseLog allUserData={allUserData} />}
+      />
       <Route path="/manage_students" element={<WorkspaceManageStudents />} />
       <Route
         path="/log"
