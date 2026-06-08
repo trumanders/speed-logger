@@ -11,5 +11,5 @@ public class BaseLogDay : IEntity
 	public int WeekNumber { get; set; }
 	public string Content { get; set; } = string.Empty;
 
-	public ICollection<LogDay> LogDays { get; set; } = new List<LogDay>();
+	public ICollection<LogDay> LogDays { get; set; } = new List<LogDay>(); // Is it needed?
 }

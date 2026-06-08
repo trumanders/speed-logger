@@ -17,6 +17,7 @@ export interface BaseLogDay {
 export interface StudentAllUserData {
   id: number;
   name: string;
+  isTerminated: boolean;
   log: LogAllUserData;
 }
 

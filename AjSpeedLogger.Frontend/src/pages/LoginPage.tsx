@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import type { LoginCredentials } from "../services/api";
 import { login } from "../services/api";
 import Alert from "react-bootstrap/Alert";
@@ -13,13 +13,14 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const successMessage = location.state?.successMessage;
 
   const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true)
     const credentials: LoginCredentials = { email, password };
-
     try {
       const data = await login(credentials); // Returns { token: "string"}
 
@@ -38,6 +39,7 @@ const LoginPage = () => {
         );
       }
     }
+    setIsLoading(false);
   };
 
   return (
@@ -73,8 +75,14 @@ const LoginPage = () => {
         <p>
           <Link to="/forgot-password">Glömt lösenord?</Link>
         </p>
-        <Button variant="primary" type="submit">
-          Logga in
+        <Button variant="primary" disabled={isLoading} type="submit">
+          {isLoading ? (
+            <>
+              <Spinner size="sm" animation="border" className="me-2" />
+            </>
+          ) : (
+            "Logga in"
+          )}
         </Button>
       </Form>
     </>

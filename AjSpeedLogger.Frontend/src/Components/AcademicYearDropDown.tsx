@@ -1,20 +1,23 @@
 import { Dropdown } from "react-bootstrap";
-import type { AcademicYear } from "../types/academicYear";
+import type { AcademicYearName } from "../types/academicYearName";
 
 interface AcademicYearDropdownProps {
-  academicYears: AcademicYear[];
+  academicYears: AcademicYearName[];
   selectedAcademicYearId: number | null;
   onAcademicYearSelect: (id: number) => void;
 }
 
 const AcademicYearDropdown = ({ academicYears, selectedAcademicYearId, onAcademicYearSelect }: AcademicYearDropdownProps) => {
   return (
+    <>
+    <span><h6>Läsår:</h6></span>
+
     <Dropdown className="w-100 mb-3">
       <Dropdown.Toggle 
         variant="outline-secondary" 
         className="w-100 d-flex align-items-center justify-content-between bg-white text-dark border-secondary-subtle"
       >
-        <span>Läsår: <strong className="ms-1">{selectedAcademicYearId ? academicYears.find(y => y.id === selectedAcademicYearId)?.name : "Du har inga läsår"}</strong></span>
+        <span>{selectedAcademicYearId && academicYears?.length > 0 ? academicYears.find(y => y.id === selectedAcademicYearId)?.name : "Du har inga läsår"}</span>
       </Dropdown.Toggle>
 
       <Dropdown.Menu className="w-100 shadow-sm border-0 mt-1">
@@ -30,6 +33,10 @@ const AcademicYearDropdown = ({ academicYears, selectedAcademicYearId, onAcademi
         ))}
       </Dropdown.Menu>
     </Dropdown>
+    {/* <p>selectedAcademicYearId: {selectedAcademicYearId ?? "null"}</p>
+    <p>selectedAcademicYearName: {academicYears.find(ay => ay.id === selectedAcademicYearId)?.name}</p> */}
+
+    </>
   );
 };
 

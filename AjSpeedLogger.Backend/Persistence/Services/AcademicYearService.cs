@@ -26,7 +26,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 	public async Task<AcademicYearAllUserDataDto?> GetAcademicYearAllUserDataAsync(string applicationUserId, int? academicYearId)
 	{
 		int? selectedAcademicYearId;
-		if (academicYearId == null) // No academic years is explicitly selected
+		if (academicYearId == null || !_db.AcademicYears.Any(ay => ay.Id == academicYearId)) // No academic years is explicitly selected
 		{
 			// Determine what academic year to fetch
 			var userAllAcademicYears = await _db.AcademicYears
@@ -43,7 +43,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 		else
 		{
 			selectedAcademicYearId = academicYearId;
-		}
+		}	
 
 		var data = await _db.AcademicYears
 			.Where(ay => ay.ApplicationUserId == applicationUserId && ay.Id == selectedAcademicYearId)
@@ -52,11 +52,19 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 				Name = ay.Name,
 				StartDate = ay.StartDate,
 				EndDate = ay.EndDate,
-				Students = ay.Logs.Select(l => new StudentAllUserDataDto
+				BaseLogDayDtos = ay.BaseLogDays.Select(bld => new BaseLogDayDto
 				{
-					Id = l.StudentId,
-					Name = l.Student.Name,
-					Log = l.Student.Logs
+					Id = bld.Id,
+					Date = bld.Date,
+					WeekNumber = bld.WeekNumber,
+					Content = bld.Content
+				}).ToList(),
+				Students = ay.Logs.Select(ayl => new StudentAllUserDataDto
+				{	
+					Id = ayl.StudentId,
+					Name = ayl.Student.Name,
+					IsTerminated = ayl.Student.IsTerminated,
+					Log = ayl.Student.Logs
 						.Where(sl => sl.AcademicYearId == selectedAcademicYearId)
 						.Select(sl => new LogAllUserDataDto
 						{

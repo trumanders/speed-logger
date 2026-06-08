@@ -1,22 +1,38 @@
 import { Routes, Route } from "react-router";
-import type { AcademicYearAllUserData } from "../types/allUserData";
+import type {
+  AcademicYearAllUserData,
+  StudentAllUserData,
+} from "../types/allUserData";
 import WorkspaceManageBaseLog from "./WorkspaceManageBaseLog";
 import WorkspaceLog from "./WorkspaceLog";
 import WorkspaceAddYear from "./WorkspaceAddYear";
 import WorkspaceAddLog from "./WorkspaceAddLog";
 import WorkspaceManageStudents from "./WorkspaceManageStudents";
-import type { AcademicYear } from "../types/academicYear";
+import type { AcademicYearCreate } from "../types/academicYearCreate";
+import type { LogCreate } from "../types/logCreate";
 
 interface WorkspaceProps {
   selectedStudent: number | null;
   allUserData: AcademicYearAllUserData | null;
-  onAddAcademicYear: (newAcademicYear: AcademicYear) => void;
+  onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
+  academicYearId: number | null;
+  studentList: StudentAllUserData[] | undefined;
+  onAddLog: (newLog: LogCreate) => void;
+  onShowAddStudent: () => void;
+  newStudentName: string;
+  resetNewStudentName: () => void;
 }
 
 const Workspace = ({
   selectedStudent,
   allUserData,
   onAddAcademicYear,
+  academicYearId,
+  studentList,
+  onAddLog,
+  onShowAddStudent,
+  newStudentName,
+  resetNewStudentName,
 }: WorkspaceProps) => {
   return (
     <Routes>
@@ -38,7 +54,19 @@ const Workspace = ({
           />
         }
       />
-      <Route path="/add_log" element={<WorkspaceAddLog />} />
+      <Route
+        path="/add_log"
+        element={
+          <WorkspaceAddLog
+            academicYearId={academicYearId}
+            studentList={studentList}
+            onAddLog={onAddLog}
+            onShowAddStudent={onShowAddStudent}
+            newStudentName={newStudentName}
+            resetNewStudentName={resetNewStudentName}
+          />
+        }
+      />
     </Routes>
   );
 };

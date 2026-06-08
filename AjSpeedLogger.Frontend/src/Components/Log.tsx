@@ -1,16 +1,13 @@
-import type { LogAllUserDataDto } from "../types/allUserData";
+import type { LogAllUserData } from "../types/allUserData";
 
 interface LogProps {
-  log: LogAllUserDataDto | null;
+  log: LogAllUserData | null;
 }
 
 const Log = ({ log }: LogProps) => {
-  if (!log)
-    return null;
+  if (!log) return null;
 
-    return (
-        <p>HÄR KOMMER LOGGEN</p>
-    )
+  return <p>HÄR KOMMER LOGGEN</p>;
 };
 
 export default Log;
