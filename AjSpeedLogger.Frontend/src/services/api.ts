@@ -21,7 +21,7 @@ export const signup = async (credentials: LoginCredentials) => {
   const response = await apiClient.post(`/Auth/register`, credentials);
   return response.data;
 };
- 
+
 export const forgotPassword = async (email: string) => {
   const response = await apiClient.post(`/Auth/forgot-password`, {
     email,
@@ -84,25 +84,29 @@ export const addAcademicYear = async (academicYear: AcademicYearCreate) => {
   return response.data;
 };
 
-export const addLog = async (logCreate: LogCreate): Promise<LogCreateResponse> => {
+export const addLog = async (
+  logCreate: LogCreate,
+): Promise<LogCreateResponse> => {
   const token = localStorage.getItem("token");
   if (!token) {
     throw new Error("User is not authenticated");
   }
+
   const response = await apiClient.post(`/Log`, logCreate, {
-    headers: { Authorization: `Bearer ${token}`},
+    headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
-}
+};
 
-export const addStudent = async (newStudent: StudentCreate): Promise<Student> => {
-    const token = localStorage.getItem("token");
+export const addStudent = async (
+  newStudent: StudentCreate,
+): Promise<Student> => {
+  const token = localStorage.getItem("token");
   if (!token) {
-    throw new Error("User is not authenticated");
+    throw new Error("Användaren är inte behörig.");
   }
   const response = await apiClient.post(`/Student`, newStudent, {
-    headers: { Authorization: `Bearer ${token}`},
+    headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
-}
-  
+};

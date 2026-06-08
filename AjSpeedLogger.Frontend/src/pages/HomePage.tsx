@@ -18,12 +18,13 @@ import type { LogCreate } from "../types/logCreate";
 import { AddStudentModal } from "../components/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
 import type { Student } from "../types/student";
-import type { StudentCreate } from "../types/studentCreate";
+import ErrorModal from "../components/ErrorModal";
 
 const HomePage = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [username, setUserName] = useState<string | null>(null);
   const [allUserData, setAllUserData] =
     useState<AcademicYearAllUserData | null>(null);
   const [academicYears, setAcademicYears] = useState<AcademicYearName[]>([]);
@@ -33,9 +34,6 @@ const HomePage = () => {
   >(null);
   const [showAddStudentModal, setShowAddStudentModal] =
     useState<boolean>(false);
-  // const [studentList, setStudentList] = useState<Student[]>(
-  //   allUserData?.students ?? [],
-  // );
   const [newStudentName, setNewStudentName] = useState<string>("");
 
   useEffect(() => {
@@ -101,16 +99,24 @@ const HomePage = () => {
       throw new Error("There is no student associated with the log.");
 
     // If a new student was added, create it and save to db
-    if (newLog.newStudentName) {
-      const newStudent: Student = await addStudent({
-        name: newLog.newStudentName,
-      });
-      newLog.studentId = newStudent.id;
-    }
+    try {
+      if (newLog.newStudentName) {
+        const newStudent: Student = await addStudent({
+          name: newLog.newStudentName,
+        });
+        newLog.studentId = newStudent.id;
+      }
 
-    await addLog(newLog);
-    setSelectedStudent(newLog.studentId);
-    setAllUserData(await getAllUserDataByAcademicYear(selectedAcademicYearId));
+      await addLog(newLog);
+      setSelectedStudent(newLog.studentId);
+      setAllUserData(
+        await getAllUserDataByAcademicYear(selectedAcademicYearId),
+      );
+    } catch (err: any) {
+      const message = err.response?.data || "Ett fel uppstod";
+      setError(message);
+      setErrorTitle("Kunde inte lägga till loggen");
+    }
   };
 
   const handleAddStudent = (name: string) => {
@@ -171,6 +177,17 @@ const HomePage = () => {
         onHide={() => setShowAddStudentModal(false)}
         onAddStudent={handleAddStudent}
       />
+
+      {error && (
+        <ErrorModal
+          message={error}
+          errorTitle={errorTitle}
+          onClose={() => {
+            setError(null);
+            setErrorTitle(null);
+          }}
+        />
+      )}
     </>
   );
 };
