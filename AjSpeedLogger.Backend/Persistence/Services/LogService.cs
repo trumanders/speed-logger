@@ -9,19 +9,23 @@ public class LogService(IRepository _repository, IMapper _mapper) : ILogService
 		return logEntity == null ? null : _mapper.Map<LogDto>(logEntity);
 	}
 
-	public async Task<LogDto?> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
+	public async Task<ResultWrapper<LogDto?>> CreateLogAsync(LogCreateDto createDto, string applicationUserId)
 	{
+		if (createDto.LessonStartTime > createDto.LessonEndTime)
+			return ResultWrapper<LogDto?>.Failure(ErrorCode.LOG_INVALID_TIME_RANGE);			
+
 		// Check if student already has a log for the same academic year (not allowed)
 		if (await _repository.IsCountGreaterThan<Log>(l => 
 			l.StudentId == createDto.StudentId && l.AcademicYearId == createDto.AcademicYearId, 0))
 		{
-			throw new InvalidOperationException("Eleven har redan en log registrerad på samma läsår.");
+			return ResultWrapper<LogDto?>.Failure(ErrorCode.LOG_ALREADY_EXISTS);
 		}
-
+		
 		var logEntity = await _repository.AddAsync<Log>(_mapper.Map<Log>(createDto));
 		logEntity.ApplicationUserId = applicationUserId;
 		await _repository.SaveChangesAsync();
-		return _mapper.Map<LogDto>(logEntity);
+		var logDto = _mapper.Map<LogDto>(logEntity);
+		return ResultWrapper<LogDto?>.Success(logDto);
 	}
 
 	public async Task<bool> DeleteLogAsync(int id, string applicationUserId)
