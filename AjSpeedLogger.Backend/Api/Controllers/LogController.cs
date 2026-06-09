@@ -36,10 +36,10 @@ public class LogController(ILogService _logService) : BaseController
 			var applicationUserId = ApplicationUserId;
 			if (applicationUserId == null)
 				return Unauthorized();
-			var logDto = await _logService.CreateLogAsync(dto, applicationUserId);
-			if (logDto == null)
-				return NotFound();
-			return CreatedAtAction(nameof(GetById), new { id = logDto.Id }, logDto);
+			var result = await _logService.CreateLogAsync(dto, applicationUserId);
+			if (!result.IsSuccess)
+				return BadRequest(result.ErrorCode);
+			return CreatedAtAction(nameof(GetById), new { id = result.Value?.Id }, result.Value);
 		}
 		catch(InvalidOperationException ex)
 		{
