@@ -12,7 +12,7 @@ public class Log : IEntity
 	public int AcademicYearId { get; set; }
 	public AcademicYear AcademicYear { get; set; } = null!;
 
-	public DayOfWeek DayOfWeek { get; set; }
+	public int DayOfWeek { get; set; }
 	public TimeOnly LessonStartTime { get; set; }
 	public TimeOnly LessonEndTime { get; set; }
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import type { LogCreate } from "../types/logCreate";
 import type { StudentAllUserData } from "../types/allUserData";
+import { weekDays } from "../constants/weekDays";
 
 interface WorkspaceaAddLogProps {
   academicYearId: number | null;
@@ -21,20 +22,12 @@ const WorkspaceAddLog = ({
   resetNewStudentName,
 }: WorkspaceaAddLogProps) => {
   const [studentId, setStudentId] = useState<number | null>(null);
-  const [weekDay, setWeekDay] = useState("");
+  const [weekDay, setWeekDay] = useState<number>(0);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [endTimeError, setEndTimeError] = useState<string | null>(null);
   const [showError, setShowError] = useState(false);
-  const weekDays = [
-    "Söndag",
-    "Måndag",
-    "Tisdag",
-    "Onsdag",
-    "Torsdag",
-    "Fredag",
-    "Lördag",
-  ];
+
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setStartTime(value);
@@ -63,7 +56,7 @@ const WorkspaceAddLog = ({
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newLog: LogCreate = {
-      dayOfWeek: weekDays.indexOf(weekDay),
+      dayOfWeek: weekDay,
       lessonStartTime: startTime,
       lessonEndTime: endTime,
       academicYearId: academicYearId,
@@ -71,9 +64,8 @@ const WorkspaceAddLog = ({
       newStudentName: newStudentName,
     };
     onAddLog(newLog);
-
     setStudentId(null);
-    setWeekDay(weekDays[0]);
+    setWeekDay(0);
     setStartTime("");
     setEndTime("");
     resetNewStudentName();
@@ -137,12 +129,12 @@ const WorkspaceAddLog = ({
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">Veckodag</Form.Label>
           <Form.Select
-            value={weekDay}
-            onChange={(e) => setWeekDay(e.target.value)}
+            value={weekDay} // index value
+            onChange={(e) => setWeekDay(Number(e.target.value))}
           >
-            {weekDays.map((weekDay) => (
-              <option key={weekDay} value={weekDay}>
-                {weekDay}
+            {weekDays.map((_, _i) => (
+              <option key={_i} value={_i}>
+                {weekDays[_i]}
               </option>
             ))}
           </Form.Select>

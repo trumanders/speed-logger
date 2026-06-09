@@ -3,6 +3,8 @@ import type { AcademicYearAllUserData } from "../types/allUserData";
 import AcademicYearDropdown from "./AcademicYearDropDown";
 import { Link } from "react-router";
 import type { AcademicYearName } from "../types/academicYearName";
+import { weekDays } from "../constants/weekDays";
+import React from "react";
 
 interface SideBarProps {
   allUserData: AcademicYearAllUserData | null;
@@ -35,34 +37,35 @@ const Sidebar = ({
           </div>
 
           <ListGroup>
-            {allUserData?.students ? (
-              [...(allUserData?.students || [])]
-                .sort((a, b) => {
-                  if (a.log.dayOfWeek !== b.log.dayOfWeek)
-                    return a.log.dayOfWeek - b.log.dayOfWeek;
-                  return a.log.lessonStartTime.localeCompare(
-                    b.log.lessonStartTime,
-                  );
-                })
-                .map((student, _i, arr) => (
-                  <ListGroup.Item
-                    key={student.id}
-                    action
-                    onClick={() => onSelectStudent(student.id)}
-                  >
-                    {_i === 0 ||
-                      (student.log.dayOfWeek !== arr[_i - 1].log.dayOfWeek && (
-                        <>
-                          {student.log.dayOfWeek}
-                          <br />
-                        </>
-                      ))}
-                    {student.log.lessonStartTime.substring(0, 5)} {student.name}
-                  </ListGroup.Item>
-                ))
-            ) : (
-              <ListGroup.Item disabled>Du har inga loggar.</ListGroup.Item>
-            )}
+            {allUserData?.students
+              ?.slice() // Create a copy to not mutate the original
+              .sort(
+                (a, b) =>
+                  a.log.dayOfWeek - b.log.dayOfWeek ||
+                  a.log.lessonStartTime.localeCompare(b.log.lessonStartTime),
+              )
+              .map((student, i, arr) => {
+                const isNewDay =
+                  i === 0 || student.log.dayOfWeek !== arr[i - 1].log.dayOfWeek;
+
+                return (
+                  <React.Fragment key={student.id}>
+                    {isNewDay && (
+                      <div className="mt-3 mb-1 fw-bold text-muted">
+                        {weekDays[student.log.dayOfWeek]}
+                      </div>
+                    )}
+                    <ListGroup.Item
+                      action
+                      onClick={() => onSelectStudent(student.id)}
+                      className="mb-1 border rounded-3"
+                    >
+                      {student.log.lessonStartTime.substring(0, 5)}{" "}
+                      {student.name}
+                    </ListGroup.Item>
+                  </React.Fragment>
+                );
+              })}
           </ListGroup>
         </div>
       ) : (
