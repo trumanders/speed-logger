@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
 import type { LogCreate } from "../types/logCreate";
 import type { StudentAllUserData } from "../types/allUserData";
 
@@ -24,6 +24,8 @@ const WorkspaceAddLog = ({
   const [weekDay, setWeekDay] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+  const [endTimeError, setEndTimeError] = useState<string | null>(null);
+  const [showError, setShowError] = useState(false);
   const weekDays = [
     "Söndag",
     "Måndag",
@@ -47,6 +49,17 @@ const WorkspaceAddLog = ({
     }
   };
 
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value <= startTime) {
+      setEndTimeError("Sluttid måste vara efter starttid.");
+    }
+    if (value > startTime) {
+      setEndTimeError(null);
+    }
+    setEndTime(value);
+  };
+
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newLog: LogCreate = {
@@ -58,29 +71,48 @@ const WorkspaceAddLog = ({
       newStudentName: newStudentName,
     };
     onAddLog(newLog);
+
+    setStudentId(null);
+    setWeekDay(weekDays[0]);
+    setStartTime("");
+    setEndTime("");
+    resetNewStudentName();
   };
 
   const handleSelectStudentChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    console.log("HANDLE SELECT RUN!!!!");
     const val = e.target.value;
     setStudentId(val !== "" && !isNaN(Number(val)) ? Number(val) : null);
-    if (val) resetNewStudentName(); // Existing student selected
+    // if (val) resetNewStudentName(); // Existing student selected
   };
+
+  useEffect(() => {
+    setStudentId(null);
+  }, [newStudentName]);
+
+  useEffect(() => {
+    if (endTimeError) {
+      const timer = setTimeout(() => setShowError(true), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowError(false);
+    }
+  }, [endTimeError]);
 
   return (
     <>
+      <p>{studentId ?? "null"}</p>
       <Form onSubmit={handleSubmit} className="p-3">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">Elev</Form.Label>
           <Form.Select
-            value={studentId ?? ""}
+            value={studentId ?? newStudentName}
             onChange={(e) => {
               handleSelectStudentChange(e);
             }}
           >
-            <option value={newStudentName || ""}>
+            <option value={newStudentName}>
               {newStudentName || "Välj elev..."}
             </option>
             {studentList?.map((student) => (
@@ -129,14 +161,15 @@ const WorkspaceAddLog = ({
           <Form.Label>Lektionens sluttid</Form.Label>
           <Form.Control
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={handleEndTimeChange}
             type="time"
           />
         </Form.Group>
+        {showError && <Alert>{endTimeError}</Alert>}
         <Button
           variant="primary"
           type="submit"
-          disabled={!studentId && !newStudentName}
+          disabled={(!studentId && !newStudentName) || endTimeError !== null}
         >
           Skapa elevlogg
         </Button>

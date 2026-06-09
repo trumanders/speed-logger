@@ -100,7 +100,7 @@ const HomePage = () => {
 
     // If a new student was added, create it and save to db
     try {
-      if (newLog.newStudentName) {
+      if (!newLog.studentId && newLog.newStudentName) {
         const newStudent: Student = await addStudent({
           name: newLog.newStudentName,
         });
