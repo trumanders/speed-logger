@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
-import axios from "axios";
-import { resetPassword } from "../services/api";
+import { resetPassword } from "../services/authService";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();

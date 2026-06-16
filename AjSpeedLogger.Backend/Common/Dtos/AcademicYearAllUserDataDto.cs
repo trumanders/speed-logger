@@ -7,5 +7,5 @@ public class AcademicYearAllUserDataDto
 	public DateOnly EndDate { get; set; }
 
 	public List<StudentAllUserDataDto> Students { get; set; }
-	public List<BaseLogDayDto> BaseLogDayDtos { get; set; }
+	public List<BaseLogDayDto> BaseLogDays { get; set; }
 }

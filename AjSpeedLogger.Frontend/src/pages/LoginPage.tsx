@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button, Spinner } from "react-bootstrap";
-import type { LoginCredentials } from "../services/api";
-import { login } from "../services/api";
+import type { LoginCredentials } from "../services/authService";
+import { login } from "../services/authService";
 import Alert from "react-bootstrap/Alert";
 import { useLocation } from "react-router";
 
@@ -19,7 +19,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     const credentials: LoginCredentials = { email, password };
     try {
       const data = await login(credentials); // Returns { token: "string"}

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Alert, Button } from "react-bootstrap";
-import { signup } from "../services/api";
+import { signup } from "../services/authService";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -23,34 +23,35 @@ const SignUpPage = () => {
     try {
       const credentials = { email, password };
       await signup(credentials);
-      navigate("/login", {state: {successMessage: "Konto har skapats. Du kan nu logga in."}});
+      navigate("/login", {
+        state: { successMessage: "Konto har skapats. Du kan nu logga in." },
+      });
     } catch (error: any) {
       if (error.response && error.response.data) {
         const backendData = error.response.data;
 
         // Om .NET Identity skickar en array av fel (t.ex. [{ description: "..." }])
         if (Array.isArray(backendData)) {
-          const messages = backendData
-            .map((err: any) => {
-              if (
-                err.code === "DuplicateUserName" ||
-                err.code === "DuplicateEmail"
-              )
-                return "E-postadressen är redan registrerad.";
-              if (err.code === "PasswordTooShort")
-                return "Lösenordet är för kort.";
-              if (err.code === "PasswordRequiresNonAlphanumeric")
-                return "Lösenordet måste innehålla minst ett specialtecken.";
-              if (err.code === "PasswordRequiresDigit")
-                return "Lösenordet måste innehålla minst en siffra.";
-              if (err.code === "PasswordRequiresLower")
-                return "Lösenordet måste innehålla minst en liten bokstav.";
-              if (err.code === "PasswordRequiresUpper")
-                return "Lösenordet måste innehålla minst en stor bokstav.";
-              return err.description || "Ett okänt fel inträffade.";
-            });
+          const messages = backendData.map((err: any) => {
+            if (
+              err.code === "DuplicateUserName" ||
+              err.code === "DuplicateEmail"
+            )
+              return "E-postadressen är redan registrerad.";
+            if (err.code === "PasswordTooShort")
+              return "Lösenordet är för kort.";
+            if (err.code === "PasswordRequiresNonAlphanumeric")
+              return "Lösenordet måste innehålla minst ett specialtecken.";
+            if (err.code === "PasswordRequiresDigit")
+              return "Lösenordet måste innehålla minst en siffra.";
+            if (err.code === "PasswordRequiresLower")
+              return "Lösenordet måste innehålla minst en liten bokstav.";
+            if (err.code === "PasswordRequiresUpper")
+              return "Lösenordet måste innehålla minst en stor bokstav.";
+            return err.description || "Ett okänt fel inträffade.";
+          });
 
-            const uniqueMessages = [...new Set(messages)].join("\n");
+          const uniqueMessages = [...new Set(messages)].join("\n");
           setErrorMessage(uniqueMessages);
         } else {
           setErrorMessage(
@@ -70,9 +71,13 @@ const SignUpPage = () => {
 
         {/* Visar felmeddelanden från valideringen eller servern */}
         {errorMessage && (
-          <Alert variant="danger" onClose={() => setErrorMessage(null)} dismissible>
+          <Alert
+            variant="danger"
+            onClose={() => setErrorMessage(null)}
+            dismissible
+          >
             {errorMessage.split("\n").map((msg, idx) => (
-              <div key={idx}>{msg}</div>  
+              <div key={idx}>{msg}</div>
             ))}
           </Alert>
         )}

@@ -1,26 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import type { LogCreate } from "../types/logCreate";
-import type { StudentAllUserData } from "../types/allUserData";
 import { weekDays } from "../constants/weekDays";
+import { useOutletContext } from "react-router";
+import type { AddLogContext } from "../pages/HomePage";
 
-interface WorkspaceaAddLogProps {
-  academicYearId: number | null;
-  studentList: StudentAllUserData[] | undefined;
-  onAddLog: (newLog: LogCreate) => void;
-  onShowAddStudent: () => void;
-  newStudentName: string;
-  resetNewStudentName: () => void;
-}
+const AddLog = () => {
+  const {
+    selectedAcademicYearId,
+    selectedAcademicYearStudents,
+    allStudents, // borde inte vara StudentAllUserData eftersom den har Log (singular för ett läsår). allStudents är användarens alla elever.
+    onAddLog,
+    onShowAddStudent,
+    newStudentName,
+    resetNewStudentName,
+  } = useOutletContext<AddLogContext>();
 
-const WorkspaceAddLog = ({
-  academicYearId,
-  studentList,
-  onAddLog,
-  onShowAddStudent,
-  newStudentName,
-  resetNewStudentName,
-}: WorkspaceaAddLogProps) => {
   const [studentId, setStudentId] = useState<number | null>(null);
   const [weekDay, setWeekDay] = useState<number>(0);
   const [startTime, setStartTime] = useState("");
@@ -59,7 +54,7 @@ const WorkspaceAddLog = ({
       dayOfWeek: weekDay,
       lessonStartTime: startTime,
       lessonEndTime: endTime,
-      academicYearId: academicYearId,
+      academicYearId: selectedAcademicYearId,
       studentId: studentId,
       newStudentName: newStudentName,
     };
@@ -76,7 +71,6 @@ const WorkspaceAddLog = ({
   ) => {
     const val = e.target.value;
     setStudentId(val !== "" && !isNaN(Number(val)) ? Number(val) : null);
-    // if (val) resetNewStudentName(); // Existing student selected
   };
 
   useEffect(() => {
@@ -92,9 +86,14 @@ const WorkspaceAddLog = ({
     }
   }, [endTimeError]);
 
+  const filteredStudents = useMemo(() => {
+    return allStudents?.filter(
+      (s) => !selectedAcademicYearStudents?.some((says) => s.id === says.id),
+    );
+  }, [selectedAcademicYearStudents, allStudents]);
+
   return (
     <>
-      <p>{studentId ?? "null"}</p>
       <Form onSubmit={handleSubmit} className="p-3">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="fw-bold">Elev</Form.Label>
@@ -107,11 +106,14 @@ const WorkspaceAddLog = ({
             <option value={newStudentName}>
               {newStudentName || "Välj elev..."}
             </option>
-            {studentList?.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.name}
-              </option>
-            ))}
+
+            {filteredStudents
+              ?.filter((s) => s)
+              .map((student) => (
+                <option key={student.id} value={student.id}>
+                  {student.name}
+                </option>
+              ))}
           </Form.Select>
         </Form.Group>
         <span
@@ -170,4 +172,4 @@ const WorkspaceAddLog = ({
   );
 };
 
-export default WorkspaceAddLog;
+export default AddLog;

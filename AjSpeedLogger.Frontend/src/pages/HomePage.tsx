@@ -1,17 +1,18 @@
 import { Row, Col } from "react-bootstrap";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router";
-import type { AcademicYearAllUserData } from "../types/allUserData";
-import {
-  addAcademicYear,
-  addLog,
-  addStudent,
-  getAcademicYears,
-  getAllUserDataByAcademicYear,
-} from "../services/api";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router";
+import type {
+  AcademicYearAllUserData,
+  BaseLogDay,
+  StudentAllUserData,
+} from "../types/allUserData";
+import { addAcademicYear } from "../services/academicYearService";
+import { addLog } from "../services/logService";
+import { addStudent, getAllStudents } from "../services/studentService";
+import { getAcademicYears } from "../services/academicYearService";
+import { getAllUserDataByAcademicYear } from "../services/academicYearService";
 import ActionBar from "../components/ActionBar";
 import Sidebar from "../components/Sidebar";
-import Workspace from "../components/Workspace";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
 import type { AcademicYearName } from "../types/academicYearName";
 import type { LogCreate } from "../types/logCreate";
@@ -19,6 +20,32 @@ import { AddStudentModal } from "../components/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
 import type { Student } from "../types/student";
 import ErrorModal from "../components/ErrorModal";
+
+export interface AddYearContext {
+  onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
+}
+
+export interface AddLogContext {
+  selectedAcademicYearId: number | null;
+  selectedAcademicYearStudents: StudentAllUserData[] | null;
+  allStudents: StudentAllUserData[] | undefined;
+  onAddLog: (newLog: LogCreate) => void;
+  onShowAddStudent: () => void;
+  newStudentName: string;
+  resetNewStudentName: () => void;
+}
+
+export interface LogContext extends BaseLogDaysContext {
+  students: StudentAllUserData[];
+}
+
+export interface ManageBaseLogContext {
+  allUserData: AcademicYearAllUserData | null;
+}
+
+export interface BaseLogDaysContext {
+  baseLogDays: BaseLogDay[];
+}
 
 const HomePage = () => {
   const [error, setError] = useState<string | null>(null);
@@ -35,44 +62,14 @@ const HomePage = () => {
   const [showAddStudentModal, setShowAddStudentModal] =
     useState<boolean>(false);
   const [newStudentName, setNewStudentName] = useState<string>("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const fetchAcademicYears = await getAcademicYears();
-        const localStorageAcademicYearId = localStorage.getItem(
-          "selectedAcademicYearId",
-        );
-        const academicYearSavedId = localStorageAcademicYearId
-          ? parseInt(localStorageAcademicYearId)
-          : null;
-        const validId =
-          academicYearSavedId &&
-          fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
-            ? academicYearSavedId
-            : null;
-
-        if (!validId) localStorage.removeItem("selectedAcademicYearId");
-
-        setSelectedAcademicYearId(validId);
-        setAllUserData(await getAllUserDataByAcademicYear(validId));
-        setAcademicYears(fetchAcademicYears);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-    setNewStudentName("");
-  }, []);
+  const [allStudents, setAllStudents] = useState<Student[]>([]);
+  useState<Student | null>(null);
 
   const handleSelectedStudent = (id: number) => {
     setSelectedStudent(id);
+    navigate(`/log/${id}`);
   };
 
-  // When user selects a year int the dropdown, fetch, set selected year and store id in local storage.
   const handleAcademicYearSelect = async (id: number) => {
     const fetchAllUserData = await getAllUserDataByAcademicYear(id);
     setAllUserData(fetchAllUserData);
@@ -88,11 +85,6 @@ const HomePage = () => {
     localStorage.setItem("selectedAcademicYearId", response.id.toString());
     navigate("/");
   };
-
-  const studentList = useMemo(
-    () => allUserData?.students.map((s) => s),
-    [allUserData],
-  );
 
   const handleAddLog = async (newLog: LogCreate) => {
     if (!newLog.newStudentName && !newLog.studentId)
@@ -127,7 +119,7 @@ const HomePage = () => {
     setShowAddStudentModal(true);
   };
 
-  const handleResetNewStudentName = () => {
+  const resetNewStudentName = () => {
     setNewStudentName("");
   };
 
@@ -137,10 +129,63 @@ const HomePage = () => {
 
   const handleBaseLogClick = () => {};
 
+  const contexts = {
+    // AddYearContext
+    onAddAcademicYear: handleAddAcademicYear,
+
+    // AddLogContext
+    selectedAcademicYearId,
+    selectedAcademicYearStudents: allUserData?.students,
+    allStudents,
+    onAddLog: handleAddLog,
+    onShowAddStudent: handleShowAddStudent,
+    newStudentName,
+    resetNewStudentName,
+
+    // LogContext
+    students: allUserData?.students,
+
+    // LogContext / ManageBaseLogContext
+    baseLogDays: allUserData?.baseLogDays,
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const fetchAcademicYears = await getAcademicYears();
+        const localStorageAcademicYearId = localStorage.getItem(
+          "selectedAcademicYearId",
+        );
+        const academicYearSavedId = localStorageAcademicYearId
+          ? parseInt(localStorageAcademicYearId)
+          : null;
+        const validId =
+          academicYearSavedId &&
+          fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
+            ? academicYearSavedId
+            : null;
+
+        if (!validId) localStorage.removeItem("selectedAcademicYearId");
+
+        setSelectedAcademicYearId(validId);
+        setAllUserData(await getAllUserDataByAcademicYear(validId));
+        setAcademicYears(fetchAcademicYears);
+        const fetchedAllStudents = await getAllStudents();
+        setAllStudents(fetchedAllStudents);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+    setNewStudentName("");
+  }, []);
+
   return (
     <>
       <ActionBar />
-      {allUserData ? "inte null" : "null"}
       <Row>
         <Col sm={4} className="border-end">
           {isLoading ? (
@@ -149,7 +194,7 @@ const HomePage = () => {
             </Spinner>
           ) : (
             <Sidebar
-              allUserData={allUserData}
+              selectedAcademicYearStudents={allUserData?.students ?? []}
               onSelectStudent={handleSelectedStudent}
               onAcademicYearSelect={handleAcademicYearSelect}
               academicYears={academicYears}
@@ -158,17 +203,7 @@ const HomePage = () => {
           )}
         </Col>
         <Col sm={8} className="ps-4">
-          <Workspace
-            selectedStudent={selectedStudent}
-            allUserData={allUserData}
-            onAddAcademicYear={handleAddAcademicYear}
-            academicYearId={selectedAcademicYearId}
-            studentList={studentList}
-            onAddLog={handleAddLog}
-            onShowAddStudent={handleShowAddStudent}
-            newStudentName={newStudentName}
-            resetNewStudentName={handleResetNewStudentName}
-          />
+          <Outlet context={contexts} />
         </Col>
       </Row>
 

@@ -3,7 +3,7 @@
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class StudentController(IRepository _repository, IMapper _mapper) : BaseController
+public class StudentController(IRepository _repository, IStudentService _studentService, IMapper _mapper) : BaseController
 {
 	// ADD
 	[HttpPost]
@@ -33,7 +33,7 @@ public class StudentController(IRepository _repository, IMapper _mapper) : BaseC
 
 	// GET ALL (by User)
 	[HttpGet]
-	public async Task<IActionResult> GetAllAsync()
+	public async Task<IActionResult> GetAllAsync() // Borde byta namn till Get (den har expression)
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
@@ -45,6 +45,16 @@ public class StudentController(IRepository _repository, IMapper _mapper) : BaseC
 		return Ok(studentDtos);
 	}
 
+	//// GET ALL WITH LOGS
+	//[HttpGet]
+	//public async Task<IActionResult> GetAllWithLogs()
+	//{
+	//	var applicationUserId = ApplicationUserId;
+	//	if (applicationUserId == null)
+	//		return Unauthorized();
+	//	var studentWithLogsEntities = await _repository.GetWithIncludesAsync<Student>(s => s.ApplicationUserId == applicationUserId)			
+	//}
+
 
 	// GET by ID
 	[HttpGet("{id}")]
@@ -53,10 +63,23 @@ public class StudentController(IRepository _repository, IMapper _mapper) : BaseC
         var applicationUserId = ApplicationUserId;
         if (applicationUserId == null)
 			return Unauthorized();
-		var studentEntities = await _repository.GetAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId);
-		if (studentEntities == null)
+		var studentEntity = (await _repository.GetAsync<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId)).FirstOrDefault();
+		if (studentEntity == null)
 			return NotFound($"Student year with ID {id} not found.");
-		var studentDtos = _mapper.Map<StudentDto>(studentEntities);
+		var studentDto = _mapper.Map<StudentDto>(studentEntity);
+		return Ok(studentDto);
+	}
+
+	// GET by AcademicYer ID
+	[HttpGet("academicYearId/{academicYearId}")]
+	public async Task<IActionResult> GetByAcademicYearId(int academicYearId)
+	{
+		var applicationUserId = ApplicationUserId;
+		if (applicationUserId == null)
+			return Unauthorized();
+		var studentDtos = await _studentService.GetActiveStudentsByAcademicYear(academicYearId, applicationUserId);
+		if (studentDtos== null)
+			return NotFound($"Students not found.");
 		return Ok(studentDtos);
 	}
 

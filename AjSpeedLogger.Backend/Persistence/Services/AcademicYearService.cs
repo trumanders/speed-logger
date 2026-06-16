@@ -52,7 +52,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 				Name = ay.Name,
 				StartDate = ay.StartDate,
 				EndDate = ay.EndDate,
-				BaseLogDayDtos = ay.BaseLogDays.Select(bld => new BaseLogDayDto
+				BaseLogDays = ay.BaseLogDays.Select(bld => new BaseLogDayDto
 				{
 					Id = bld.Id,
 					Date = bld.Date,
@@ -69,6 +69,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 						.Select(sl => new LogAllUserDataDto
 						{
 							Id = sl.Id,
+							AcademicYearId = sl.AcademicYearId,
 							DayOfWeek = sl.DayOfWeek,
 							LessonStartTime = sl.LessonStartTime,
 							LessonEndTime = sl.LessonEndTime,

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-
-namespace Api.Controllers;
+﻿namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

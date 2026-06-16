@@ -6,7 +6,6 @@ import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
   const navigate = useNavigate();
-  // Kolla om användaren är inloggad genom att se om token finns
   const isLoggedIn = !!localStorage.getItem("token");
 
   const handleLogout = () => {

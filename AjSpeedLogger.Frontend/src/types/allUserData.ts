@@ -12,6 +12,7 @@ export interface BaseLogDay {
   date: string;
   weekNumber: number;
   content: string;
+  academicYearId: number;
 }
 
 export interface StudentAllUserData {
@@ -23,6 +24,7 @@ export interface StudentAllUserData {
 
 export interface LogAllUserData {
   id: number;
+  academicYearId: number;
   dayOfWeek: number;
   lessonStartTime: string;
   lessonEndTime: string;

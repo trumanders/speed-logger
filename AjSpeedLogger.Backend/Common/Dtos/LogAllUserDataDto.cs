@@ -8,4 +8,5 @@ public class LogAllUserDataDto
 	public TimeOnly LessonEndTime { get; set; }
 
 	public List<LogDayDto> LogDays { get; set; } = [];
+	public int AcademicYearId { get; set; }
 }

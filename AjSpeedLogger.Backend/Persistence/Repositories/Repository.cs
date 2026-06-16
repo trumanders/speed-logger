@@ -2,7 +2,7 @@
 
 public class Repository(Context _db) : IRepository
 {
-	public async Task<TEntity?> GetSingleByAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class, IEntity
+	public async Task<TEntity?> GetSingleAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : class, IEntity
 	{
 		return await _db.Set<TEntity>().FirstOrDefaultAsync(predicate);
 	}
@@ -25,6 +25,17 @@ public class Repository(Context _db) : IRepository
 			query = query.Include(include);
 		}		
 		return await query.FirstOrDefaultAsync(predicate);
+	}
+
+	public async Task<List<TEntity>> GetWithIncludesAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+	where TEntity : class, IEntity
+	{
+		IQueryable<TEntity> query = _db.Set<TEntity>();
+		foreach (var include in includes)
+		{
+			query = query.Include(include);
+		}
+		return await query.Where(predicate).ToListAsync();
 	}
 
 

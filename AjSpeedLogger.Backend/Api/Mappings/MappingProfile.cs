@@ -12,5 +12,9 @@ public class MappingProfile : Profile
 		CreateMap<StudentUpdateDto, Student>().ReverseMap();
 		CreateMap<Log, LogDto>().ReverseMap();
 		CreateMap<Log, LogCreateDto>().ReverseMap();
+		CreateMap<LogDay, LogDayDto>();
+			//.ForSourceMember(src => src.Log, opt => opt.DoNotValidate())
+			//.ForSourceMember(src => src.BaseLogDay, opt => opt.DoNotValidate());
+		CreateMap<LogDay, LogDayCreateDto>().ReverseMap();
 	}
 }

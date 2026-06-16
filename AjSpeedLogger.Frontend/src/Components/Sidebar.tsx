@@ -1,13 +1,13 @@
 import { ListGroup, Stack } from "react-bootstrap";
-import type { AcademicYearAllUserData } from "../types/allUserData";
 import AcademicYearDropdown from "./AcademicYearDropDown";
 import { Link } from "react-router";
 import type { AcademicYearName } from "../types/academicYearName";
 import { weekDays } from "../constants/weekDays";
 import React from "react";
+import type { StudentAllUserData } from "../types/allUserData";
 
 interface SideBarProps {
-  allUserData: AcademicYearAllUserData | null;
+  selectedAcademicYearStudents: StudentAllUserData[] | [];
   academicYears: AcademicYearName[];
   onSelectStudent: (id: number) => void;
   onAcademicYearSelect: (id: number) => void;
@@ -15,7 +15,7 @@ interface SideBarProps {
 }
 
 const Sidebar = ({
-  allUserData,
+  selectedAcademicYearStudents,
   academicYears,
   onSelectStudent,
   onAcademicYearSelect,
@@ -31,13 +31,13 @@ const Sidebar = ({
             selectedAcademicYearId={selectedAcademicYearId}
           />
           <div className="d-flex justify-content-center mb-3">
-            <Link to="/add_log" className="btn btn-outline-primary btn-sm">
+            <Link to="/add-log" className="btn btn-outline-primary btn-sm">
               Ny logg
             </Link>
           </div>
 
           <ListGroup>
-            {allUserData?.students
+            {selectedAcademicYearStudents
               ?.slice() // Create a copy to not mutate the original
               .sort(
                 (a, b) =>
@@ -73,19 +73,11 @@ const Sidebar = ({
           <p>
             <b>Du har inga läsår</b>
           </p>
-          <Link to="/add_year" className="btn btn-outline-primary btn-sm">
+          <Link to="/add-year" className="btn btn-outline-primary btn-sm">
             Lägg till läsår
           </Link>
         </div>
       )}
-      {/* <div><br></br>
-        <p>TESTDATA:::</p>
-        <p>antal läsår: {academicYears?.length ?? 0}</p>
-        <p>selectedId: {selectedAcademicYearId ?? "null"}</p>
-
-        <p>elever: {allUserData?.students?.length ?? 0}</p>
-        <p>basloggdagar: {allUserData?.baseLogDays?.length ?? 0}</p>
-      </div> */}
     </>
   );
 };

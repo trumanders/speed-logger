@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { Button } from "react-bootstrap";
-import { forgotPassword } from "../services/api";
+import { forgotPassword } from "../services/authService";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ const ForgotPasswordPage = () => {
     <Form onSubmit={handleSubmit}>
       <h2>Glömt lösenord</h2>
       <p style={{ color: "#666" }}>
-        Ange din e-postadress så skickar vi en länk för att återställa ditt
+        Ange din e-postadress så skickas en länk för att återställa ditt
         lösenord.
       </p>
 

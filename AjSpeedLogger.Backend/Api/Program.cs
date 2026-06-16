@@ -12,12 +12,14 @@ public class Program
 			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter()));
 		builder.Services.AddDbContext<Context>(options =>
 			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
-		builder.Services.AddScoped<IRepository, Repository>();
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
-		builder.Services.AddScoped<ILogService, LogService>();
-		builder.Services.AddScoped<ILogDayService, LogDayService>();
 		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
 		builder.Services.AddScoped<IContext, Context>();
+		builder.Services.AddScoped<ILogDayService, LogDayService>();
+		builder.Services.AddScoped<ILogService, LogService>();
+		builder.Services.AddScoped<IRepository, Repository>();
+		builder.Services.AddScoped<IStudentService, StudentService>();
+
 		builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 		{
 			options.User.RequireUniqueEmail = true;

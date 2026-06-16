@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import type { AcademicYearCreate } from "../types/academicYearCreate";
+import type { AcademicYearCreate } from "../types/academicYearCreate.tsx";
+import { useOutletContext } from "react-router";
+import type { AddYearContext } from "../pages/HomePage.tsx";
 
-interface WorkspaceAddYearProps {
-  onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
-}
-
-const WorkspaceAddYear = ({ onAddAcademicYear }: WorkspaceAddYearProps) => {
+const AddYear = () => {
+  const { onAddAcademicYear } = useOutletContext<AddYearContext>();
   const yearNameOptionsStartYear = new Date().getFullYear() - 3;
   const yearNameOptions = Array.from(
     { length: 8 },
@@ -70,4 +69,4 @@ const WorkspaceAddYear = ({ onAddAcademicYear }: WorkspaceAddYearProps) => {
   );
 };
 
-export default WorkspaceAddYear;
+export default AddYear;
