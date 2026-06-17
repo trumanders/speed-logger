@@ -10,15 +10,17 @@ export const createLogDay = async (
   return response.data;
 };
 
-export const updateLogDay = async (
-  logDayUpdate: LogDayUpdate,
-): Promise<LogDay> => {
-  console.log("logDayUpdate-id: ", logDayUpdate.id);
-  const response = await apiClient.put(`/LogDay/${logDayUpdate.id}/content`, {
-    content: logDayUpdate.content,
-  });
-  return response.data;
-};
+// ANVÄNDS INTE?
+// export const updateLogDay = async (
+//   logDayUpdate: LogDayUpdate,
+// ): Promise<LogDay> => {
+//   const response = await apiClient.put(
+//     `/LogDay/${logDayUpdate.id}/content`,
+//     JSON.stringify(logDayUpdate.content),
+//     { headers: { "Content-Type": "application/json" } },
+//   );
+//   return response.data;
+// };
 
 export const deleteLogDay = async (logDayId: number) => {
   await apiClient.delete(`/LogDay/${logDayId}`);

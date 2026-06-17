@@ -1,5 +1,5 @@
 import { Row, Col } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 import type {
   AcademicYearAllUserData,
@@ -20,6 +20,7 @@ import { AddStudentModal } from "../components/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
 import type { Student } from "../types/student";
 import ErrorModal from "../components/ErrorModal";
+import type { AcademicYear } from "../types/academicYear";
 
 export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
@@ -45,6 +46,8 @@ export interface ManageBaseLogContext {
 
 export interface BaseLogDaysContext {
   baseLogDays: BaseLogDay[];
+  academicYear: AcademicYear;
+  onUpdateBaseLogDay: (id: number, newContent: string) => void;
 }
 
 const HomePage = () => {
@@ -111,6 +114,21 @@ const HomePage = () => {
     }
   };
 
+  const handleUpdateBaseLogDay = (id: number, newContent: string) => {
+    // update the baselogdays-part of allUserData
+    setAllUserData((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        baseLogDays: prev.baseLogDays.map((baseLogDay) =>
+          baseLogDay.id == id
+            ? { ...baseLogDay, content: newContent }
+            : baseLogDay,
+        ),
+      };
+    });
+  };
+
   const handleAddStudent = (name: string) => {
     setNewStudentName(name);
   };
@@ -129,25 +147,38 @@ const HomePage = () => {
 
   const handleBaseLogClick = () => {};
 
-  const contexts = {
-    // AddYearContext
-    onAddAcademicYear: handleAddAcademicYear,
+  const contexts = useMemo(
+    () => ({
+      // AddYearContext
+      onAddAcademicYear: handleAddAcademicYear,
 
-    // AddLogContext
-    selectedAcademicYearId,
-    selectedAcademicYearStudents: allUserData?.students,
-    allStudents,
-    onAddLog: handleAddLog,
-    onShowAddStudent: handleShowAddStudent,
-    newStudentName,
-    resetNewStudentName,
+      // AddLogContext
+      selectedAcademicYearId,
+      selectedAcademicYearStudents: allUserData?.students,
+      allStudents,
+      onAddLog: handleAddLog,
+      onShowAddStudent: handleShowAddStudent,
+      newStudentName,
+      resetNewStudentName,
 
-    // LogContext
-    students: allUserData?.students,
+      // LogContext
+      students: allUserData?.students,
 
-    // LogContext / ManageBaseLogContext
-    baseLogDays: allUserData?.baseLogDays,
-  };
+      // LogContext / ManageBaseLogContext
+      baseLogDays: allUserData?.baseLogDays,
+      academicYear: academicYears.find(
+        (ay) => ay.id === selectedAcademicYearId,
+      ),
+      onUpdateBaseLogDay: handleUpdateBaseLogDay,
+    }),
+    [
+      allUserData,
+      allStudents,
+      selectedAcademicYearId,
+      academicYears,
+      newStudentName,
+    ],
+  );
 
   useEffect(() => {
     const fetchData = async () => {
