@@ -58,7 +58,6 @@ const HomePage = () => {
   const [allUserData, setAllUserData] =
     useState<AcademicYearAllUserData | null>(null);
   const [academicYears, setAcademicYears] = useState<AcademicYearName[]>([]);
-  const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
   const [selectedAcademicYearId, setSelectedAcademicYearId] = useState<
     number | null
   >(null);
@@ -69,7 +68,6 @@ const HomePage = () => {
   useState<Student | null>(null);
 
   const handleSelectedStudent = (id: number) => {
-    setSelectedStudent(id);
     navigate(`/log/${id}`);
   };
 
@@ -103,10 +101,10 @@ const HomePage = () => {
       }
 
       await addLog(newLog);
-      setSelectedStudent(newLog.studentId);
       setAllUserData(
         await getAllUserDataByAcademicYear(selectedAcademicYearId),
       );
+      navigate(`/log/${newLog.studentId}`);
     } catch (err: any) {
       const message = err.response?.data || "Ett fel uppstod";
       setError(message);
@@ -145,7 +143,7 @@ const HomePage = () => {
     navigate("/Log");
   };
 
-  const handleBaseLogClick = () => {};
+  const handleBaseLogClick = () => { };
 
   const contexts = useMemo(
     () => ({
@@ -193,7 +191,7 @@ const HomePage = () => {
           : null;
         const validId =
           academicYearSavedId &&
-          fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
+            fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
             ? academicYearSavedId
             : null;
 

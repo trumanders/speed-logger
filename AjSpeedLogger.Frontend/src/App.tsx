@@ -6,12 +6,12 @@ import SignUpPage from "./pages/SignUpPage";
 import HomePage from "./pages/HomePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import { jwtDecode } from "jwt-decode";
 import AddYear from "./components/AddYear";
 import ManageStudents from "./components/ManageStudents";
 import ManageBaseLog from "./components/ManageBaseLog";
 import AddLog from "./components/AddLog";
 import Log from "./components/Log";
+import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = () => {
   const token = localStorage.getItem("token");
