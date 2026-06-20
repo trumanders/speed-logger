@@ -86,7 +86,8 @@ const Log = () => {
             const logDayTextBoxes = [];
 
             // Start from the correct weekday
-            const firstBaseLogWeekday = new Date(baseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
+            const firstBaseLogWeekday =
+              new Date(baseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
             let firstIndex = log.dayOfWeek - firstBaseLogWeekday;
             if (firstIndex < 0) firstIndex = firstIndex + 7; // Log starts the week after the academicYear start.
 
@@ -101,7 +102,22 @@ const Log = () => {
                   }).format(new Date(baseLogDay.date))}
                 </div>,
                 <Stack direction="horizontal" className="mb-3">
-                  {baseLogDay.content ? (<p>FINNS BASELOGG-INLÄGG</p>) : (
+                  {baseLogDay.content ? (
+                    <textarea
+                      readOnly={true}
+                      color="red"
+                      value={baseLogDay.content}
+                      key={`${student.id}-${baseLogDay.id}`}
+                      rows={1}
+                      style={{
+                        width: "90%",
+                        overflow: "hidden",
+                        resize: "none",
+                        border: "3px solid red",
+                        outline: "none",
+                      }}
+                    />
+                  ) : (
                     <textarea
                       value={
                         logDays.find((ld) => ld.baseLogDayId === baseLogDay.id)
@@ -109,7 +125,11 @@ const Log = () => {
                       }
                       key={`${student.id}-${baseLogDay.id}`}
                       rows={1}
-                      style={{ width: "90%", overflow: "hidden", resize: "none" }}
+                      style={{
+                        width: "90%",
+                        overflow: "hidden",
+                        resize: "none",
+                      }}
                       onChange={(e) => {
                         const target = e.target as HTMLTextAreaElement;
                         target.style.height = "auto";
@@ -118,9 +138,7 @@ const Log = () => {
                       }}
                     />
                   )}
-
-
-                </Stack>
+                </Stack>,
               );
             }
             return logDayTextBoxes;
