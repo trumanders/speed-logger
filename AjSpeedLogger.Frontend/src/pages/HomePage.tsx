@@ -50,6 +50,10 @@ export interface BaseLogDaysContext {
   onUpdateBaseLogDay: (id: number, newContent: string) => void;
 }
 
+export interface ManageStudentsContext {
+  allStudents: StudentAllUserData[];
+}
+
 const HomePage = () => {
   const [error, setError] = useState<string | null>(null);
   const [errorTitle, setErrorTitle] = useState<string | null>(null);
@@ -143,7 +147,7 @@ const HomePage = () => {
     navigate("/Log");
   };
 
-  const handleBaseLogClick = () => { };
+  const handleBaseLogClick = () => {};
 
   const contexts = useMemo(
     () => ({
@@ -191,7 +195,7 @@ const HomePage = () => {
           : null;
         const validId =
           academicYearSavedId &&
-            fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
+          fetchAcademicYears.find((ay) => ay.id === Number(academicYearSavedId))
             ? academicYearSavedId
             : null;
 
