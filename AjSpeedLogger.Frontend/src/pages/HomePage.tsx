@@ -29,7 +29,7 @@ export interface AddYearContext {
 export interface AddLogContext {
   selectedAcademicYearId: number | null;
   selectedAcademicYearStudents: StudentAllUserData[] | null;
-  allStudents: StudentAllUserData[] | undefined;
+  allStudents: Student[] | undefined;
   onAddLog: (newLog: LogCreate) => void;
   onShowAddStudent: () => void;
   newStudentName: string;
@@ -51,7 +51,7 @@ export interface BaseLogDaysContext {
 }
 
 export interface ManageStudentsContext {
-  allStudents: StudentAllUserData[];
+  allStudents: Student[];
 }
 
 const HomePage = () => {
@@ -69,7 +69,6 @@ const HomePage = () => {
     useState<boolean>(false);
   const [newStudentName, setNewStudentName] = useState<string>("");
   const [allStudents, setAllStudents] = useState<Student[]>([]);
-  useState<Student | null>(null);
 
   const handleSelectedStudent = (id: number) => {
     navigate(`/log/${id}`);
@@ -101,6 +100,7 @@ const HomePage = () => {
         const newStudent: Student = await addStudent({
           name: newLog.newStudentName,
         });
+        setAllStudents((prev) => [...prev, newStudent]);
         newLog.studentId = newStudent.id;
       }
 
@@ -157,7 +157,7 @@ const HomePage = () => {
       // AddLogContext
       selectedAcademicYearId,
       selectedAcademicYearStudents: allUserData?.students,
-      allStudents,
+      allStudents: allStudents,
       onAddLog: handleAddLog,
       onShowAddStudent: handleShowAddStudent,
       newStudentName,
@@ -244,6 +244,7 @@ const HomePage = () => {
         show={showAddStudentModal}
         onHide={() => setShowAddStudentModal(false)}
         onAddStudent={handleAddStudent}
+        allStudents={allStudents}
       />
 
       {error && (
@@ -253,6 +254,7 @@ const HomePage = () => {
           onClose={() => {
             setError(null);
             setErrorTitle(null);
+            // hejehj
           }}
         />
       )}

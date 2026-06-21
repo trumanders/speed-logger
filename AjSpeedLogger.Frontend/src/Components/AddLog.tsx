@@ -9,7 +9,7 @@ const AddLog = () => {
   const {
     selectedAcademicYearId,
     selectedAcademicYearStudents,
-    allStudents, // borde inte vara StudentAllUserData eftersom den har Log (singular för ett läsår). allStudents är användarens alla elever.
+    allStudents,
     onAddLog,
     onShowAddStudent,
     newStudentName,
