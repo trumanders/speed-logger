@@ -19,3 +19,14 @@ export const getAllStudents = async (): Promise<Student[]> => {
   const response = await apiClient.get<Student[]>(`/Student`);
   return response.data;
 };
+
+export const updateStudent = async (student: Student): Promise<Student> => {
+  const response = await apiClient.put<Student>(
+    `/Student/${student.id}`,
+    JSON.stringify(student),
+    {
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+  return response.data;
+};

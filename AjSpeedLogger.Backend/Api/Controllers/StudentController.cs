@@ -106,25 +106,23 @@ public class StudentController(IRepository _repository, IStudentService _student
 
 	// UPDATE
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Update(int id, [FromBody] StudentUpdateDto dto)
+	public async Task<IActionResult> Update(int id, [FromBody] StudentDto dto)
 	{
-		if (dto == null)
-			return BadRequest("DTO is null");
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
+		if (dto == null)
+			return BadRequest("DTO is null");
 		try
 		{
-			if (!await _repository.AnyAsync<Student>(e => e.Id.Equals(id) && e.ApplicationUserId == applicationUserId))
+			var updatedStudent = await _studentService.UpdateAsync(dto, applicationUserId);
+			if (updatedStudent == null)
 				return NotFound();
-			if (await _repository.Update<Student>(s => s.Id == id && s.ApplicationUserId == applicationUserId))
-				if (await _repository.SaveChangesAsync())
-					return NoContent();
+			return Ok(updatedStudent);
 		}
 		catch (Exception ex)
 		{
 			return BadRequest($"An error occurred while updating student with ID {id}.\n{ex.InnerException?.Message ?? ex.Message}");
 		}
-		return BadRequest($"An error occurred while updating student with ID {id}.");
 	}
 }

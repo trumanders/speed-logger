@@ -8,7 +8,11 @@ import type {
 } from "../types/allUserData";
 import { addAcademicYear } from "../services/academicYearService";
 import { addLog } from "../services/logService";
-import { addStudent, getAllStudents } from "../services/studentService";
+import {
+  addStudent,
+  getAllStudents,
+  updateStudent,
+} from "../services/studentService";
 import { getAcademicYears } from "../services/academicYearService";
 import { getAllUserDataByAcademicYear } from "../services/academicYearService";
 import ActionBar from "../components/ActionBar";
@@ -19,8 +23,9 @@ import type { LogCreate } from "../types/logCreate";
 import { AddStudentModal } from "../components/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
 import type { Student } from "../types/student";
-import ErrorModal from "../components/ErrorModal";
 import type { AcademicYear } from "../types/academicYear";
+import AlertModal from "../components/AlertModal";
+import EditStudentModal from "../components/EditStudentModal";
 
 export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
@@ -52,11 +57,12 @@ export interface BaseLogDaysContext {
 
 export interface ManageStudentsContext {
   allStudents: Student[];
+  onEditStudentClick: (updateStudent: Student) => void;
 }
 
 const HomePage = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [alert, setAlert] = useState<string | null>(null);
+  const [alertTitle, setAlertTitle] = useState<string | null>(null);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [allUserData, setAllUserData] =
@@ -67,8 +73,11 @@ const HomePage = () => {
   >(null);
   const [showAddStudentModal, setShowAddStudentModal] =
     useState<boolean>(false);
+  const [showEditStudentModal, setShowEditStudentModal] =
+    useState<boolean>(false);
   const [newStudentName, setNewStudentName] = useState<string>("");
   const [allStudents, setAllStudents] = useState<Student[]>([]);
+  const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
 
   const handleSelectedStudent = (id: number) => {
     navigate(`/log/${id}`);
@@ -111,8 +120,8 @@ const HomePage = () => {
       navigate(`/log/${newLog.studentId}`);
     } catch (err: any) {
       const message = err.response?.data || "Ett fel uppstod";
-      setError(message);
-      setErrorTitle("Kunde inte lägga till loggen");
+      setAlert(message);
+      setAlertTitle("Kunde inte lägga till loggen");
     }
   };
 
@@ -129,6 +138,20 @@ const HomePage = () => {
         ),
       };
     });
+  };
+
+  const handleEditStudentClick = async (studentUpdate: Student) => {
+    setStudentToEdit(studentUpdate);
+    setShowEditStudentModal(true);
+  };
+
+  const handleEditStudent = async (studentUpdate: Student) => {
+    console.log("newName = ", studentUpdate.name);
+    const updatedStudent = await updateStudent(studentUpdate);
+    setAllStudents((prev) =>
+      prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)),
+    );
+    setAllUserData(await getAllUserDataByAcademicYear(selectedAcademicYearId));
   };
 
   const handleAddStudent = (name: string) => {
@@ -172,6 +195,9 @@ const HomePage = () => {
         (ay) => ay.id === selectedAcademicYearId,
       ),
       onUpdateBaseLogDay: handleUpdateBaseLogDay,
+
+      // ManageStudent
+      onEditStudentClick: handleEditStudentClick,
     }),
     [
       allUserData,
@@ -247,14 +273,20 @@ const HomePage = () => {
         allStudents={allStudents}
       />
 
-      {error && (
-        <ErrorModal
-          message={error}
-          errorTitle={errorTitle}
+      <EditStudentModal
+        show={showEditStudentModal}
+        onHide={() => setShowEditStudentModal(false)}
+        student={studentToEdit}
+        onEditStudent={handleEditStudent}
+      />
+
+      {alert && (
+        <AlertModal
+          message={alert}
+          alertTitle={alertTitle}
           onClose={() => {
-            setError(null);
-            setErrorTitle(null);
-            // hejehj
+            setAlert(null);
+            setAlertTitle(null);
           }}
         />
       )}

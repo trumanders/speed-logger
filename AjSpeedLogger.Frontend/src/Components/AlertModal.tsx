@@ -1,17 +1,17 @@
 import { Button, Modal } from "react-bootstrap";
 
-interface ErrorModalProps {
+interface AlertModalProps {
   message: string;
-  errorTitle: string | null;
+  alertTitle: string | null;
   onClose: () => void;
 }
 
-const ErrorModal = ({ message, onClose, errorTitle }: ErrorModalProps) => {
+const AlertModal = ({ message, onClose, alertTitle }: AlertModalProps) => {
   return (
     <>
       <Modal show={!!message} onHide={onClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{errorTitle || "Fel!"}</Modal.Title>
+          <Modal.Title>{alertTitle || "Fel!"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{message}</Modal.Body>
         <Modal.Footer>
@@ -28,4 +28,4 @@ const ErrorModal = ({ message, onClose, errorTitle }: ErrorModalProps) => {
   );
 };
 
-export default ErrorModal;
+export default AlertModal;

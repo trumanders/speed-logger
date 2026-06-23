@@ -9,4 +9,14 @@ public class StudentService(IRepository _repository, IMapper _mapper) : IStudent
 		);
 		return _mapper.Map<List<StudentDto>>(studentEntities);
 	} 
+
+	public async Task<StudentDto?> UpdateAsync(StudentDto dto, string applicationUserId)
+	{
+		var existingEntity = await _repository.GetSingleAsync<Student>(e => e.Id == dto.Id && e.ApplicationUserId == applicationUserId);
+		if (existingEntity == null)
+			return null;
+		_mapper.Map(dto, existingEntity); // Maps dto into existing entity
+		await _repository.SaveChangesAsync();
+		return _mapper.Map<StudentDto>(existingEntity);
+	}
 }

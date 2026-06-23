@@ -30,7 +30,7 @@ public interface IRepository
 		where TEntity : class, IEntity;
 
 	// UPDATE
-	public Task<bool> Update<TEntity>(Expression<Func<TEntity, bool>> predicate)
+	public Task<TEntity?> Update<TEntity>(int id, TEntity updatedEntity)
 		where TEntity : class, IEntity;
 
 	// CHECK IF STUDENT HAS MULTIPLE LOGS

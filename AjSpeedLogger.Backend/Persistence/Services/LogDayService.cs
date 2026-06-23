@@ -58,7 +58,7 @@ public class LogDayService(IRepository _repository, IMapper _mapper) : ILogDaySe
 			else
 			{
 				logDayEntity.Content = content;
-				await _repository.Update<LogDay>(logDay => logDay.Id == logDayEntity.Id);
+				await _repository.Update<LogDay>(logDayEntity.Id, logDayEntity);
 			}
 		}
 		await _repository.SaveChangesAsync();

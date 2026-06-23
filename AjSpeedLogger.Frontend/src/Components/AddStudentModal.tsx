@@ -21,7 +21,6 @@ export const AddStudentModal = ({
 
   const onAddStudentClick = (name: string) => {
     if (allStudents?.some((s) => s.name === name)) {
-      console.log("HITTADE ELEV MED SAMMA NAMN");
       setIsShowAdditionalInput(true);
     } else {
       onAddStudent(name);
@@ -45,7 +44,7 @@ export const AddStudentModal = ({
 
           {isShowAdditionalInput && (
             <React.Fragment>
-              <p className="d">
+              <p className="mt-3">
                 En elev med samma namn finns redan. Ange smeknamn, eller annan
                 unik identifikation.
               </p>

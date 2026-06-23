@@ -73,15 +73,17 @@ public class Repository(Context _db) : IRepository
 	}
 
 	// UPDATE
-	public async Task<bool> Update<TEntity>(Expression<Func<TEntity, bool>> predicate)
+	public async Task<TEntity?> Update<TEntity>(int id, TEntity updatedEntity)
 	where TEntity : class, IEntity
 	{
-		// Get the existing entity because we only change the properties that are in the DTO, not the whole entity
-		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(predicate);
+		// Get the existing entity because we only change the properties, not the whole entity
+		var entity = await _db.Set<TEntity>().SingleOrDefaultAsync(e => e.Id == id);
 		if (entity == null)
-			return false;
-		_db.Set<TEntity>().Update(entity);
-		return true;
+			return null;
+		_db.Entry(entity).CurrentValues.SetValues(updatedEntity);
+		if (entity is IUserOwned)
+			_db.Entry(entity).Property("ApplicationUserId").IsModified = false;
+		return entity;		
 	}
 
 	public async Task<bool> IsCountGreaterThan<TEntity>(Expression<Func<TEntity, bool>> predicate, int count)
