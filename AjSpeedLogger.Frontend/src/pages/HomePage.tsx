@@ -10,6 +10,7 @@ import { addAcademicYear } from "../services/academicYearService";
 import { addLog } from "../services/logService";
 import {
   addStudent,
+  deleteStudent,
   getAllStudents,
   updateStudent,
 } from "../services/studentService";
@@ -20,12 +21,13 @@ import Sidebar from "../components/Sidebar";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
 import type { AcademicYearName } from "../types/academicYearName";
 import type { LogCreate } from "../types/logCreate";
-import { AddStudentModal } from "../components/AddStudentModal";
+import { AddStudentModal } from "../components/modals/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
 import type { Student } from "../types/student";
 import type { AcademicYear } from "../types/academicYear";
 import AlertModal from "../components/AlertModal";
-import EditStudentModal from "../components/EditStudentModal";
+import EditStudentModal from "../components/modals/EditStudentModal";
+import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
 
 export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
@@ -77,7 +79,12 @@ const HomePage = () => {
     useState<boolean>(false);
   const [newStudentName, setNewStudentName] = useState<string>("");
   const [allStudents, setAllStudents] = useState<Student[]>([]);
-  const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
+  const [studentToEdit, setStudentToEdit] = useState<Student | undefined>(
+    undefined,
+  );
+  const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
+  const [deleteType, setDeleteType] = useState<string>("");
+  const [deleteMessage, setDeleteMessage] = useState<string>("");
 
   const handleSelectedStudent = (id: number) => {
     navigate(`/log/${id}`);
@@ -146,12 +153,40 @@ const HomePage = () => {
   };
 
   const handleEditStudent = async (studentUpdate: Student) => {
-    console.log("newName = ", studentUpdate.name);
     const updatedStudent = await updateStudent(studentUpdate);
     setAllStudents((prev) =>
       prev.map((s) => (s.id === updatedStudent.id ? updatedStudent : s)),
     );
     setAllUserData(await getAllUserDataByAcademicYear(selectedAcademicYearId));
+    setShowEditStudentModal(false);
+  };
+
+  const handleChangeStudentIsTerminated = (
+    studentId: number,
+    isTerminated: boolean,
+  ) => {
+    setAllStudents((prev) =>
+      prev.map((s) => (s.id === studentId ? { ...s, isTerminated } : s)),
+    );
+  };
+
+  const handleDeleteStudent = (type: string, message: string) => {
+    setDeleteType(type);
+    setDeleteMessage(message);
+    setShowConfirmDeleteModal(true);
+  };
+
+  const handleConfirmDeleteModal = async () => {
+    console.log("CONFIRM DELETE!!!!!!");
+    if (deleteType === "STUDENT") {
+      await deleteStudent(studentToEdit!.id);
+      setAllStudents((prev) => prev.filter((s) => s.id !== studentToEdit!.id));
+      setAllUserData(
+        await getAllUserDataByAcademicYear(selectedAcademicYearId),
+      );
+      setShowConfirmDeleteModal(false);
+      setShowEditStudentModal(false);
+    }
   };
 
   const handleAddStudent = (name: string) => {
@@ -198,6 +233,9 @@ const HomePage = () => {
 
       // ManageStudent
       onEditStudentClick: handleEditStudentClick,
+      handleEditStudent,
+      handleDeleteStudent,
+      handleChangeStudentIsTerminated,
     }),
     [
       allUserData,
@@ -205,6 +243,7 @@ const HomePage = () => {
       selectedAcademicYearId,
       academicYears,
       newStudentName,
+      handleChangeStudentIsTerminated,
     ],
   );
 
@@ -265,21 +304,27 @@ const HomePage = () => {
           <Outlet context={contexts} />
         </Col>
       </Row>
-
       <AddStudentModal
         show={showAddStudentModal}
         onHide={() => setShowAddStudentModal(false)}
         onAddStudent={handleAddStudent}
         allStudents={allStudents}
       />
-
       <EditStudentModal
         show={showEditStudentModal}
         onHide={() => setShowEditStudentModal(false)}
         student={studentToEdit}
+        allStudents={allStudents}
         onEditStudent={handleEditStudent}
+        onDeleteStudent={handleDeleteStudent}
       />
-
+      <ConfirmDeleteModal
+        show={showConfirmDeleteModal}
+        onClose={() => setShowConfirmDeleteModal(false)}
+        onConfirm={() => handleConfirmDeleteModal()}
+        type={deleteType}
+        message={deleteMessage}
+      />
       {alert && (
         <AlertModal
           message={alert}

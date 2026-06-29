@@ -30,3 +30,8 @@ export const updateStudent = async (student: Student): Promise<Student> => {
   );
   return response.data;
 };
+
+export const deleteStudent = async (studentId: number) => {
+  const response = await apiClient.delete<Student>(`/Student/${studentId}`);
+  return response;
+};

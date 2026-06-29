@@ -1,5 +1,5 @@
 export interface Student {
-  id: number | null;
+  id: number;
   name: string;
   isTerminated: boolean;
 }

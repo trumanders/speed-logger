@@ -88,7 +88,9 @@ const AddLog = () => {
 
   const filteredStudents = useMemo(() => {
     return allStudents?.filter(
-      (s) => !selectedAcademicYearStudents?.some((says) => s.id === says.id),
+      (s) =>
+        !s.isTerminated &&
+        !selectedAcademicYearStudents?.some((says) => s.id === says.id),
     );
   }, [selectedAcademicYearStudents, allStudents]);
 
@@ -110,7 +112,7 @@ const AddLog = () => {
             {filteredStudents
               ?.filter((s) => s)
               .map((student) => (
-                <option key={student.id} value={student.id}>
+                <option key={student.id} value={student.id!}>
                   {student.name}
                 </option>
               ))}

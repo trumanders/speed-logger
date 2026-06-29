@@ -8,6 +8,7 @@ import {
 } from "../services/logDayService";
 import type { LogContext } from "../pages/HomePage";
 import { useOutletContext, useParams } from "react-router";
+import EditStudentButton from "./buttons/EditStudentButton";
 
 const Log = () => {
   const { baseLogDays, students } = useOutletContext<LogContext>();
@@ -74,7 +75,10 @@ const Log = () => {
           <h6>
             {weekDays[log.dayOfWeek]} - {log.lessonStartTime.substring(0, 5)}
           </h6>
-          <h4>{student.name}</h4>
+          <Stack direction="horizontal">
+            <h4>{student.name}</h4>
+            <EditStudentButton student={student} />
+          </Stack>
         </div>
         <div
           style={{
