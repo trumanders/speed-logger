@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import type { Student } from "../../types/student";
+import { isStudentNameValid } from "../../utils/validation";
 
 interface AddStudentModalProps {
   show: boolean;
   onHide: () => void;
   onAddStudent: (nameInput: string) => void;
-  allStudents: Student[] | null;
+  allStudents: Student[];
 }
 
 export const AddStudentModal = ({
@@ -17,6 +18,7 @@ export const AddStudentModal = ({
 }: AddStudentModalProps) => {
   const [name, setName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [disableButton, setDisableButton] = useState(true);
 
   const onAddStudentClick = (name: string) => {
     if (allStudents?.some((s) => s.name === name)) {
@@ -25,6 +27,13 @@ export const AddStudentModal = ({
       onAddStudent(name);
       setName("");
     }
+  };
+
+  const onChangeName = (value: string) => {
+    const duplicate = allStudents?.some((s) => s.name === value.trim());
+    setIsDuplicate(duplicate || false);
+    setName(value);
+    setDisableButton(duplicate || !isStudentNameValid(allStudents, value));
   };
 
   return (
@@ -37,7 +46,7 @@ export const AddStudentModal = ({
           <Form.Control
             placeholder="Namn"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => onChangeName(e.target.value)}
           />
 
           {isDuplicate && (
@@ -56,7 +65,7 @@ export const AddStudentModal = ({
         </Modal.Body>
         <Modal.Footer>
           <Button
-            disabled={name.length < 2 || isDuplicate}
+            disabled={disableButton}
             variant="primary"
             onClick={() => onAddStudentClick(name)}
           >

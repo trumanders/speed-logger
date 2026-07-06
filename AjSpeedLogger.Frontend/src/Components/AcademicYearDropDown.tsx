@@ -1,16 +1,18 @@
-import { Dropdown } from "react-bootstrap";
-import type { AcademicYearName } from "../types/academicYearName";
+import { Dropdown, Stack } from "react-bootstrap";
+import type { AcademicYear } from "../types/academicYear";
 
 interface AcademicYearDropdownProps {
-  academicYears: AcademicYearName[];
+  academicYears: AcademicYear[];
   selectedAcademicYearId: number | null;
   onAcademicYearSelect: (id: number) => void;
+  onEditAcademicYearButtonClick: (academicYearId: number) => void;
 }
 
 const AcademicYearDropdown = ({
   academicYears,
   selectedAcademicYearId,
   onAcademicYearSelect,
+  onEditAcademicYearButtonClick,
 }: AcademicYearDropdownProps) => {
   return (
     <>
@@ -23,11 +25,24 @@ const AcademicYearDropdown = ({
           variant="outline-secondary"
           className="w-100 d-flex align-items-center justify-content-between bg-white text-dark border-secondary-subtle"
         >
-          <span>
-            {selectedAcademicYearId && academicYears?.length > 0
-              ? academicYears.find((y) => y.id === selectedAcademicYearId)?.name
-              : "Du har inga läsår"}
-          </span>
+          <Stack direction="horizontal" gap={2}>
+            <span>
+              {academicYears?.length > 0
+                ? academicYears.find((y) => y.id === selectedAcademicYearId)
+                    ?.name
+                : "Du har inga läsår"}
+            </span>
+            {academicYears?.length > 0 && selectedAcademicYearId && (
+              <button
+                className="btn p-0 border-0 ms-auto"
+                onClick={() =>
+                  onEditAcademicYearButtonClick(selectedAcademicYearId)
+                }
+              >
+                <img src="/images/edit.png" className="edit-icon" />
+              </button>
+            )}
+          </Stack>
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="w-100 shadow-sm border-0 mt-1">
@@ -40,7 +55,9 @@ const AcademicYearDropdown = ({
                 onAcademicYearSelect(year.id);
               }}
             >
-              {year.name}
+              <Stack direction="horizontal">
+                <p>{year.name}</p>
+              </Stack>
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>

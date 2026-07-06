@@ -7,6 +7,6 @@ public interface IAcademicYearService
 	public Task<AcademicYearDto?> GetByIdAsync(int id, string applicationUserId);
 	public Task<bool> DeleteAsync(int id, string applicationUserId);
 	public Task<IEnumerable<AcademicYearNameDto>> GetAllNamesByStudentIdAsync(int studentId, string applicationUserId);
-	public Task<IEnumerable<AcademicYearNameDto>> GetAllNamesAsync(string applicationUserId);
+	public Task<IEnumerable<AcademicYearDto>> GetAllAsync(string applicationUserId);
 
 }

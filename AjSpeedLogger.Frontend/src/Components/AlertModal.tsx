@@ -3,13 +3,13 @@ import { Button, Modal } from "react-bootstrap";
 interface AlertModalProps {
   message: string;
   alertTitle: string | null;
-  onClose: () => void;
+  onHide: () => void;
 }
 
-const AlertModal = ({ message, onClose, alertTitle }: AlertModalProps) => {
+const AlertModal = ({ message, onHide, alertTitle }: AlertModalProps) => {
   return (
     <>
-      <Modal show={!!message} onHide={onClose}>
+      <Modal show={!!message} onHide={onHide}>
         <Modal.Header closeButton>
           <Modal.Title>{alertTitle || "Fel!"}</Modal.Title>
         </Modal.Header>
@@ -17,7 +17,7 @@ const AlertModal = ({ message, onClose, alertTitle }: AlertModalProps) => {
         <Modal.Footer>
           <Button
             onClick={() => {
-              onClose();
+              onHide();
             }}
           >
             Ok

@@ -23,14 +23,14 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 		return Ok(allUserData);
 	}
 
-	// GET ALL (names only)
+	// GET ALL
 	[HttpGet]
 	public async Task<IActionResult> Get()
 	{
 		var applicationUserId = ApplicationUserId;
 		if (applicationUserId == null)
 			return Unauthorized();
-		var academicYears = await _academicYearService.GetAllNamesAsync(applicationUserId);
+		var academicYears = await _academicYearService.GetAllAsync(applicationUserId);
 		return Ok(academicYears);
 	}
 

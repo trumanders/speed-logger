@@ -1,17 +1,18 @@
 import { ListGroup, Stack } from "react-bootstrap";
 import AcademicYearDropdown from "./AcademicYearDropDown";
 import { Link } from "react-router";
-import type { AcademicYearName } from "../types/academicYearName";
 import { weekDays } from "../constants/weekDays";
 import React from "react";
 import type { StudentAllUserData } from "../types/allUserData";
+import type { AcademicYear } from "../types/academicYear";
 
 interface SideBarProps {
   selectedAcademicYearStudents: StudentAllUserData[] | [];
-  academicYears: AcademicYearName[];
+  academicYears: AcademicYear[];
   onSelectStudent: (id: number) => void;
   onAcademicYearSelect: (id: number) => void;
   selectedAcademicYearId: number | null;
+  onEditAcademicYearButtonClick: (academicYearId: number) => void;
 }
 
 const Sidebar = ({
@@ -20,6 +21,7 @@ const Sidebar = ({
   onSelectStudent,
   onAcademicYearSelect,
   selectedAcademicYearId,
+  onEditAcademicYearButtonClick,
 }: SideBarProps) => {
   return (
     <>
@@ -29,6 +31,7 @@ const Sidebar = ({
             academicYears={academicYears}
             onAcademicYearSelect={onAcademicYearSelect}
             selectedAcademicYearId={selectedAcademicYearId}
+            onEditAcademicYearButtonClick={onEditAcademicYearButtonClick}
           />
           <div className="d-flex justify-content-center mb-3">
             <Link to="/add-log" className="btn btn-outline-primary btn-sm">

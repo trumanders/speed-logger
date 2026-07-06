@@ -6,7 +6,10 @@ import type {
   BaseLogDay,
   StudentAllUserData,
 } from "../types/allUserData";
-import { addAcademicYear } from "../services/academicYearService";
+import {
+  addAcademicYear,
+  updateAcademicYear,
+} from "../services/academicYearService";
 import { addLog } from "../services/logService";
 import {
   addStudent,
@@ -19,7 +22,6 @@ import { getAllUserDataByAcademicYear } from "../services/academicYearService";
 import ActionBar from "../components/ActionBar";
 import Sidebar from "../components/Sidebar";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
-import type { AcademicYearName } from "../types/academicYearName";
 import type { LogCreate } from "../types/logCreate";
 import { AddStudentModal } from "../components/modals/AddStudentModal";
 import Spinner from "react-bootstrap/Spinner";
@@ -28,9 +30,15 @@ import type { AcademicYear } from "../types/academicYear";
 import AlertModal from "../components/AlertModal";
 import EditStudentModal from "../components/modals/EditStudentModal";
 import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
+import EditAcademicYearModal from "../components/modals/EditAcademicYearModal";
 
 export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
+}
+
+export interface EditAcademicYearContext {
+  handleEditAcademicYear: (id: number, academicYear: AcademicYear) => void;
+  handleEditAcademicYearButtonClick: (academicYear: AcademicYear) => void;
 }
 
 export interface AddLogContext {
@@ -69,7 +77,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [allUserData, setAllUserData] =
     useState<AcademicYearAllUserData | null>(null);
-  const [academicYears, setAcademicYears] = useState<AcademicYearName[]>([]);
+  const [academicYears, setAcademicYears] = useState<AcademicYear[]>([]);
   const [selectedAcademicYearId, setSelectedAcademicYearId] = useState<
     number | null
   >(null);
@@ -85,6 +93,11 @@ const HomePage = () => {
   const [showConfirmDeleteModal, setShowConfirmDeleteModal] = useState(false);
   const [deleteType, setDeleteType] = useState<string>("");
   const [deleteMessage, setDeleteMessage] = useState<string>("");
+  const [academicYearToEdit, setAcademicYearToEdit] = useState<
+    AcademicYear | undefined
+  >(undefined);
+  const [showEditAcademicYearModal, setShowEditAcademicYearModal] =
+    useState<boolean>(false);
 
   const handleSelectedStudent = (id: number) => {
     navigate(`/log/${id}`);
@@ -177,7 +190,6 @@ const HomePage = () => {
   };
 
   const handleConfirmDeleteModal = async () => {
-    console.log("CONFIRM DELETE!!!!!!");
     if (deleteType === "STUDENT") {
       await deleteStudent(studentToEdit!.id);
       setAllStudents((prev) => prev.filter((s) => s.id !== studentToEdit!.id));
@@ -189,8 +201,25 @@ const HomePage = () => {
     }
   };
 
+  const handleEditAcademicYear = async (academicYear: AcademicYear) => {
+    const updatedAcademicYear = await updateAcademicYear(
+      academicYear.id,
+      academicYear,
+    );
+    academicYears;
+  };
+
+  const handleEditAcademicYearButtonClick = (academicYearId: number) => {
+    const academicYear = academicYears.find((ay) => ay.id === academicYearId);
+    if (academicYear) {
+      setAcademicYearToEdit(academicYear);
+      setShowEditAcademicYearModal(true);
+    }
+  };
+
   const handleAddStudent = (name: string) => {
     setNewStudentName(name);
+    setShowAddStudentModal(false);
   };
 
   const handleShowAddStudent = () => {
@@ -211,6 +240,10 @@ const HomePage = () => {
     () => ({
       // AddYearContext
       onAddAcademicYear: handleAddAcademicYear,
+
+      // EditAcademicYearContext
+      handleEditAcademicYear,
+      handleEditAcademicYearButtonClick,
 
       // AddLogContext
       selectedAcademicYearId,
@@ -244,6 +277,8 @@ const HomePage = () => {
       academicYears,
       newStudentName,
       handleChangeStudentIsTerminated,
+      handleEditAcademicYear,
+      handleEditAcademicYearButtonClick,
     ],
   );
 
@@ -297,6 +332,7 @@ const HomePage = () => {
               onAcademicYearSelect={handleAcademicYearSelect}
               academicYears={academicYears}
               selectedAcademicYearId={selectedAcademicYearId}
+              onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
             />
           )}
         </Col>
@@ -325,11 +361,22 @@ const HomePage = () => {
         type={deleteType}
         message={deleteMessage}
       />
+
+      {showEditAcademicYearModal && academicYearToEdit && (
+        <EditAcademicYearModal
+          academicYears={academicYears}
+          academicYear={academicYearToEdit}
+          show={showEditAcademicYearModal}
+          onHide={() => setShowEditAcademicYearModal(false)}
+          onConfirm={() => handleEditAcademicYear(academicYearToEdit)}
+        />
+      )}
+
       {alert && (
         <AlertModal
           message={alert}
           alertTitle={alertTitle}
-          onClose={() => {
+          onHide={() => {
             setAlert(null);
             setAlertTitle(null);
           }}

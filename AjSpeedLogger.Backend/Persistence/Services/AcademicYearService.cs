@@ -5,10 +5,10 @@ namespace Persistence.Services;
 public class AcademicYearService(IRepository _repository, IMapper _mapper, IContext _db) : IAcademicYearService
 {
 	// GET
-	public async Task<IEnumerable<AcademicYearNameDto>> GetAllNamesAsync(string applicationUserId)
+	public async Task<IEnumerable<AcademicYearDto>> GetAllAsync(string applicationUserId)
 	{
 		var academicYears = await _repository.GetAsync<AcademicYear>(ay => ay.ApplicationUserId == applicationUserId);
-		return _mapper.Map<IEnumerable<AcademicYearNameDto>>(academicYears);
+		return _mapper.Map<IEnumerable<AcademicYearDto>>(academicYears);
 	}
 
 	public async Task<AcademicYearDto?> GetByIdAsync(int id, string applicationUserId)

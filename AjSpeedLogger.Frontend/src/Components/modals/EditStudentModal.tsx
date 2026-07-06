@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import type { Student } from "../../types/student";
 import { Button, Form, Modal } from "react-bootstrap";
+import { isStudentNameValid } from "../../utils/validation";
 
 interface EditStudentModalProps {
   show: boolean;
@@ -31,10 +32,6 @@ const EditStudentModal = ({
   const isSomethingChanged = (name: string, isTerminated: boolean) =>
     name.trim() !== student?.name || isTerminated !== student?.isTerminated;
 
-  const isInvalid = (name: string) =>
-    name.trim().length < 2 ||
-    allStudents?.some((s) => s.name === name.trim() && s.id !== student?.id);
-
   const onChangeName = (value: string) => {
     const duplicate =
       value.trim() !== student?.name &&
@@ -44,7 +41,7 @@ const EditStudentModal = ({
     setDisableButton(
       duplicate ||
         !isSomethingChanged(value, isStudentTerminated) ||
-        isInvalid(value),
+        !isStudentNameValid(allStudents, value),
     );
   };
 
@@ -69,11 +66,6 @@ const EditStudentModal = ({
           <Modal.Title>Redigera elev</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            <b>
-              {student?.name} NEW NAME= {newName}
-            </b>
-          </p>
           <Form.Control
             defaultValue={student?.name}
             onChange={(e) => onChangeName(e.target.value)}
