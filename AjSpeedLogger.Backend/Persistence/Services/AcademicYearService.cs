@@ -1,8 +1,9 @@
-﻿using System.Windows.Markup;
+﻿using System.Net.WebSockets;
+using System.Windows.Markup;
 
 namespace Persistence.Services;
 
-public class AcademicYearService(IRepository _repository, IMapper _mapper, IContext _db) : IAcademicYearService
+public class AcademicYearService(IRepository _repository, IMapper _mapper, IContext _db, IBaseLogDayService _baseLogDayService) : IAcademicYearService
 {
 	// GET
 	public async Task<IEnumerable<AcademicYearDto>> GetAllAsync(string applicationUserId)
@@ -32,7 +33,7 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 			var userAllAcademicYears = await _db.AcademicYears
 				.Where(ay => ay.ApplicationUserId == applicationUserId)
 				.ToListAsync();
-			if (userAllAcademicYears == null ||!userAllAcademicYears.Any())
+			if (userAllAcademicYears == null || !userAllAcademicYears.Any())
 				return null;
 			var today = DateOnly.FromDateTime(DateTime.Today);
 			var selectedAcademicYear = userAllAcademicYears.FirstOrDefault(uay => today >= uay.StartDate && today <= uay.EndDate);
@@ -108,6 +109,48 @@ public class AcademicYearService(IRepository _repository, IMapper _mapper, ICont
 		await _repository.SaveChangesAsync();
 		return _mapper.Map<AcademicYearDto>(academicYearEntity);
 	}	
+
+	public async Task<bool> UpdateAsync(int id, AcademicYearUpdateDto dto, string applicationUserId)
+	{
+		var existingEntityWithBaseLogDays = await _repository.GetSingleWithIncludesAsync<AcademicYear>(ay => ay.Id == id && ay.ApplicationUserId == applicationUserId, "BaseLogDays");
+		if (existingEntityWithBaseLogDays == null || existingEntityWithBaseLogDays.BaseLogDays == null)
+			return false;
+
+		var existingFirstDate = existingEntityWithBaseLogDays.BaseLogDays.OrderBy(b => b.Date).FirstOrDefault().Date;
+		if (existingFirstDate > dto.StartDate)
+		{			
+			var date = dto.StartDate;
+			while (date < existingFirstDate)
+			{
+				existingEntityWithBaseLogDays.BaseLogDays.Add(new BaseLogDay
+				{
+					Date = date,
+					WeekNumber = ISOWeek.GetWeekOfYear(date)
+				});
+				date = date.AddDays(1);
+			}
+		}
+
+		var existingLastDate = existingEntityWithBaseLogDays.BaseLogDays.OrderBy(b => b.Date).LastOrDefault().Date;
+		if (existingLastDate != default && existingLastDate < dto.EndDate)
+		{
+			var date = existingLastDate.AddDays(1);
+			while (date <= dto.EndDate)
+			{
+				existingEntityWithBaseLogDays.BaseLogDays.Add(new BaseLogDay
+				{
+					Date = date,
+					WeekNumber = ISOWeek.GetWeekOfYear(date)
+				});
+				date = date.AddDays(1);
+			}
+		}
+
+		_mapper.Map(dto, existingEntityWithBaseLogDays); // Maps dto into existing entity
+
+		await _repository.SaveChangesAsync();
+		return true;
+	}
 
 	public async Task<bool> DeleteAsync(int id, string applicationUserId)
 	{

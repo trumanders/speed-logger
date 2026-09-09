@@ -80,6 +80,18 @@ public class AcademicYearController(IAcademicYearService _academicYearService) :
 		}
 	}
 
+	[HttpPut("{id}/content")]
+	public async Task<IActionResult> Update(int id, [FromBody] AcademicYearUpdateDto updateDto)
+	{
+
+		var applicationUserId = ApplicationUserId;
+		if (applicationUserId == null)
+			return Unauthorized();
+		if (!await _academicYearService.UpdateAsync(id, updateDto, applicationUserId))
+			return BadRequest();
+		return NoContent();
+	}
+
 	// DELETE
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> Delete(int id)

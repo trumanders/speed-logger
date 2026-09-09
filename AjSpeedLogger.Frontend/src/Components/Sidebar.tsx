@@ -26,7 +26,14 @@ const Sidebar = ({
   return (
     <>
       {academicYears.length > 0 ? (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
           <AcademicYearDropdown
             academicYears={academicYears}
             onAcademicYearSelect={onAcademicYearSelect}
@@ -39,7 +46,11 @@ const Sidebar = ({
             </Link>
           </div>
 
-          <ListGroup>
+          <ListGroup
+            style={{
+              overflowY: "auto",
+            }}
+          >
             {selectedAcademicYearStudents
               ?.slice() // Create a copy to not mutate the original
               .sort(

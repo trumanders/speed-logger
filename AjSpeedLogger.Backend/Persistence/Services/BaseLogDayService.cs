@@ -4,8 +4,12 @@ public class BaseLogDayService(IRepository _repository, IMapper _mapper) : IBase
 {
 	public async Task<List<BaseLogDayDto>> GetByAcademicYearIdAsync(int academicYearId, string applicationUserId)
 	{
+		
 		var baseLogDayEntities = await _repository.GetAsync<BaseLogDay>(bld =>
-			bld.AcademicYearId == academicYearId && bld.AcademicYear.ApplicationUserId == applicationUserId);
+			bld.AcademicYearId == academicYearId &&
+			bld.Date >= bld.AcademicYear.StartDate &&
+			bld.Date <= bld.AcademicYear.EndDate &&
+			bld.AcademicYear.ApplicationUserId == applicationUserId);
 		var baseLogDayDtos = _mapper.Map<List<BaseLogDayDto>>(baseLogDayEntities);
 		return baseLogDayDtos;
 	}

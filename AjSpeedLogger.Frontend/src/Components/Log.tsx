@@ -87,16 +87,21 @@ const Log = () => {
           }}
         >
           {(() => {
+            const sortedBaseLogDays = [...baseLogDays].sort((a, b) =>
+              a.date.localeCompare(b.date),
+            );
             const logDayTextBoxes = [];
-
             // Start from the correct weekday
             const firstBaseLogWeekday =
-              new Date(baseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
+              new Date(sortedBaseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
             let firstIndex = log.dayOfWeek - firstBaseLogWeekday;
             if (firstIndex < 0) firstIndex = firstIndex + 7; // Log starts the week after the academicYear start.
 
-            for (let i = firstIndex; i < baseLogDays.length; i += 7) {
-              const baseLogDay = baseLogDays[i];
+            // VISA INTE BASERAT PÅ ALLA BASELOGDAYS SOM FINNS, UTAN KOLLA
+            // VILKET START OCH SLUTDATUM LÄSÅRET FAKTISKT HAR.
+            // (Eftersom baslogdays inte tas bort om man redigerar läsåret och gör det kortare.)
+            for (let i = firstIndex; i < sortedBaseLogDays.length; i += 7) {
+              const baseLogDay = sortedBaseLogDays[i];
               logDayTextBoxes.push(
                 <div key={baseLogDay.id}>
                   v{baseLogDay.weekNumber} -{" "}

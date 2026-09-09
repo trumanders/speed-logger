@@ -21,7 +21,6 @@ const EditAcademicYearModal = ({
   const [endDate, setEndDate] = useState(academicYear.endDate);
   const [showStartRangeError, setShowStartRangeError] = useState(false);
   const [showEndRangeError, setShowEndRangeError] = useState(false);
-  const [showRangeError, setShowRangeError] = useState(false);
 
   const isValidStartDate = () => {
     const startDateObj = new Date(startDate);
@@ -45,6 +44,11 @@ const EditAcademicYearModal = ({
       setShowEndRangeError(true);
     }
     if (isValidStartDate() && isValidEndDate()) {
+      console.log(
+        "KÖR confirmClick i EditAcademicYearModal:",
+        startDate,
+        endDate,
+      );
       onConfirm({ ...academicYear, startDate, endDate });
       onHide();
     }
@@ -61,6 +65,7 @@ const EditAcademicYearModal = ({
           <Form.Label>
             <strong>Startdatum</strong>
           </Form.Label>
+
           <Form.Control
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}

@@ -1,6 +1,5 @@
 import type { AcademicYear } from "../types/academicYear";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
-import type { AcademicYearName } from "../types/academicYearName";
 import type { AcademicYearAllUserData } from "../types/allUserData";
 import apiClient from "./apiClient";
 
@@ -30,12 +29,10 @@ export const addAcademicYear = async (academicYear: AcademicYearCreate) => {
   return response.data;
 };
 
-export const updateAcademicYear = async (
-  id: number,
-  academicYear: AcademicYear,
-) => {
+export const updateAcademicYear = async (academicYear: AcademicYear) => {
+  console.log("Updating academic year:", academicYear);
   const response = await apiClient.put(
-    `/AcademicYear/${id}`,
+    `/AcademicYear/${academicYear.id}/content`,
     JSON.stringify(academicYear),
     {
       headers: { "Content-Type": "application/json" },

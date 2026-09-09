@@ -9,7 +9,7 @@ import {
 import LogTextarea from "./LogTextarea";
 
 const ManageBaseLog = () => {
-  const { baseLogDays, academicYear, onUpdateBaseLogDay } =
+  const { baseLogDays, academicYear, onAddBaseLogDay, onUpdateBaseLogDay } =
     useOutletContext<BaseLogDaysContext>();
   const baseLogTextSaveTimers = useRef<Record<number, any>>({});
 
@@ -26,6 +26,24 @@ const ManageBaseLog = () => {
     }, 2000);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedBaseLogDays = await getBaseLogDaysByAcademicYear(
+        academicYear.id,
+      );
+      fetchedBaseLogDays.forEach((fetchedBaseLogDay) => {
+        const existingBaseLogDay = baseLogDays.find(
+          (bld) => bld.id === fetchedBaseLogDay.id,
+        );
+        if (!existingBaseLogDay) {
+          onAddBaseLogDay(fetchedBaseLogDay);
+        }
+      });
+    };
+
+    fetchData();
+  }, [academicYear.id, onAddBaseLogDay]);
+
   return (
     <>
       <div
@@ -41,9 +59,12 @@ const ManageBaseLog = () => {
         </div>
         <div style={{ flexGrow: 1, overflowY: "auto" }}>
           {(() => {
+            const sortedBaseLogDays = [...baseLogDays].sort((a, b) =>
+              a.date.localeCompare(b.date),
+            );
             const textBoxes = [];
-            for (let i = 0; i < baseLogDays.length; i++) {
-              const baseLogDay = baseLogDays[i];
+            for (let i = 0; i < sortedBaseLogDays.length; i++) {
+              const baseLogDay = sortedBaseLogDays[i];
               textBoxes.push(
                 <div key={baseLogDay.id}>
                   v{baseLogDay.weekNumber} -{" "}

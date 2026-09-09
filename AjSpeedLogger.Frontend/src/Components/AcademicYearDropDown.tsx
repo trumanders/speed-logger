@@ -33,14 +33,16 @@ const AcademicYearDropdown = ({
                 : "Du har inga läsår"}
             </span>
             {academicYears?.length > 0 && selectedAcademicYearId && (
-              <button
+              <span
+                role="button"
                 className="btn p-0 border-0 ms-auto"
-                onClick={() =>
-                  onEditAcademicYearButtonClick(selectedAcademicYearId)
-                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditAcademicYearButtonClick(selectedAcademicYearId);
+                }}
               >
                 <img src="/images/edit.png" className="edit-icon" />
-              </button>
+              </span>
             )}
           </Stack>
         </Dropdown.Toggle>

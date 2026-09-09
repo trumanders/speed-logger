@@ -7,6 +7,7 @@ public class MappingProfile : Profile
 		CreateMap<AcademicYear, AcademicYearCreateDto>().ReverseMap();
 		CreateMap<AcademicYear, AcademicYearDto>().ReverseMap();
 		CreateMap<AcademicYear, AcademicYearNameDto>().ReverseMap();
+		CreateMap<AcademicYear, AcademicYearUpdateDto>().ReverseMap();
 		CreateMap<Student, StudentCreateDto>().ReverseMap();
 		CreateMap<Student, StudentDto>().ReverseMap();
 		CreateMap<Log, LogDto>().ReverseMap();
@@ -15,5 +16,6 @@ public class MappingProfile : Profile
 			//.ForSourceMember(src => src.Log, opt => opt.DoNotValidate())
 			//.ForSourceMember(src => src.BaseLogDay, opt => opt.DoNotValidate());
 		CreateMap<LogDay, LogDayCreateDto>().ReverseMap();
+		CreateMap<BaseLogDayDto, BaseLogDay>().ReverseMap();
 	}
 }

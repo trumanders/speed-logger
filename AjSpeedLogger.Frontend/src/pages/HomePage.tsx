@@ -36,10 +36,10 @@ export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
 }
 
-export interface EditAcademicYearContext {
-  handleEditAcademicYear: (id: number, academicYear: AcademicYear) => void;
-  handleEditAcademicYearButtonClick: (academicYear: AcademicYear) => void;
-}
+// export interface EditAcademicYearContext {
+//   handleEditAcademicYear: (id: number, academicYear: AcademicYear) => void;
+//   handleEditAcademicYearButtonClick: (academicYear: AcademicYear) => void;
+// }
 
 export interface AddLogContext {
   selectedAcademicYearId: number | null;
@@ -63,6 +63,7 @@ export interface BaseLogDaysContext {
   baseLogDays: BaseLogDay[];
   academicYear: AcademicYear;
   onUpdateBaseLogDay: (id: number, newContent: string) => void;
+  onAddBaseLogDay: (newBaseLogDay: BaseLogDay) => void;
 }
 
 export interface ManageStudentsContext {
@@ -160,6 +161,16 @@ const HomePage = () => {
     });
   };
 
+  const handleAddBaseLogDay = (newBaseLogDay: BaseLogDay) => {
+    setAllUserData((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        baseLogDays: [...prev.baseLogDays, newBaseLogDay],
+      };
+    });
+  };
+
   const handleEditStudentClick = async (studentUpdate: Student) => {
     setStudentToEdit(studentUpdate);
     setShowEditStudentModal(true);
@@ -202,11 +213,8 @@ const HomePage = () => {
   };
 
   const handleEditAcademicYear = async (academicYear: AcademicYear) => {
-    const updatedAcademicYear = await updateAcademicYear(
-      academicYear.id,
-      academicYear,
-    );
-    academicYears;
+    console.log("KÖR handleEditAcademicYear i HomePage:", academicYear);
+    await updateAcademicYear(academicYear);
   };
 
   const handleEditAcademicYearButtonClick = (academicYearId: number) => {
@@ -263,6 +271,7 @@ const HomePage = () => {
         (ay) => ay.id === selectedAcademicYearId,
       ),
       onUpdateBaseLogDay: handleUpdateBaseLogDay,
+      onAddBaseLogDay: handleAddBaseLogDay,
 
       // ManageStudent
       onEditStudentClick: handleEditStudentClick,
@@ -317,7 +326,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <>
+    <div>
       <ActionBar />
       <Row>
         <Col sm={4} className="border-end">
@@ -368,7 +377,9 @@ const HomePage = () => {
           academicYear={academicYearToEdit}
           show={showEditAcademicYearModal}
           onHide={() => setShowEditAcademicYearModal(false)}
-          onConfirm={() => handleEditAcademicYear(academicYearToEdit)}
+          onConfirm={(updatedAcademicYear) =>
+            handleEditAcademicYear(updatedAcademicYear)
+          }
         />
       )}
 
@@ -382,7 +393,7 @@ const HomePage = () => {
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 
