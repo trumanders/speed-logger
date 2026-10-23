@@ -22,3 +22,6 @@ build/
 .DS_Store
 *.log
 .env*
+/AjSpeedLogger.Backend/Api/ConnectionString.txt
+/AjSpeedLogger.Backend/Api/Application-flow-logic.txt
+/AjSpeedLogger.Backend/Api/design.txt

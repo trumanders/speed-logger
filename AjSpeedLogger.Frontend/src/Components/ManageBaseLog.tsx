@@ -65,11 +65,19 @@ const ManageBaseLog = () => {
             const textBoxes = [];
             for (let i = 0; i < sortedBaseLogDays.length; i++) {
               const baseLogDay = sortedBaseLogDays[i];
+              const date = new Date(baseLogDay.date);
               textBoxes.push(
                 <div key={baseLogDay.id}>
-                  v{baseLogDay.weekNumber} -{" "}
+                  {date.getDay() === 1 && (
+                    <>
+                      <b>
+                        v{baseLogDay.weekNumber} <br></br>
+                      </b>
+                    </>
+                  )}
                   {new Intl.DateTimeFormat("sv-SE", {
                     day: "numeric",
+                    weekday: "long",
                     month: "long",
                   }).format(new Date(baseLogDay.date))}
                 </div>,

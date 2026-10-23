@@ -11,7 +11,9 @@ public class Program
 		builder.Services.AddControllers()
 			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter()));
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+			options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseSessionPoolerConnection")));
+			//options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseConnection")));
+		
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
 		builder.Services.AddScoped<IContext, Context>();
@@ -33,7 +35,7 @@ public class Program
 		})
 			.AddJwtBearer(options =>
 			{
-				options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,
 					ValidateAudience = true,
@@ -46,31 +48,6 @@ public class Program
 				};
 			});
 		builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
-		builder.Services.AddSwaggerGen(c =>
-		{
-			c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-			{
-				Name = "Authorization",
-				Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-				Scheme = "Bearer",
-				BearerFormat = "JWT",
-				In = Microsoft.OpenApi.Models.ParameterLocation.Header
-			});
-			c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-			{
-				{
-					new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-					{
-						Reference = new Microsoft.OpenApi.Models.OpenApiReference
-						{
-							Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-							Id = "Bearer"
-						}
-					},
-					Array.Empty<string>()
-				}
-			});
-		});
 
 		// Configure CORS
 		builder.Services.AddCors(options =>
@@ -84,13 +61,6 @@ public class Program
 		});
 
 		var app = builder.Build();
-
-		// Configure the HTTP request pipeline.
-		if (app.Environment.IsDevelopment())
-		{
-			app.UseSwagger();
-			app.UseSwaggerUI();
-		}
 		app.UseCors();
 		app.UseAuthentication();
 		app.UseAuthorization();

@@ -61,6 +61,15 @@ const Log = () => {
     if (log.id) fetchData();
   }, [student.id, log.id]);
 
+  if (
+    !students ||
+    students.length === 0 ||
+    !baseLogDays ||
+    baseLogDays.length === 0
+  ) {
+    return <div>Laddar...</div>;
+  }
+
   return (
     <>
       <div

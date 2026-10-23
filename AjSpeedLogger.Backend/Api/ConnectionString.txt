@@ -1,5 +1,0 @@
-LOCAL POSTGRES:
-Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=Zildjianpaiste0+;
-
-SUPABASE:
-ConnectionStrings:PostgreSqlConnection = Host=aws-0-eu-west-1.pooler.supabase.com;Database=postgres;Username=postgres.kaohvrxaxwvxtpxhpkpp;Password=Zildjianpaiste0+;SSL Mode=Require;Trust Server Certificate=true
