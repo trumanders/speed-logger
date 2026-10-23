@@ -1,6 +1,5 @@
 import type { LogDay } from "../types/allUserData";
 import type { LogDayCreate } from "../types/logDayCreate";
-import type { LogDayUpdate } from "../types/logDayUpdate";
 import apiClient from "./apiClient";
 
 export const createLogDay = async (

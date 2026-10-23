@@ -238,12 +238,6 @@ const HomePage = () => {
     setNewStudentName("");
   };
 
-  const handleStudentClick = () => {
-    navigate("/Log");
-  };
-
-  const handleBaseLogClick = () => {};
-
   const contexts = useMemo(
     () => ({
       // AddYearContext
