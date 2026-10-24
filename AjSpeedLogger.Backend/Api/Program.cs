@@ -54,7 +54,7 @@ public class Program
 		{
 			options.AddDefaultPolicy(policy =>
 			{
-				policy.WithOrigins("http://localhost:5173") // React app URL
+				policy.WithOrigins("http://localhost:5173", "https://speedlogger.netlify.app") // React app URL
 					  .AllowAnyHeader()
 					  .AllowAnyMethod();
 			});

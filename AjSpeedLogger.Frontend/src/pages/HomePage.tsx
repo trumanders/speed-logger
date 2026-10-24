@@ -371,7 +371,7 @@ const HomePage = () => {
           academicYear={academicYearToEdit}
           show={showEditAcademicYearModal}
           onHide={() => setShowEditAcademicYearModal(false)}
-          onConfirm={(updatedAcademicYear) =>
+          onConfirm={(updatedAcademicYear: AcademicYear) =>
             handleEditAcademicYear(updatedAcademicYear)
           }
         />
