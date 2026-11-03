@@ -13,10 +13,6 @@ import EditStudentButton from "./buttons/EditStudentButton";
 const Log = () => {
   const { baseLogDays, students } = useOutletContext<LogContext>();
   const { studentId } = useParams();
-  const student = students.find((s) => s.id === Number(studentId));
-  const log = student?.log;
-
-  if (!student) return null;
 
   const [logDays, setLogDays] = useState<LogDay[]>(() =>
     (baseLogDays || []).map((b) => ({
@@ -25,7 +21,36 @@ const Log = () => {
       content: "",
     })),
   );
+
   const logTextSaveTimers = useRef<Record<number, any>>({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedLogs = await getLogDaysByLogId(log.id);
+      const merged = baseLogDays.map(
+        (bld) =>
+          fetchedLogs.find((l) => l.baseLogDayId === bld.id) || {
+            baseLogDayId: bld.id,
+            content: "",
+          },
+      );
+      setLogDays(merged as LogDay[]);
+    };
+    fetchData();
+  }, [logDays, studentId]);
+
+  if (
+    !students ||
+    students.length === 0 ||
+    !baseLogDays ||
+    baseLogDays.length === 0
+  ) {
+    return <div>Laddar...</div>;
+  }
+
+  const student = students.find((s) => s.id === Number(studentId));
+  const log = student?.log;
+
   if (!log || !student) return <div>Kan inte hitta log eller elev</div>;
 
   const handleTextChange = async (baseLogDayId: number, newContent: string) => {
@@ -45,30 +70,6 @@ const Log = () => {
       delete logTextSaveTimers.current[baseLogDayId];
     }, 2000);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedLogs = await getLogDaysByLogId(log.id);
-      const merged = baseLogDays.map(
-        (bld) =>
-          fetchedLogs.find((l) => l.baseLogDayId === bld.id) || {
-            baseLogDayId: bld.id,
-            content: "",
-          },
-      );
-      setLogDays(merged as LogDay[]);
-    };
-    if (log.id) fetchData();
-  }, [student.id, log.id]);
-
-  if (
-    !students ||
-    students.length === 0 ||
-    !baseLogDays ||
-    baseLogDays.length === 0
-  ) {
-    return <div>Laddar...</div>;
-  }
 
   return (
     <>

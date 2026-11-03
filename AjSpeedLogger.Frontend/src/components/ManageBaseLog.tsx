@@ -13,19 +13,6 @@ const ManageBaseLog = () => {
     useOutletContext<BaseLogDaysContext>();
   const baseLogTextSaveTimers = useRef<Record<number, any>>({});
 
-  const handleTextChange = async (id: number, newContent: string) => {
-    // Local update
-    if (baseLogTextSaveTimers.current[id]) {
-      clearTimeout(baseLogTextSaveTimers.current[id]);
-    }
-    baseLogTextSaveTimers.current[id] = setTimeout(async () => {
-      onUpdateBaseLogDay(id, newContent);
-
-      await updateBaseLogDay({ id: id, content: newContent });
-      delete baseLogTextSaveTimers.current[id];
-    }, 2000);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       const fetchedBaseLogDays = await getBaseLogDaysByAcademicYear(
@@ -42,7 +29,24 @@ const ManageBaseLog = () => {
     };
 
     fetchData();
-  }, [academicYear.id, onAddBaseLogDay]);
+  }, [academicYear, onAddBaseLogDay]);
+
+  const handleTextChange = async (id: number, newContent: string) => {
+    // Local update
+    if (baseLogTextSaveTimers.current[id]) {
+      clearTimeout(baseLogTextSaveTimers.current[id]);
+    }
+    baseLogTextSaveTimers.current[id] = setTimeout(async () => {
+      onUpdateBaseLogDay(id, newContent);
+
+      await updateBaseLogDay({ id: id, content: newContent });
+      delete baseLogTextSaveTimers.current[id];
+    }, 2000);
+  };
+
+  if (!academicYear || !baseLogDays) {
+    return <div>Laddar...</div>;
+  }
 
   return (
     <>
@@ -69,11 +73,13 @@ const ManageBaseLog = () => {
               textBoxes.push(
                 <div key={baseLogDay.id}>
                   {date.getDay() === 1 && (
-                    <>
+                    <div>
                       <b>
-                        v{baseLogDay.weekNumber} <br></br>
+                        <h4>
+                          vecka {baseLogDay.weekNumber} <br></br>
+                        </h4>
                       </b>
-                    </>
+                    </div>
                   )}
                   {new Intl.DateTimeFormat("sv-SE", {
                     day: "numeric",
@@ -81,13 +87,13 @@ const ManageBaseLog = () => {
                     month: "long",
                   }).format(new Date(baseLogDay.date))}
                 </div>,
-                <Stack direction="horizontal" className="mb-3">
+                <div className="mb-2">
                   <LogTextarea
                     id={baseLogDay.id}
                     content={baseLogDay.content}
                     onTextChange={handleTextChange}
                   />
-                </Stack>,
+                </div>,
               );
             }
             return textBoxes;
