@@ -1,6 +1,5 @@
 import { useOutletContext } from "react-router";
 import type { BaseLogDaysContext } from "../pages/HomePage";
-import { Stack } from "react-bootstrap";
 import { useEffect, useRef } from "react";
 import {
   getBaseLogDaysByAcademicYear,
