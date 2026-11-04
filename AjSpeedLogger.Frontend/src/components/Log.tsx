@@ -23,8 +23,6 @@ const Log = () => {
   );
 
   const logTextSaveTimers = useRef<Record<number, any>>({});
-  const student = students?.find((s) => s.id === Number(studentId));
-  const log = student?.log;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +37,7 @@ const Log = () => {
       setLogDays(merged as LogDay[]);
     };
     fetchData();
-  }, [logDays, studentId]);
+  }, [studentId]);
 
   if (
     !students ||
@@ -49,7 +47,8 @@ const Log = () => {
   ) {
     return <div>Laddar...</div>;
   }
-
+  const student = students?.find((s) => s.id === Number(studentId));
+  const log = student?.log;
   if (!log || !student) return <div>Kan inte hitta log eller elev</div>;
 
   const handleTextChange = async (baseLogDayId: number, newContent: string) => {
