@@ -23,7 +23,7 @@ const Log = () => {
   );
 
   const logTextSaveTimers = useRef<Record<number, any>>({});
-  const student = students.find((s) => s.id === Number(studentId));
+  const student = students?.find((s) => s.id === Number(studentId));
   const log = student?.log;
 
   useEffect(() => {
@@ -138,7 +138,7 @@ const Log = () => {
                   ) : (
                     <textarea
                       value={
-                        logDays.find((ld) => ld.baseLogDayId === baseLogDay.id)
+                        logDays?.find((ld) => ld.baseLogDayId === baseLogDay.id)
                           ?.content || ""
                       }
                       key={`${student.id}-${baseLogDay.id}`}
