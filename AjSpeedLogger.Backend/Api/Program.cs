@@ -11,7 +11,7 @@ public class Program
 		builder.Services.AddControllers()
 			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter()));
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseSessionPoolerConnection")));
+			options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 		
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
 		builder.Services.AddScoped<IBaseLogDayService, BaseLogDayService>();
