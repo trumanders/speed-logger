@@ -1,5 +1,4 @@
 import { ListGroup } from "react-bootstrap";
-import AcademicYearDropdown from "./AcademicYearDropDown";
 import { Link } from "react-router";
 import { weekDays } from "../constants/weekDays";
 import React from "react";
@@ -12,16 +11,12 @@ interface SideBarProps {
   onSelectStudent: (id: number) => void;
   onAcademicYearSelect: (id: number) => void;
   selectedAcademicYearId: number | null;
-  onEditAcademicYearButtonClick: (academicYearId: number) => void;
 }
 
 const Sidebar = ({
   selectedAcademicYearStudents,
   academicYears,
   onSelectStudent,
-  onAcademicYearSelect,
-  selectedAcademicYearId,
-  onEditAcademicYearButtonClick,
 }: SideBarProps) => {
   return (
     <>
@@ -34,12 +29,6 @@ const Sidebar = ({
             overflow: "hidden",
           }}
         >
-          <AcademicYearDropdown
-            academicYears={academicYears}
-            onAcademicYearSelect={onAcademicYearSelect}
-            selectedAcademicYearId={selectedAcademicYearId}
-            onEditAcademicYearButtonClick={onEditAcademicYearButtonClick}
-          />
           <div className="d-flex justify-content-center mb-3">
             <Link to="/add-log" className="btn btn-outline-primary btn-sm">
               Ny logg

@@ -1,11 +1,31 @@
 import { Stack } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import AcademicYearDropdown from "./AcademicYearDropDown";
+import type { AcademicYear } from "../types/academicYear";
 
-const ActionBar = () => {
+interface ActionBarProps {
+  academicYears: AcademicYear[];
+  onAcademicYearSelect: (id: number) => void;
+  onEditAcademicYearButtonClick: (academicYearId: number) => void;
+  selectedAcademicYearId: number | null;
+}
+
+const ActionBar = ({
+  academicYears,
+  onAcademicYearSelect,
+  onEditAcademicYearButtonClick,
+  selectedAcademicYearId,
+}: ActionBarProps) => {
   return (
-    <div className="bg-light py-1 px-3 border-bottom w-100">
+    <div className="bg-light py-1 px-3 mb-3 border-bottom w-100">
       <Stack direction="horizontal" gap={2}>
-        <Link to="/add-year" className="btn btn-outline-primary btn-sm">
+        <AcademicYearDropdown
+          academicYears={academicYears}
+          onAcademicYearSelect={onAcademicYearSelect}
+          selectedAcademicYearId={selectedAcademicYearId}
+          onEditAcademicYearButtonClick={onEditAcademicYearButtonClick}
+        />
+        <Link to="/add-year" className="btn btn-outline-primary btn-sm ms-auto">
           Nytt läsår
         </Link>
         <Link to="/manage-baselog" className="btn btn-outline-primary btn-sm">

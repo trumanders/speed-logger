@@ -321,7 +321,12 @@ const HomePage = () => {
 
   return (
     <div>
-      <ActionBar />
+      <ActionBar
+        academicYears={academicYears}
+        onAcademicYearSelect={handleAcademicYearSelect}
+        onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
+        selectedAcademicYearId={selectedAcademicYearId}
+      />
       <Row>
         <Col sm={4} className="border-end">
           {isLoading ? (
@@ -335,7 +340,6 @@ const HomePage = () => {
               onAcademicYearSelect={handleAcademicYearSelect}
               academicYears={academicYears}
               selectedAcademicYearId={selectedAcademicYearId}
-              onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
             />
           )}
         </Col>

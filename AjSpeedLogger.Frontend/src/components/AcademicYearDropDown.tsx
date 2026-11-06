@@ -15,15 +15,13 @@ const AcademicYearDropdown = ({
   onEditAcademicYearButtonClick,
 }: AcademicYearDropdownProps) => {
   return (
-    <>
-      <span>
-        <h6>Läsår:</h6>
-      </span>
+    <Stack className="align-items-center" direction="horizontal">
+      <h6 className="mb-2 me-2 mt-2">Läsår:</h6>
 
-      <Dropdown className="w-100 mb-3">
+      <Dropdown className="mb-2 mt-2">
         <Dropdown.Toggle
           variant="outline-secondary"
-          className="w-100 d-flex align-items-center justify-content-between bg-white text-dark border-secondary-subtle"
+          className="d-flex align-items-center justify-content-between bg-white text-dark border-secondary-subtle"
         >
           <Stack direction="horizontal" gap={2}>
             <span>
@@ -64,7 +62,7 @@ const AcademicYearDropdown = ({
           ))}
         </Dropdown.Menu>
       </Dropdown>
-    </>
+    </Stack>
   );
 };
 
