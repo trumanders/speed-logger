@@ -53,7 +53,7 @@ public class Program
 		{
 			options.AddDefaultPolicy(policy =>
 			{
-				policy.WithOrigins("http://localhost:5173", "https://speedlogger.netlify.app", "https://snaplog.se")
+				policy.WithOrigins("http://localhost:5173", "https://speedlogger.netlify.app", "https://www.snaplog.se")
 					  .AllowAnyHeader()
 					  .AllowAnyMethod();
 			});
