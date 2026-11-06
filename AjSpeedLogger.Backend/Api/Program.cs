@@ -11,7 +11,7 @@ public class Program
 		builder.Services.AddControllers()
 			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter()));
 		builder.Services.AddDbContext<Context>(options =>
-			options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseSessionPoolerConnection")));
+			options.UseNpgsql(builder.Configuration.GetConnectionString("LocalConnection")));
 			//options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseConnection")));
 		
 		builder.Services.AddScoped<IAcademicYearService, AcademicYearService>();
@@ -54,7 +54,7 @@ public class Program
 		{
 			options.AddDefaultPolicy(policy =>
 			{
-				policy.WithOrigins("http://localhost:5173", "https://speedlogger.netlify.app") // React app URL
+				policy.WithOrigins("http://localhost:5173", "https://speedlogger.netlify.app", "https://www.snaplog.se") // React app URL
 					  .AllowAnyHeader()
 					  .AllowAnyMethod();
 			});
