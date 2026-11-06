@@ -320,15 +320,18 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
+    <div
+      className="d-flex flex-column flex-grow-1 overflow-hidden"
+      style={{ minHeight: 0 }}
+    >
       <ActionBar
         academicYears={academicYears}
         onAcademicYearSelect={handleAcademicYearSelect}
         onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
         selectedAcademicYearId={selectedAcademicYearId}
       />
-      <Row>
-        <Col sm={4} className="border-end">
+      <Row className="flex-grow-1 m-0" style={{ minHeight: 0 }}>
+        <Col sm={4} className="border-end overflow-auto">
           {isLoading ? (
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -343,7 +346,7 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col sm={8} className="ps-4">
+        <Col sm={8} className="ps-4 overflow-auto">
           <Outlet context={contexts} />
         </Col>
       </Row>

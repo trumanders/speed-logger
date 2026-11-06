@@ -35,7 +35,7 @@ const ProtectedRoute = () => {
 const App = () => {
   return (
     <>
-      <Container>
+      <Container className="d-flex flex-column vh-100 overflow-hidden">
         <Navigation />
         <Routes>
           <Route element={<ProtectedRoute />}>
