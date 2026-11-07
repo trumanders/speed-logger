@@ -57,6 +57,11 @@ const ManageBaseLog = () => {
       >
         <div className="m-3" style={{ flexShrink: 0 }}>
           <h4>Baslogg - {academicYear.name}</h4>
+          <p className="border p-2">
+            Inlägg här visas på alla loggar för respektive datum. Om det redan
+            finns text på samma datum i loggen, kommer denna text visas där
+            istället.
+          </p>
         </div>
         <div>
           {(() => {

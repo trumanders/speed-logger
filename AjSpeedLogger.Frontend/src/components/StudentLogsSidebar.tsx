@@ -5,7 +5,7 @@ import React from "react";
 import type { StudentAllUserData } from "../types/allUserData";
 import type { AcademicYear } from "../types/academicYear";
 
-interface SideBarProps {
+interface StudentLogsSideBarProps {
   selectedAcademicYearStudents: StudentAllUserData[] | [];
   academicYears: AcademicYear[];
   onSelectStudent: (id: number) => void;
@@ -13,11 +13,11 @@ interface SideBarProps {
   selectedAcademicYearId: number | null;
 }
 
-const Sidebar = ({
+const StudentLogsSidebar = ({
   selectedAcademicYearStudents,
   academicYears,
   onSelectStudent,
-}: SideBarProps) => {
+}: StudentLogsSideBarProps) => {
   return (
     <div className="mb-5">
       {academicYears.length > 0 ? (
@@ -32,6 +32,7 @@ const Sidebar = ({
               Ny logg
             </Link>
           </div>
+          <h5 className="ms-4">Elevloggar</h5>
 
           <ListGroup>
             {selectedAcademicYearStudents
@@ -79,4 +80,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default StudentLogsSidebar;

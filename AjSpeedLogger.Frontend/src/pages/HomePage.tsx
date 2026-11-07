@@ -20,7 +20,7 @@ import {
 import { getAcademicYears } from "../services/academicYearService";
 import { getAllUserDataByAcademicYear } from "../services/academicYearService";
 import ActionBar from "../components/ActionBar";
-import Sidebar from "../components/Sidebar";
+import StudentLogsSidebar from "../components/StudentLogsSidebar";
 import type { AcademicYearCreate } from "../types/academicYearCreate";
 import type { LogCreate } from "../types/logCreate";
 import { AddStudentModal } from "../components/modals/AddStudentModal";
@@ -340,7 +340,7 @@ const HomePage = () => {
               <span className="visually-hidden">Loading...</span>
             </Spinner>
           ) : (
-            <Sidebar
+            <StudentLogsSidebar
               selectedAcademicYearStudents={allUserData?.students ?? []}
               onSelectStudent={handleSelectedStudent}
               onAcademicYearSelect={handleAcademicYearSelect}
