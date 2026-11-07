@@ -69,7 +69,7 @@ const ManageBaseLog = () => {
               const date = new Date(baseLogDay.date);
               textBoxes.push(
                 <div key={baseLogDay.id}>
-                  {date.getDay() === 1 && (
+                  {(date.getDay() === 1 || i === 0) && (
                     <div>
                       <b>
                         <h4>
