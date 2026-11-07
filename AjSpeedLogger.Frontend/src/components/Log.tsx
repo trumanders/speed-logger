@@ -11,7 +11,8 @@ import { useOutletContext, useParams } from "react-router";
 import EditStudentButton from "./buttons/EditStudentButton";
 
 const Log = () => {
-  const { baseLogDays, students } = useOutletContext<LogContext>();
+  const { baseLogDays, students, academicYear } =
+    useOutletContext<LogContext>();
   const { studentId } = useParams();
   const student = students?.find((s) => s.id === Number(studentId));
   const log = student?.log;
@@ -73,15 +74,8 @@ const Log = () => {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100vh",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ flexShrink: 0 }}>
+      <div className="mb-5">
+        <div>
           <h6>
             {weekDays[log.dayOfWeek]} - {log.lessonStartTime.substring(0, 5)}
           </h6>
@@ -97,9 +91,15 @@ const Log = () => {
           }}
         >
           {(() => {
-            const sortedBaseLogDays = [...baseLogDays].sort((a, b) =>
-              a.date.localeCompare(b.date),
-            );
+            const sortedBaseLogDays = [...baseLogDays]
+              .sort((a, b) => a.date.localeCompare(b.date))
+              .filter((b) => {
+                if (!academicYear) return true;
+                return (
+                  b.date >= academicYear.startDate &&
+                  b.date <= academicYear.endDate
+                );
+              });
             const logDayTextBoxes = [];
             // Start from the correct weekday
             const firstBaseLogWeekday =
@@ -107,9 +107,6 @@ const Log = () => {
             let firstIndex = log.dayOfWeek - firstBaseLogWeekday;
             if (firstIndex < 0) firstIndex = firstIndex + 7; // Log starts the week after the academicYear start.
 
-            // VISA INTE BASERAT PÅ ALLA BASELOGDAYS SOM FINNS, UTAN KOLLA
-            // VILKET START OCH SLUTDATUM LÄSÅRET FAKTISKT HAR.
-            // (Eftersom baslogdays inte tas bort om man redigerar läsåret och gör det kortare.)
             for (let i = firstIndex; i < sortedBaseLogDays.length; i += 7) {
               const baseLogDay = sortedBaseLogDays[i];
               logDayTextBoxes.push(

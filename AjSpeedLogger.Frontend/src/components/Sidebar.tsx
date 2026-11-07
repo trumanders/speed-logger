@@ -19,7 +19,7 @@ const Sidebar = ({
   onSelectStudent,
 }: SideBarProps) => {
   return (
-    <>
+    <div className="mb-5">
       {academicYears.length > 0 ? (
         <div
           style={{
@@ -81,7 +81,7 @@ const Sidebar = ({
           </Link>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

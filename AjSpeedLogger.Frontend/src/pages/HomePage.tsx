@@ -330,8 +330,8 @@ const HomePage = () => {
         onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
         selectedAcademicYearId={selectedAcademicYearId}
       />
-      <Row className="flex-grow-1 m-0" style={{ minHeight: 0 }}>
-        <Col sm={4} className="border-end overflow-auto">
+      <Row className="flex-grow-1 flex-nowrap m-0" style={{ minHeight: 0 }}>
+        <Col sm={4} className="overflow-auto">
           {isLoading ? (
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -346,7 +346,10 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col sm={8} className="ps-4 overflow-auto">
+        <Col
+          sm={8}
+          className="ps-4 overflow-auto border border-danger border-3"
+        >
           <Outlet context={contexts} />
         </Col>
       </Row>
