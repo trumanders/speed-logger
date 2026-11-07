@@ -346,10 +346,7 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col
-          sm={8}
-          className="ps-4 overflow-auto border border-danger border-3"
-        >
+        <Col sm={8} className="ps-4 overflow-auto">
           <Outlet context={contexts} />
         </Col>
       </Row>
