@@ -25,8 +25,6 @@ const Sidebar = ({
           style={{
             display: "flex",
             flexDirection: "column",
-            height: "100vh",
-            overflow: "hidden",
           }}
         >
           <div className="d-flex justify-content-center mb-3">
@@ -35,11 +33,7 @@ const Sidebar = ({
             </Link>
           </div>
 
-          <ListGroup
-            style={{
-              overflowY: "auto",
-            }}
-          >
+          <ListGroup>
             {selectedAcademicYearStudents
               ?.slice() // Create a copy to not mutate the original
               .sort(

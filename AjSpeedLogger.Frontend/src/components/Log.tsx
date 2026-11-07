@@ -84,12 +84,7 @@ const Log = () => {
             <EditStudentButton student={student} />
           </Stack>
         </div>
-        <div
-          style={{
-            flexGrow: 1,
-            overflowY: "auto",
-          }}
-        >
+        <div>
           {(() => {
             const sortedBaseLogDays = [...baseLogDays]
               .sort((a, b) => a.date.localeCompare(b.date))
