@@ -53,14 +53,12 @@ const ManageBaseLog = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          height: "100vh",
-          overflow: "hidden",
         }}
       >
         <div className="m-3" style={{ flexShrink: 0 }}>
           <h4>Baslogg - {academicYear.name}</h4>
         </div>
-        <div style={{ flexGrow: 1, overflowY: "auto" }}>
+        <div>
           {(() => {
             const sortedBaseLogDays = [...baseLogDays].sort((a, b) =>
               a.date.localeCompare(b.date),

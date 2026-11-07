@@ -28,7 +28,7 @@ const AcademicYearDropdown = ({
               {academicYears?.length > 0
                 ? academicYears.find((y) => y.id === selectedAcademicYearId)
                     ?.name
-                : "Du har inga läsår"}
+                : "Inga läsår"}
             </span>
             {academicYears?.length > 0 && selectedAcademicYearId && (
               <span
@@ -46,20 +46,22 @@ const AcademicYearDropdown = ({
         </Dropdown.Toggle>
 
         <Dropdown.Menu className="w-100 shadow-sm border-0 mt-1">
-          {academicYears.map((year) => (
-            <Dropdown.Item
-              className="py-2"
-              key={year.id}
-              active={year.id === selectedAcademicYearId}
-              onClick={() => {
-                onAcademicYearSelect(year.id);
-              }}
-            >
-              <Stack direction="horizontal">
-                <p>{year.name}</p>
-              </Stack>
-            </Dropdown.Item>
-          ))}
+          {academicYears
+            .sort((a, b) => a.name.localeCompare(b.name, "sv"))
+            .map((year) => (
+              <Dropdown.Item
+                className="py-2"
+                key={year.id}
+                active={year.id === selectedAcademicYearId}
+                onClick={() => {
+                  onAcademicYearSelect(year.id);
+                }}
+              >
+                <Stack direction="horizontal">
+                  <p>{year.name}</p>
+                </Stack>
+              </Dropdown.Item>
+            ))}
         </Dropdown.Menu>
       </Dropdown>
     </Stack>
