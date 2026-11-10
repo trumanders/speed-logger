@@ -18,6 +18,12 @@ const LogTextarea = ({ id, content, onTextChange }: LogTextareaProps) => {
       value={text}
       key={`${id}`}
       rows={1}
+      ref={(node) => {
+        if (node) {
+          node.style.height = "auto";
+          node.style.height = `${node.scrollHeight}px`;
+        }
+      }}
       style={{ width: "90%", overflow: "hidden", resize: "none" }}
       onChange={(e) => {
         const target = e.target as HTMLTextAreaElement;

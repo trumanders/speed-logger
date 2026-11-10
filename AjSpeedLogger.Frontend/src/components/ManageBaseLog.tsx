@@ -58,16 +58,22 @@ const ManageBaseLog = () => {
         <div className="m-3" style={{ flexShrink: 0 }}>
           <h4>Baslogg - {academicYear.name}</h4>
           <p className="border p-2">
-            Inlägg här visas på alla loggar för respektive datum. Om det redan
+            Dessa inlägg visas på alla loggar för respektive datum. Om det redan
             finns text på samma datum i loggen, kommer denna text visas där
-            istället.
+            istället. Basloginlägg går inte redigera i loggen.
           </p>
         </div>
         <div>
           {(() => {
-            const sortedBaseLogDays = [...baseLogDays].sort((a, b) =>
-              a.date.localeCompare(b.date),
-            );
+            const sortedBaseLogDays = [...baseLogDays]
+              .sort((a, b) => a.date.localeCompare(b.date))
+              .filter((b) => {
+                return (
+                  b.date >= academicYear.startDate &&
+                  b.date <= academicYear.endDate
+                );
+              });
+
             const textBoxes = [];
             for (let i = 0; i < sortedBaseLogDays.length; i++) {
               const baseLogDay = sortedBaseLogDays[i];

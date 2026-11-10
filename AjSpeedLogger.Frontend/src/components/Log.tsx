@@ -120,6 +120,12 @@ const Log = () => {
                       value={baseLogDay.content}
                       key={`${student.id}-${baseLogDay.id}`}
                       rows={1}
+                      ref={(node) => {
+                        if (node) {
+                          node.style.height = "auto";
+                          node.style.height = `${node.scrollHeight}px`;
+                        }
+                      }}
                       style={{
                         width: "90%",
                         overflow: "hidden",
@@ -136,6 +142,12 @@ const Log = () => {
                       }
                       key={`${student.id}-${baseLogDay.id}`}
                       rows={1}
+                      ref={(node) => {
+                        if (node) {
+                          node.style.height = "auto";
+                          node.style.height = `${node.scrollHeight}px`;
+                        }
+                      }}
                       style={{
                         width: "90%",
                         overflow: "hidden",
