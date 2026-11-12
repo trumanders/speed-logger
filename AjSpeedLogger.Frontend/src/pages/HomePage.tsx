@@ -36,11 +36,6 @@ export interface AddYearContext {
   onAddAcademicYear: (newAcademicYear: AcademicYearCreate) => void;
 }
 
-// export interface EditAcademicYearContext {
-//   handleEditAcademicYear: (id: number, academicYear: AcademicYear) => void;
-//   handleEditAcademicYearButtonClick: (academicYear: AcademicYear) => void;
-// }
-
 export interface AddLogContext {
   selectedAcademicYearId: number | null;
   selectedAcademicYearStudents: StudentAllUserData[] | null;
@@ -320,22 +315,15 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div
-      className="d-flex flex-column flex-grow-1 overflow-hidden"
-      style={{ minHeight: 0 }}
-    >
+    <div className="d-flex flex-column flex-grow-1 overflow-hidden">
       <ActionBar
         academicYears={academicYears}
         onAcademicYearSelect={handleAcademicYearSelect}
         onEditAcademicYearButtonClick={handleEditAcademicYearButtonClick}
         selectedAcademicYearId={selectedAcademicYearId}
       />
-      <Row className="flex-grow-1 overflow-hidden m-0" style={{ minHeight: 0 }}>
-        <Col
-          sm={4}
-          className="d-flex flex-column h-100 p-0 overflow-hidden"
-          style={{ minHeight: 0 }}
-        >
+      <Row className="flex-grow-1 flex-column flex-sm-row flex-nowrap overflow-hidden">
+        <Col sm={4} className="pane d-flex flex-column overflow-hidden p-3">
           {isLoading ? (
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -350,11 +338,7 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col
-          sm={8}
-          className="d-flex flex-column h-100 p-0 overflow-y-auto"
-          style={{ minHeight: 0 }}
-        >
+        <Col sm={9} className="pane d-flex flex-column overflow-hidden p-3">
           <Outlet context={contexts} />
         </Col>
       </Row>
