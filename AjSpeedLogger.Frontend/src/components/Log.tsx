@@ -74,15 +74,15 @@ const Log = () => {
 
   return (
     <>
-      <div className="d-flex flex-column h-100 mb-5 overflow-auto">
-        <div className="log-header">
+      <div className="d-flex flex-column h-100">
+        <div className="pb-3">
           <LogHeader
             headerText={`${weekDays[log.dayOfWeek]} - ${log.lessonStartTime.substring(0, 5)}`}
             student={student}
           />
         </div>
 
-        <div>
+        <div className="overflow-auto">
           {(() => {
             const sortedBaseLogDays = [...baseLogDays]
               .sort((a, b) => a.date.localeCompare(b.date))
