@@ -3,7 +3,7 @@ import { Link } from "react-router";
 const StudentSidebarHeader = () => {
   return (
     <>
-      <div className="d-flex justify-content-center">
+      <div>
         <Link to="/add-log" className="btn btn-outline-primary btn-sm">
           Lägg till logg
         </Link>

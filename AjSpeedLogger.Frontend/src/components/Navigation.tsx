@@ -15,7 +15,7 @@ const Navigation = () => {
   };
 
   return (
-    <Navbar sticky="top" bg="dark" data-bs-theme="dark">
+    <Navbar bg="dark" data-bs-theme="dark">
       <Container>
         <Navbar.Brand as={Link} to="/">
           Snaplog

@@ -17,7 +17,7 @@ const ActionBar = ({
   selectedAcademicYearId,
 }: ActionBarProps) => {
   return (
-    <div className="bg-light py-1 px-3 mb-3 border-bottom w-100">
+    <div>
       <Stack direction="horizontal" gap={2}>
         <AcademicYearDropdown
           academicYears={academicYears}

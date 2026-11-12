@@ -18,10 +18,10 @@ const StudentLogsSidebar = ({
   onSelectStudent,
 }: StudentLogsSideBarProps) => {
   return (
-    <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100 overflow-hidden">
       {academicYears.length > 0 ? (
         <>
-          <div>
+          <div className="flex-shrink-0 p-2">
             <StudentSidebarHeader />
           </div>
           <div className="flex-grow-1 overflow-auto">

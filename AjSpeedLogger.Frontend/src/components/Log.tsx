@@ -73,100 +73,97 @@ const Log = () => {
   };
 
   return (
-    <>
-      <div className="d-flex flex-column h-100">
-        <div className="pb-3">
-          <LogHeader
-            headerText={`${weekDays[log.dayOfWeek]} - ${log.lessonStartTime.substring(0, 5)}`}
-            student={student}
-          />
-        </div>
-
-        <div className="overflow-auto">
-          {(() => {
-            const sortedBaseLogDays = [...baseLogDays]
-              .sort((a, b) => a.date.localeCompare(b.date))
-              .filter((b) => {
-                if (!academicYear) return true;
-                return (
-                  b.date >= academicYear.startDate &&
-                  b.date <= academicYear.endDate
-                );
-              });
-            const logDayTextBoxes = [];
-            // Start from the correct weekday
-            const firstBaseLogWeekday =
-              new Date(sortedBaseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
-            let firstIndex = log.dayOfWeek - firstBaseLogWeekday;
-            if (firstIndex < 0) firstIndex = firstIndex + 7; // Log starts the week after the academicYear start.
-
-            for (let i = firstIndex; i < sortedBaseLogDays.length; i += 7) {
-              const baseLogDay = sortedBaseLogDays[i];
-              logDayTextBoxes.push(
-                <div key={baseLogDay.id}>
-                  v{baseLogDay.weekNumber} -{" "}
-                  {new Intl.DateTimeFormat("sv-SE", {
-                    day: "numeric",
-                    month: "long",
-                  }).format(new Date(baseLogDay.date))}
-                </div>,
-                <Stack direction="horizontal" className="mb-3">
-                  {baseLogDay.content ? (
-                    <textarea
-                      readOnly={true}
-                      color="red"
-                      value={baseLogDay.content}
-                      key={`${student.id}-${baseLogDay.id}`}
-                      rows={1}
-                      ref={(node) => {
-                        if (node) {
-                          node.style.height = "auto";
-                          node.style.height = `${node.scrollHeight}px`;
-                        }
-                      }}
-                      style={{
-                        width: "90%",
-                        overflow: "hidden",
-                        resize: "none",
-                        border: "3px solid red",
-                        outline: "none",
-                      }}
-                    />
-                  ) : (
-                    <textarea
-                      value={
-                        logDays?.find((ld) => ld.baseLogDayId === baseLogDay.id)
-                          ?.content || ""
-                      }
-                      key={`${student.id}-${baseLogDay.id}`}
-                      rows={1}
-                      ref={(node) => {
-                        if (node) {
-                          node.style.height = "auto";
-                          node.style.height = `${node.scrollHeight}px`;
-                        }
-                      }}
-                      style={{
-                        width: "90%",
-                        overflow: "hidden",
-                        resize: "none",
-                      }}
-                      onChange={(e) => {
-                        const target = e.target as HTMLTextAreaElement;
-                        target.style.height = "auto";
-                        target.style.height = `${target.scrollHeight}px`;
-                        handleTextChange(baseLogDay.id, target.value);
-                      }}
-                    />
-                  )}
-                </Stack>,
-              );
-            }
-            return logDayTextBoxes;
-          })()}
-        </div>
+    <div className="d-flex flex-column h-100 overflow-hidden">
+      <div className="flex-shrink-0">
+        <LogHeader
+          headerText={`${weekDays[log.dayOfWeek]} - ${log.lessonStartTime.substring(0, 5)}`}
+          student={student}
+        />
       </div>
-    </>
+      <div className="flex-grow-1 overflow-y-auto p-3">
+        {(() => {
+          const sortedBaseLogDays = [...baseLogDays]
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .filter((b) => {
+              if (!academicYear) return true;
+              return (
+                b.date >= academicYear.startDate &&
+                b.date <= academicYear.endDate
+              );
+            });
+          const logDayTextBoxes = [];
+          // Start from the correct weekday
+          const firstBaseLogWeekday =
+            new Date(sortedBaseLogDays[0].date).getDay() - 1; // We use mon-sun = 0-6, instead of sun-sat = 0-6
+          let firstIndex = log.dayOfWeek - firstBaseLogWeekday;
+          if (firstIndex < 0) firstIndex = firstIndex + 7; // Log starts the week after the academicYear start.
+
+          for (let i = firstIndex; i < sortedBaseLogDays.length; i += 7) {
+            const baseLogDay = sortedBaseLogDays[i];
+            logDayTextBoxes.push(
+              <div key={baseLogDay.id}>
+                v{baseLogDay.weekNumber} -{" "}
+                {new Intl.DateTimeFormat("sv-SE", {
+                  day: "numeric",
+                  month: "long",
+                }).format(new Date(baseLogDay.date))}
+              </div>,
+              <Stack direction="horizontal" className="mb-3">
+                {baseLogDay.content ? (
+                  <textarea
+                    readOnly={true}
+                    color="red"
+                    value={baseLogDay.content}
+                    key={`${student.id}-${baseLogDay.id}`}
+                    rows={1}
+                    ref={(node) => {
+                      if (node) {
+                        node.style.height = "auto";
+                        node.style.height = `${node.scrollHeight}px`;
+                      }
+                    }}
+                    style={{
+                      width: "90%",
+                      overflow: "hidden",
+                      resize: "none",
+                      border: "3px solid red",
+                      outline: "none",
+                    }}
+                  />
+                ) : (
+                  <textarea
+                    value={
+                      logDays?.find((ld) => ld.baseLogDayId === baseLogDay.id)
+                        ?.content || ""
+                    }
+                    key={`${student.id}-${baseLogDay.id}`}
+                    rows={1}
+                    ref={(node) => {
+                      if (node) {
+                        node.style.height = "auto";
+                        node.style.height = `${node.scrollHeight}px`;
+                      }
+                    }}
+                    style={{
+                      width: "90%",
+                      overflow: "hidden",
+                      resize: "none",
+                    }}
+                    onChange={(e) => {
+                      const target = e.target as HTMLTextAreaElement;
+                      target.style.height = "auto";
+                      target.style.height = `${target.scrollHeight}px`;
+                      handleTextChange(baseLogDay.id, target.value);
+                    }}
+                  />
+                )}
+              </Stack>,
+            );
+          }
+          return logDayTextBoxes;
+        })()}
+      </div>
+    </div>
   );
 };
 
