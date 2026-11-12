@@ -18,7 +18,7 @@ const Navigation = () => {
     <Navbar sticky="top" bg="dark" data-bs-theme="dark">
       <Container>
         <Navbar.Brand as={Link} to="/">
-          Speed Logger
+          Snaplog
         </Navbar.Brand>
         <Nav className="ms-auto">
           {isLoggedIn ? (
