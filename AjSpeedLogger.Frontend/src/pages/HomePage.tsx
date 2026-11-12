@@ -349,7 +349,7 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col sm={8} className="overflow-auto">
+        <Col sm={8}>
           <Outlet context={contexts} />
         </Col>
       </Row>

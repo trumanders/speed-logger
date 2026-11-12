@@ -8,7 +8,7 @@ import {
 } from "../services/logDayService";
 import type { LogContext } from "../pages/HomePage";
 import { useOutletContext, useParams } from "react-router";
-import EditStudentButton from "./buttons/EditStudentButton";
+import LogHeader from "./LogHeader";
 
 const Log = () => {
   const { baseLogDays, students, academicYear } =
@@ -74,16 +74,14 @@ const Log = () => {
 
   return (
     <>
-      <div className="mb-5">
-        <div>
-          <h6>
-            {weekDays[log.dayOfWeek]} - {log.lessonStartTime.substring(0, 5)}
-          </h6>
-          <Stack direction="horizontal">
-            <h4>{student.name}</h4>
-            <EditStudentButton student={student} />
-          </Stack>
+      <div className="d-flex flex-column h-100 mb-5 overflow-auto">
+        <div className="log-header">
+          <LogHeader
+            headerText={`${weekDays[log.dayOfWeek]} - ${log.lessonStartTime.substring(0, 5)}`}
+            student={student}
+          />
         </div>
+
         <div>
           {(() => {
             const sortedBaseLogDays = [...baseLogDays]
