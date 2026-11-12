@@ -21,10 +21,10 @@ const StudentLogsSidebar = ({
     <div className="d-flex flex-column flex-grow-1 overflow-hidden">
       {academicYears.length > 0 ? (
         <>
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 mb-4">
             <StudentSidebarHeader />
           </div>
-          <div className="flex-grow-1 overflow-auto">
+          <div className="flex-grow-1 overflow-auto pe-2">
             <LogList
               selectedAcademicYearStudents={selectedAcademicYearStudents}
               onSelectStudent={onSelectStudent}

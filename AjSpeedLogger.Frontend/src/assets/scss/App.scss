@@ -5,9 +5,20 @@
   height: 20px;
 }
 
-.pane {
-  @include media-breakpoint-down(sm) {
-    flex: 1 1 0;
-    min-height: 0;
+.row > .pane-start {
+  @include media-breakpoint-only(xs) {
+    flex: 0 0 35%;
+    max-height: 35%;
   }
+}
+
+.row > .pane-end {
+  @include media-breakpoint-only(xs) {
+    flex: 0 0 65%;
+    max-height: 65%;
+  }
+}
+
+.overflow-auto {
+  scrollbar-width: thin;
 }

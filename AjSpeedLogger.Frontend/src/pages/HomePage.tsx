@@ -323,7 +323,10 @@ const HomePage = () => {
         selectedAcademicYearId={selectedAcademicYearId}
       />
       <Row className="flex-grow-1 flex-column flex-sm-row flex-nowrap overflow-hidden">
-        <Col sm={4} className="pane d-flex flex-column overflow-hidden p-3">
+        <Col
+          sm={3}
+          className="pane pane-start d-flex flex-column overflow-hidden"
+        >
           {isLoading ? (
             <Spinner animation="border" role="status">
               <span className="visually-hidden">Loading...</span>
@@ -338,7 +341,10 @@ const HomePage = () => {
             />
           )}
         </Col>
-        <Col sm={9} className="pane d-flex flex-column overflow-hidden p-3">
+        <Col
+          sm={9}
+          className="pane pane-end d-flex flex-column overflow-hidden"
+        >
           <Outlet context={contexts} />
         </Col>
       </Row>

@@ -67,14 +67,13 @@ const Log = () => {
       clearTimeout(logTextSaveTimers.current[baseLogDayId]);
     logTextSaveTimers.current[baseLogDayId] = setTimeout(async () => {
       await saveLogDayContent(log.id, baseLogDayId, newContent);
-
       delete logTextSaveTimers.current[baseLogDayId];
     }, 2000);
   };
 
   return (
     <div className="d-flex flex-column flex-grow-1 overflow-hidden">
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 mb-3">
         <LogHeader
           headerText={`${weekDays[log.dayOfWeek]} - ${log.lessonStartTime.substring(0, 5)}`}
           student={student}
