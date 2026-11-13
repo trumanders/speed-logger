@@ -48,67 +48,60 @@ const ManageBaseLog = () => {
   }
 
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <div className="m-3" style={{ flexShrink: 0 }}>
-          <h4>Baslogg - {academicYear.name}</h4>
-          <p className="border p-2">
-            Dessa inlägg visas på alla loggar för respektive datum. Om det redan
-            finns text på samma datum i loggen, kommer denna text visas där
-            istället. Basloginlägg går inte redigera i loggen.
-          </p>
-        </div>
-        <div>
-          {(() => {
-            const sortedBaseLogDays = [...baseLogDays]
-              .sort((a, b) => a.date.localeCompare(b.date))
-              .filter((b) => {
-                return (
-                  b.date >= academicYear.startDate &&
-                  b.date <= academicYear.endDate
-                );
-              });
-
-            const textBoxes = [];
-            for (let i = 0; i < sortedBaseLogDays.length; i++) {
-              const baseLogDay = sortedBaseLogDays[i];
-              const date = new Date(baseLogDay.date);
-              textBoxes.push(
-                <div key={baseLogDay.id}>
-                  {(date.getDay() === 1 || i === 0) && (
-                    <div>
-                      <b>
-                        <h4>
-                          vecka {baseLogDay.weekNumber} <br></br>
-                        </h4>
-                      </b>
-                    </div>
-                  )}
-                  {new Intl.DateTimeFormat("sv-SE", {
-                    day: "numeric",
-                    weekday: "long",
-                    month: "long",
-                  }).format(new Date(baseLogDay.date))}
-                </div>,
-                <div className="mb-2">
-                  <LogTextarea
-                    id={baseLogDay.id}
-                    content={baseLogDay.content}
-                    onTextChange={handleTextChange}
-                  />
-                </div>,
-              );
-            }
-            return textBoxes;
-          })()}
-        </div>
+    <div className="d-flex flex-column flex-grow-1 overflow-hidden">
+      <div className="flex-shrink-0">
+        <h4>Baslogg - {academicYear.name}</h4>
+        <p className="border p-2">
+          Dessa inlägg visas på alla loggar för respektive datum. Om det redan
+          finns text på samma datum i loggen, kommer denna text visas där
+          istället. Basloginlägg går inte redigera i loggen.
+        </p>
       </div>
-    </>
+      <div className="flex-grow-1 overflow-auto">
+        {(() => {
+          const sortedBaseLogDays = [...baseLogDays]
+            .sort((a, b) => a.date.localeCompare(b.date))
+            .filter((b) => {
+              return (
+                b.date >= academicYear.startDate &&
+                b.date <= academicYear.endDate
+              );
+            });
+
+          const textBoxes = [];
+          for (let i = 0; i < sortedBaseLogDays.length; i++) {
+            const baseLogDay = sortedBaseLogDays[i];
+            const date = new Date(baseLogDay.date);
+            textBoxes.push(
+              <div key={baseLogDay.id}>
+                {(date.getDay() === 1 || i === 0) && (
+                  <div>
+                    <b>
+                      <h4>
+                        vecka {baseLogDay.weekNumber} <br></br>
+                      </h4>
+                    </b>
+                  </div>
+                )}
+                {new Intl.DateTimeFormat("sv-SE", {
+                  day: "numeric",
+                  weekday: "long",
+                  month: "long",
+                }).format(new Date(baseLogDay.date))}
+              </div>,
+              <div className="mb-2">
+                <LogTextarea
+                  id={baseLogDay.id}
+                  content={baseLogDay.content}
+                  onTextChange={handleTextChange}
+                />
+              </div>,
+            );
+          }
+          return textBoxes;
+        })()}
+      </div>
+    </div>
   );
 };
 

@@ -35,7 +35,10 @@ const ProtectedRoute = () => {
 const App = () => {
   return (
     <>
-      <Container className="vh-100 d-flex flex-column overflow-hidden">
+      <Container
+        fluid
+        className="vh-100 d-flex flex-column overflow-hidden pb-5 ps-3"
+      >
         <Navigation />
         <Routes>
           <Route element={<ProtectedRoute />}>

@@ -324,7 +324,7 @@ const HomePage = () => {
       />
       <Row className="flex-grow-1 flex-column flex-sm-row flex-nowrap overflow-hidden">
         <Col
-          sm={3}
+          sm={4}
           className="pane pane-start d-flex flex-column overflow-hidden"
         >
           {isLoading ? (
@@ -342,7 +342,7 @@ const HomePage = () => {
           )}
         </Col>
         <Col
-          sm={9}
+          sm={8}
           className="pane pane-end d-flex flex-column overflow-hidden"
         >
           <Outlet context={contexts} />

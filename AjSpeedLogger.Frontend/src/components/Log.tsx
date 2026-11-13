@@ -9,6 +9,7 @@ import {
 import type { LogContext } from "../pages/HomePage";
 import { useOutletContext, useParams } from "react-router";
 import LogHeader from "./LogHeader";
+import LogTextarea from "./LogTextarea";
 
 const Log = () => {
   const { baseLogDays, students, academicYear } =
@@ -107,55 +108,20 @@ const Log = () => {
                   month: "long",
                 }).format(new Date(baseLogDay.date))}
               </div>,
-              <Stack direction="horizontal" className="mb-3">
-                {baseLogDay.content ? (
-                  <textarea
-                    readOnly={true}
-                    color="red"
-                    value={baseLogDay.content}
-                    key={`${student.id}-${baseLogDay.id}`}
-                    rows={1}
-                    ref={(node) => {
-                      if (node) {
-                        node.style.height = "auto";
-                        node.style.height = `${node.scrollHeight}px`;
-                      }
-                    }}
-                    style={{
-                      width: "90%",
-                      overflow: "hidden",
-                      resize: "none",
-                      border: "3px solid red",
-                      outline: "none",
-                    }}
-                  />
-                ) : (
-                  <textarea
-                    value={
-                      logDays?.find((ld) => ld.baseLogDayId === baseLogDay.id)
-                        ?.content || ""
-                    }
-                    key={`${student.id}-${baseLogDay.id}`}
-                    rows={1}
-                    ref={(node) => {
-                      if (node) {
-                        node.style.height = "auto";
-                        node.style.height = `${node.scrollHeight}px`;
-                      }
-                    }}
-                    style={{
-                      width: "90%",
-                      overflow: "hidden",
-                      resize: "none",
-                    }}
-                    onChange={(e) => {
-                      const target = e.target as HTMLTextAreaElement;
-                      target.style.height = "auto";
-                      target.style.height = `${target.scrollHeight}px`;
-                      handleTextChange(baseLogDay.id, target.value);
-                    }}
-                  />
-                )}
+              <Stack
+                direction="horizontal"
+                className="mb-3"
+                key={`stack-${baseLogDay.id}`}
+              >
+                <LogTextarea
+                  id={baseLogDay.id}
+                  content={
+                    logDays?.find((ld) => ld.baseLogDayId === baseLogDay.id)
+                      ?.content || ""
+                  }
+                  baseContent={baseLogDay.content}
+                  onTextChange={handleTextChange}
+                />
               </Stack>,
             );
           }
